@@ -15,6 +15,15 @@ define( 'ETM_VERSION', '1.2.0' );
 define( 'ETM_PATH',    plugin_dir_path( __FILE__ ) );
 define( 'ETM_URL',     plugin_dir_url( __FILE__ ) );
 
+// ── Admin: append live deploy timestamp to plugin row ───────────────────────
+add_filter( 'plugin_row_meta', function ( array $meta, string $file ): array {
+    if ( $file === plugin_basename( __FILE__ ) ) {
+        $ts     = filemtime( __FILE__ );
+        $meta[] = 'Deployed: <strong>' . gmdate( 'j M Y, H:i', $ts ) . ' UTC</strong>';
+    }
+    return $meta;
+}, 10, 2 );
+
 // Load admin panel
 if ( is_admin() ) {
     require_once ETM_PATH . 'includes/admin/class-admin-menus.php';
