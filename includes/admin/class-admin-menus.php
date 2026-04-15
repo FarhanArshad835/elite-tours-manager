@@ -1,0 +1,79 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+
+class ETM_Admin_Menus {
+
+    public function __construct() {
+        add_action( 'admin_menu',       [ $this, 'register_menus' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
+    }
+
+    public function register_menus(): void {
+
+        // Top-level menu
+        add_menu_page(
+            'Elite Tours',
+            'Elite Tours',
+            'manage_options',
+            'elite-tours',
+            [ $this, 'dashboard_page' ],
+            'data:image/svg+xml;base64,' . base64_encode(
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#ffffff"><text y="16" font-size="16" font-family="Georgia,serif" font-weight="700">ET</text></svg>'
+            ),
+            3
+        );
+
+        // Sub-pages
+        add_submenu_page( 'elite-tours', 'Site Settings', 'Site Settings', 'manage_options', 'et-site-settings',   'etm_site_settings_page' );
+        add_submenu_page( 'elite-tours', 'Homepage',      'Homepage',      'manage_options', 'et-homepage',        'etm_homepage_page' );
+
+        // Remove duplicate top-level item
+        remove_submenu_page( 'elite-tours', 'elite-tours' );
+    }
+
+    public function dashboard_page(): void {
+        ?>
+        <div class="wrap etm-wrap">
+            <div class="etm-dashboard">
+                <div class="etm-dashboard__header">
+                    <h1 class="etm-dashboard__title">
+                        <span class="etm-logo-et">ET</span>
+                        Elite Tours Ireland
+                    </h1>
+                    <p class="etm-dashboard__sub">Website Content Manager — v<?php echo ETM_VERSION; ?></p>
+                </div>
+                <div class="etm-dashboard__grid">
+                    <?php
+                    $sections = [
+                        [ 'icon' => '⚙️', 'title' => 'Site Settings',  'desc' => 'Logo, phone number, nav CTA text.',         'url' => admin_url( 'admin.php?page=et-site-settings' ) ],
+                        [ 'icon' => '🏠', 'title' => 'Homepage',        'desc' => 'Hero video/image, headline, trust bar.',    'url' => admin_url( 'admin.php?page=et-homepage' ) ],
+                    ];
+                    foreach ( $sections as $s ) : ?>
+                        <a href="<?php echo esc_url( $s['url'] ); ?>" class="etm-card">
+                            <span class="etm-card__icon"><?php echo $s['icon']; ?></span>
+                            <strong class="etm-card__title"><?php echo esc_html( $s['title'] ); ?></strong>
+                            <p class="etm-card__desc"><?php echo esc_html( $s['desc'] ); ?></p>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+
+    public function enqueue_assets( string $hook ): void {
+        // Only load on our plugin pages
+        if ( strpos( $hook, 'elite-tours' ) === false && strpos( $hook, 'et-' ) === false ) {
+            return;
+        }
+        wp_enqueue_style(
+            'etm-admin',
+            ETM_URL . 'assets/css/admin.css',
+            [],
+            ETM_VERSION
+        );
+        wp_enqueue_media(); // for image/video upload
+    }
+}
+
+new ETM_Admin_Menus();
