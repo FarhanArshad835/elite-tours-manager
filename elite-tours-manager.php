@@ -1,10 +1,12 @@
 <?php
 /**
- * Plugin Name:  Elite Tours Manager
- * Description:  Content management panel for Elite Tours Ireland website.
- * Version:      1.0.0
- * Author:       Elite Tours Ireland
- * Text Domain:  elite-tours-manager
+ * Plugin Name:   Elite Tours Manager
+ * Description:   Content management panel for Elite Tours Ireland website.
+ * Version:       1.0.0
+ * Author:        Elite Tours Ireland
+ * Text Domain:   elite-tours-manager
+ * GitHub Plugin URI: FarhanArshad835/elite-tours-manager
+ * Primary Branch:    main
  */
 
 defined( 'ABSPATH' ) || exit;
