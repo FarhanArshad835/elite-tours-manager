@@ -118,6 +118,26 @@
     margin: 0 0 24px 0;
 }
 
+/* ── Field Groups (sub-sections within a section) ────────────── */
+.etm-field-group {
+    border: 1px solid var(--etm-border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 18px;
+    background: #fafafa;
+}
+.etm-field-group:last-child { margin-bottom: 0; }
+.etm-field-group__title {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: var(--etm-text) !important;
+    margin: 0 0 16px 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
 /* ── Fields ──────────────────────────────────────────────────── */
 .etm-field {
     margin-bottom: 22px;

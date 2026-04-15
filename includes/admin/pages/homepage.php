@@ -10,6 +10,12 @@ add_action( 'admin_post_etm_save_homepage', function () {
         'hero_label', 'hero_headline', 'hero_subheading',
         'hero_cta_primary', 'hero_cta_secondary',
         'hero_video_url', 'hero_image_id',
+        // Trust strip
+        'trust_ta_sub',
+        'trust_failte_sub', 'trust_failte_logo_id',
+        'trust_asta_sub',   'trust_asta_logo_id',
+        'trust_iagto_sub',  'trust_iagto_logo_id',
+        'trust_since_label', 'trust_since_sub',
     ];
     $data = [];
     foreach ( $fields as $f ) {
@@ -136,6 +142,153 @@ function etm_homepage_page(): void {
 
             </div>
             <!-- ── END HERO ──────────────────────────────────────── -->
+
+            <!-- ── TRUST STRIP ───────────────────────────────────── -->
+            <div class="etm-section">
+                <h2 class="etm-section__title">Trust Strip</h2>
+                <p class="etm-section__desc">The badge bar at the bottom of the hero — shows partner logos and credibility signals. Logos fall back to the bundled images if no upload is provided.</p>
+
+                <!-- TripAdvisor -->
+                <div class="etm-field-group">
+                    <h3 class="etm-field-group__title">TripAdvisor</h3>
+                    <div class="etm-field">
+                        <label class="etm-label" for="trust_ta_sub">Sub-label</label>
+                        <input type="text" id="trust_ta_sub" name="trust_ta_sub" class="etm-input"
+                               value="<?php echo esc_attr( $opts['trust_ta_sub'] ?? '5-Star Rated' ); ?>"
+                               placeholder="5-Star Rated">
+                    </div>
+                </div>
+
+                <!-- Fáilte Ireland -->
+                <div class="etm-field-group">
+                    <h3 class="etm-field-group__title">Fáilte Ireland</h3>
+                    <?php
+                    $failte_logo_id  = $opts['trust_failte_logo_id'] ?? '';
+                    $failte_logo_url = $failte_logo_id ? wp_get_attachment_image_url( (int) $failte_logo_id, 'thumbnail' ) : '';
+                    ?>
+                    <div class="etm-field">
+                        <label class="etm-label">Logo Image</label>
+                        <div class="etm-media-upload">
+                            <img src="<?php echo esc_url( $failte_logo_url ); ?>" id="etm-failte-preview"
+                                 class="etm-media-preview" alt="" <?php echo $failte_logo_url ? '' : 'style="display:none;"'; ?>>
+                            <input type="hidden" name="trust_failte_logo_id" id="etm-failte-logo-id"
+                                   value="<?php echo esc_attr( $failte_logo_id ); ?>">
+                            <div class="etm-media-btns">
+                                <button type="button" class="etm-btn-upload button"
+                                        data-target="etm-failte-logo-id" data-preview="etm-failte-preview"
+                                        data-title="Select Fáilte Ireland Logo">
+                                    <?php echo $failte_logo_url ? 'Change Logo' : 'Upload Logo'; ?>
+                                </button>
+                                <?php if ( $failte_logo_url ) : ?>
+                                    <button type="button" class="etm-btn-remove button-link-delete"
+                                            data-target="etm-failte-logo-id" data-preview="etm-failte-preview">Remove</button>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <p class="etm-help">If blank, uses the bundled Fáilte Ireland logo. Recommended: PNG with transparency, ~220×80px.</p>
+                    </div>
+                    <div class="etm-field">
+                        <label class="etm-label" for="trust_failte_sub">Sub-label</label>
+                        <input type="text" id="trust_failte_sub" name="trust_failte_sub" class="etm-input"
+                               value="<?php echo esc_attr( $opts['trust_failte_sub'] ?? 'Approved Partner' ); ?>"
+                               placeholder="Approved Partner">
+                    </div>
+                </div>
+
+                <!-- ASTA -->
+                <div class="etm-field-group">
+                    <h3 class="etm-field-group__title">ASTA</h3>
+                    <?php
+                    $asta_logo_id  = $opts['trust_asta_logo_id'] ?? '';
+                    $asta_logo_url = $asta_logo_id ? wp_get_attachment_image_url( (int) $asta_logo_id, 'thumbnail' ) : '';
+                    ?>
+                    <div class="etm-field">
+                        <label class="etm-label">Logo Image</label>
+                        <div class="etm-media-upload">
+                            <img src="<?php echo esc_url( $asta_logo_url ); ?>" id="etm-asta-preview"
+                                 class="etm-media-preview" alt="" <?php echo $asta_logo_url ? '' : 'style="display:none;"'; ?>>
+                            <input type="hidden" name="trust_asta_logo_id" id="etm-asta-logo-id"
+                                   value="<?php echo esc_attr( $asta_logo_id ); ?>">
+                            <div class="etm-media-btns">
+                                <button type="button" class="etm-btn-upload button"
+                                        data-target="etm-asta-logo-id" data-preview="etm-asta-preview"
+                                        data-title="Select ASTA Logo">
+                                    <?php echo $asta_logo_url ? 'Change Logo' : 'Upload Logo'; ?>
+                                </button>
+                                <?php if ( $asta_logo_url ) : ?>
+                                    <button type="button" class="etm-btn-remove button-link-delete"
+                                            data-target="etm-asta-logo-id" data-preview="etm-asta-preview">Remove</button>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <p class="etm-help">If blank, uses the bundled ASTA logo.</p>
+                    </div>
+                    <div class="etm-field">
+                        <label class="etm-label" for="trust_asta_sub">Sub-label</label>
+                        <input type="text" id="trust_asta_sub" name="trust_asta_sub" class="etm-input"
+                               value="<?php echo esc_attr( $opts['trust_asta_sub'] ?? 'Member' ); ?>"
+                               placeholder="Member">
+                    </div>
+                </div>
+
+                <!-- IAGTO -->
+                <div class="etm-field-group">
+                    <h3 class="etm-field-group__title">IAGTO</h3>
+                    <?php
+                    $iagto_logo_id  = $opts['trust_iagto_logo_id'] ?? '';
+                    $iagto_logo_url = $iagto_logo_id ? wp_get_attachment_image_url( (int) $iagto_logo_id, 'thumbnail' ) : '';
+                    ?>
+                    <div class="etm-field">
+                        <label class="etm-label">Logo Image</label>
+                        <div class="etm-media-upload">
+                            <img src="<?php echo esc_url( $iagto_logo_url ); ?>" id="etm-iagto-preview"
+                                 class="etm-media-preview" alt="" <?php echo $iagto_logo_url ? '' : 'style="display:none;"'; ?>>
+                            <input type="hidden" name="trust_iagto_logo_id" id="etm-iagto-logo-id"
+                                   value="<?php echo esc_attr( $iagto_logo_id ); ?>">
+                            <div class="etm-media-btns">
+                                <button type="button" class="etm-btn-upload button"
+                                        data-target="etm-iagto-logo-id" data-preview="etm-iagto-preview"
+                                        data-title="Select IAGTO Logo">
+                                    <?php echo $iagto_logo_url ? 'Change Logo' : 'Upload Logo'; ?>
+                                </button>
+                                <?php if ( $iagto_logo_url ) : ?>
+                                    <button type="button" class="etm-btn-remove button-link-delete"
+                                            data-target="etm-iagto-logo-id" data-preview="etm-iagto-preview">Remove</button>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <p class="etm-help">If blank, uses the bundled IAGTO logo. IAGTO logo renders in colour (not white).</p>
+                    </div>
+                    <div class="etm-field">
+                        <label class="etm-label" for="trust_iagto_sub">Sub-label</label>
+                        <input type="text" id="trust_iagto_sub" name="trust_iagto_sub" class="etm-input"
+                               value="<?php echo esc_attr( $opts['trust_iagto_sub'] ?? 'Golf Tourism' ); ?>"
+                               placeholder="Golf Tourism">
+                    </div>
+                </div>
+
+                <!-- Since 1973 -->
+                <div class="etm-field-group">
+                    <h3 class="etm-field-group__title">Since Badge</h3>
+                    <div class="etm-field-row">
+                        <div class="etm-field">
+                            <label class="etm-label" for="trust_since_label">Badge Text</label>
+                            <input type="text" id="trust_since_label" name="trust_since_label" class="etm-input"
+                                   value="<?php echo esc_attr( $opts['trust_since_label'] ?? 'Since 1973' ); ?>"
+                                   placeholder="Since 1973">
+                            <p class="etm-help">Shown in gold. e.g. "Since 1973"</p>
+                        </div>
+                        <div class="etm-field">
+                            <label class="etm-label" for="trust_since_sub">Sub-label</label>
+                            <input type="text" id="trust_since_sub" name="trust_since_sub" class="etm-input"
+                                   value="<?php echo esc_attr( $opts['trust_since_sub'] ?? '50+ years experience' ); ?>"
+                                   placeholder="50+ years experience">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- ── END TRUST STRIP ───────────────────────────────── -->
 
             <div class="etm-actions">
                 <button type="submit" class="etm-btn-save button-primary">Save Homepage Settings</button>
