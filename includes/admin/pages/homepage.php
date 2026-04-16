@@ -1,10 +1,10 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-// ── Save Handler ──────────────────────────────────────────────────────────────
-add_action( 'admin_post_etm_save_homepage', function () {
-    if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
-    check_admin_referer( 'etm_homepage' );
+// ── Save Handler (AJAX) ───────────────────────────────────────────────────────
+add_action( 'wp_ajax_etm_hp_save', function () {
+    check_ajax_referer( 'etm_homepage', '_wpnonce' );
+    if ( ! current_user_can( 'manage_options' ) ) wp_send_json_error( 'Unauthorised', 403 );
 
     $existing = get_option( 'et_homepage_settings', [] );
     $data     = $existing; // preserve any keys not explicitly saved here
@@ -93,7 +93,7 @@ add_action( 'admin_post_etm_save_homepage', function () {
     }
 
     // ── Section visibility toggles ───────────────────────────────────────────
-    $slugs = [ 'trust-stats', 'intro', 'offers', 'process', 'experiences', 'testimonials', 'founder-cta' ];
+    $slugs = [ 'intro', 'offers', 'process', 'experiences', 'testimonials', 'founder-cta' ];
     foreach ( $slugs as $slug ) {
         $key = 'section_' . $slug . '_visible';
         $data[ $key ] = isset( $_POST[ $key ] ) ? '1' : '0';
@@ -120,9 +120,7 @@ add_action( 'admin_post_etm_save_homepage', function () {
     }
 
     update_option( 'et_homepage_settings', $data );
-
-    wp_redirect( add_query_arg( [ 'page' => 'et-homepage', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
-    exit;
+    wp_send_json_success( 'Saved' );
 } );
 
 // ── Render ────────────────────────────────────────────────────────────────────
@@ -138,9 +136,9 @@ function etm_homepage_page(): void {
     };
 
     // Section order & visibility
-    $slugs = [ 'trust-stats', 'intro', 'offers', 'process', 'experiences', 'testimonials', 'founder-cta' ];
+    $slugs = [ 'intro', 'offers', 'process', 'experiences', 'testimonials', 'founder-cta' ];
     $slug_labels = [
-        'trust-stats'  => 'Stats Strip',
+
         'intro'        => 'Who We Are',
         'offers'       => 'Core Offers',
         'process'      => 'How It Works',
@@ -167,78 +165,15 @@ function etm_homepage_page(): void {
     <div class="wrap etm-wrap">
         <h1 class="etm-page-title">Homepage</h1>
 
-        <?php if ( isset( $_GET['saved'] ) ) : ?>
-            <div class="etm-notice etm-notice--success">Homepage settings saved successfully.</div>
-        <?php endif; ?>
+        <div id="etm-save-feedback" class="etm-notice" style="min-height:1.5em;"></div>
 
-        <!-- Page-level tabs -->
-        <div class="etm-page-tabs" id="etm-page-tabs">
-            <button type="button" class="etm-page-tab etm-page-tab--active" data-panel="etm-panel-sections">Sections</button>
-            <button type="button" class="etm-page-tab" data-panel="etm-panel-hero">Hero</button>
-            <button type="button" class="etm-page-tab" data-panel="etm-panel-trust">Trust Bar</button>
-            <button type="button" class="etm-page-tab" data-panel="etm-panel-stats">Stats Strip</button>
-            <button type="button" class="etm-page-tab" data-panel="etm-panel-intro">Who We Are</button>
-            <button type="button" class="etm-page-tab" data-panel="etm-panel-offers">Core Offers</button>
-            <button type="button" class="etm-page-tab" data-panel="etm-panel-process">How It Works</button>
-            <button type="button" class="etm-page-tab" data-panel="etm-panel-experiences">Experiences</button>
-            <button type="button" class="etm-page-tab" data-panel="etm-panel-testimonials">Testimonials</button>
-            <button type="button" class="etm-page-tab" data-panel="etm-panel-founder">Founder CTA</button>
-        </div>
-
-        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+        <form method="post" id="etm-hp-form">
             <?php wp_nonce_field( 'etm_homepage' ); ?>
-            <input type="hidden" name="action" value="etm_save_homepage">
 
-            <!-- ── TAB: Sections ─────────────────────────────────────────── -->
-            <div class="etm-panel" id="etm-panel-sections">
-                <div class="etm-section">
-                    <h2 class="etm-section__title">Section Order &amp; Visibility</h2>
-                    <p class="etm-section__desc">Drag to reorder sections. Toggle the switch to show or hide a section. Hero is always first and cannot be moved.</p>
-
-                    <!-- Fixed: Hero (not draggable) -->
-                    <div class="etm-section-row etm-section-row--fixed">
-                        <span class="etm-drag-handle etm-drag-handle--disabled" aria-hidden="true">&#8942;</span>
-                        <span class="etm-section-name">Hero <em>(fixed — always first)</em></span>
-                        <span class="etm-section-fixed-badge">Always Visible</span>
-                    </div>
-
-                    <!-- Draggable sections -->
-                    <div id="etm-sortable-sections">
-                        <?php foreach ( $section_order as $slug ) :
-                            if ( ! isset( $slug_labels[ $slug ] ) ) continue;
-                            $vis_key = 'section_' . $slug . '_visible';
-                            $visible = $o( $vis_key, '1' );
-                            $chk_id  = 'etm-vis-' . esc_attr( $slug );
-                        ?>
-                        <div class="etm-section-row" draggable="true" data-slug="<?php echo esc_attr( $slug ); ?>">
-                            <span class="etm-drag-handle" title="Drag to reorder" aria-label="Drag handle">&#8942;</span>
-                            <span class="etm-section-name"><?php echo esc_html( $slug_labels[ $slug ] ); ?></span>
-                            <label class="etm-toggle" for="<?php echo $chk_id; ?>">
-                                <input type="checkbox"
-                                       id="<?php echo $chk_id; ?>"
-                                       name="<?php echo esc_attr( $vis_key ); ?>"
-                                       value="1"
-                                       <?php checked( $visible, '1' ); ?>>
-                                <span class="etm-toggle__track"></span>
-                                <span class="etm-toggle__thumb"></span>
-                            </label>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
-
-                    <input type="hidden" name="section_order" id="etm-section-order-input"
-                           value="<?php echo esc_attr( wp_json_encode( $section_order ) ); ?>">
-                </div>
-
-                <div class="etm-actions">
-                    <button type="submit" class="etm-btn-save button-primary">Save Homepage Settings</button>
-                </div>
-            </div>
-
-            <!-- ── TAB: Hero ─────────────────────────────────────────────── -->
-            <div class="etm-panel" id="etm-panel-hero" style="display:none;">
-                <div class="etm-section">
-                    <h2 class="etm-section__title">Hero Section</h2>
+            <!-- ── Hero ─────────────────────────────────────────────── -->
+            <div class="etm-accordion" id="etm-panel-hero">
+                <button type="button" class="etm-accordion__toggle">Hero Section <span class="etm-accordion__arrow">&#9662;</span></button>
+                <div class="etm-accordion__body" style="display:none;">
                     <p class="etm-section__desc">The full-screen section at the top of the homepage — the first thing visitors see.</p>
 
                     <!-- Background -->
@@ -286,7 +221,7 @@ function etm_homepage_page(): void {
                     <div class="etm-field">
                         <label class="etm-label" for="hero_label">Label Text</label>
                         <input type="text" id="hero_label" name="hero_label" class="etm-input"
-                               value="<?php echo esc_attr( $o( 'hero_label', 'ELITE TOURS IRELAND — SINCE 1973' ) ); ?>">
+                               value="<?php echo esc_attr( $o( 'hero_label', 'ELITE TOURS IRELAND · SINCE 1973' ) ); ?>">
                         <p class="etm-help">The small gold text above the headline. Uppercase, short.</p>
                     </div>
 
@@ -301,7 +236,7 @@ function etm_homepage_page(): void {
                     <!-- Subheading -->
                     <div class="etm-field">
                         <label class="etm-label" for="hero_subheading">Subheading</label>
-                        <textarea id="hero_subheading" name="hero_subheading" class="etm-textarea" rows="2"><?php echo esc_textarea( $o( 'hero_subheading', 'Bespoke private journeys — tailored to you, delivered with genuine Irish care.' ) ); ?></textarea>
+                        <textarea id="hero_subheading" name="hero_subheading" class="etm-textarea" rows="2"><?php echo esc_textarea( $o( 'hero_subheading', 'Bespoke private journeys, tailored to you, delivered with genuine Irish care.' ) ); ?></textarea>
                         <p class="etm-help">Keep it to 1–2 lines.</p>
                     </div>
 
@@ -318,17 +253,13 @@ function etm_homepage_page(): void {
                                    value="<?php echo esc_attr( $o( 'hero_cta_secondary', 'Explore Our Tours' ) ); ?>">
                         </div>
                     </div>
-                </div>
+                </div><!-- /accordion body -->
+            </div><!-- /accordion -->
 
-                <div class="etm-actions">
-                    <button type="submit" class="etm-btn-save button-primary">Save Homepage Settings</button>
-                </div>
-            </div>
-
-            <!-- ── TAB: Trust Bar ─────────────────────────────────────────── -->
-            <div class="etm-panel" id="etm-panel-trust" style="display:none;">
-                <div class="etm-section">
-                    <h2 class="etm-section__title">Trust Strip</h2>
+            <!-- ── Trust Bar ─────────────────────────────────────────── -->
+            <div class="etm-accordion" id="etm-panel-trust">
+                <button type="button" class="etm-accordion__toggle">Trust Strip <span class="etm-accordion__arrow">&#9662;</span></button>
+                <div class="etm-accordion__body" style="display:none;">
                     <p class="etm-section__desc">The badge bar at the bottom of the hero — partner logos and credibility signals.</p>
 
                     <!-- TripAdvisor -->
@@ -454,69 +385,29 @@ function etm_homepage_page(): void {
                             </div>
                         </div>
                     </div>
+                </div><!-- /accordion body -->
+            </div><!-- /accordion -->
+
+            <!-- ── Sortable homepage sections ─────────────────────────── -->
+            <p class="etm-sortable-hint">Drag sections to reorder. Toggle visibility with the switch.</p>
+            <input type="hidden" name="section_order" id="etm-section-order-input"
+                   value="<?php echo esc_attr( wp_json_encode( $section_order ) ); ?>">
+            <div id="etm-sortable-sections">
+
+            <?php /* ── Who We Are ── */ ?>
+            <div class="etm-accordion etm-accordion--sortable" id="etm-panel-intro" data-slug="intro">
+                <div class="etm-accordion__header">
+                    <span class="etm-drag-handle" title="Drag to reorder">&#8942;</span>
+                    <span class="etm-accordion__title" role="button">Who We Are</span>
+                    <label class="etm-toggle" onclick="event.stopPropagation()">
+                        <input type="checkbox" name="section_intro_visible" value="1"
+                               <?php checked( $o( 'section_intro_visible', '1' ), '1' ); ?>>
+                        <span class="etm-toggle__track"></span>
+                        <span class="etm-toggle__thumb"></span>
+                    </label>
+                    <span class="etm-accordion__arrow">&#9662;</span>
                 </div>
-
-                <div class="etm-actions">
-                    <button type="submit" class="etm-btn-save button-primary">Save Homepage Settings</button>
-                </div>
-            </div>
-
-            <!-- ── TAB: Stats Strip ───────────────────────────────────────── -->
-            <div class="etm-panel" id="etm-panel-stats" style="display:none;">
-                <div class="etm-section">
-                    <h2 class="etm-section__title">Stats Strip</h2>
-                    <p class="etm-section__desc">Four icon + label + description items displayed in a horizontal strip below the hero trust bar.</p>
-
-                    <?php
-                    $stat_defaults = [
-                        1 => [ 'icon' => 'star',   'label' => 'Since 1973',                  'desc' => 'Over five decades of private touring' ],
-                        2 => [ 'icon' => 'pin',    'label' => 'Deep Local Knowledge',        'desc' => 'Ireland brought to life through storytelling' ],
-                        3 => [ 'icon' => 'shield', 'label' => 'Trusted by Premium Travellers','desc' => 'Discretion, professionalism, reliability' ],
-                        4 => [ 'icon' => 'check',  'label' => 'Every Detail Handled',        'desc' => 'Door-to-door, from first conversation to last day' ],
-                    ];
-                    $icon_options = [ 'star' => 'Star', 'pin' => 'Pin / Location', 'shield' => 'Shield', 'check' => 'Check Circle' ];
-                    foreach ( $stat_defaults as $n => $def ) :
-                    ?>
-                    <div class="etm-field-group">
-                        <h3 class="etm-field-group__title">Item <?php echo $n; ?></h3>
-                        <div class="etm-field">
-                            <label class="etm-label" for="stats_<?php echo $n; ?>_icon">Icon</label>
-                            <select id="stats_<?php echo $n; ?>_icon" name="stats_<?php echo $n; ?>_icon" class="etm-select">
-                                <?php foreach ( $icon_options as $val => $label ) : ?>
-                                    <option value="<?php echo esc_attr( $val ); ?>"
-                                        <?php selected( $o( 'stats_' . $n . '_icon', $def['icon'] ), $val ); ?>>
-                                        <?php echo esc_html( $label ); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="etm-field-row">
-                            <div class="etm-field">
-                                <label class="etm-label" for="stats_<?php echo $n; ?>_label">Label</label>
-                                <input type="text" id="stats_<?php echo $n; ?>_label"
-                                       name="stats_<?php echo $n; ?>_label" class="etm-input"
-                                       value="<?php echo esc_attr( $o( 'stats_' . $n . '_label', $def['label'] ) ); ?>">
-                            </div>
-                            <div class="etm-field">
-                                <label class="etm-label" for="stats_<?php echo $n; ?>_desc">Description</label>
-                                <input type="text" id="stats_<?php echo $n; ?>_desc"
-                                       name="stats_<?php echo $n; ?>_desc" class="etm-input"
-                                       value="<?php echo esc_attr( $o( 'stats_' . $n . '_desc', $def['desc'] ) ); ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-
-                <div class="etm-actions">
-                    <button type="submit" class="etm-btn-save button-primary">Save Homepage Settings</button>
-                </div>
-            </div>
-
-            <!-- ── TAB: Who We Are ───────────────────────────────────────── -->
-            <div class="etm-panel" id="etm-panel-intro" style="display:none;">
-                <div class="etm-section">
-                    <h2 class="etm-section__title">Who We Are (Intro)</h2>
+                <div class="etm-accordion__body" style="display:none;">
 
                     <div class="etm-field">
                         <label class="etm-label" for="intro_label">Section Label</label>
@@ -532,7 +423,7 @@ function etm_homepage_page(): void {
                     <div class="etm-field">
                         <label class="etm-label" for="intro_body">Body Text</label>
                         <textarea id="intro_body" name="intro_body" class="etm-textarea" rows="8"><?php
-                            $default_intro_body = '<p>For many people, a journey to Ireland is not just a holiday. It is a return to something — ancestry, identity, a sense of belonging. Yet too often, that experience is rushed, impersonal, and built for volume rather than meaning.</p><p>Elite Tours was built to change that.</p><p>Every journey we create is built entirely around you — your interests, your family, your pace. We don\'t move people from place to place. We welcome them into Ireland properly. Every detail is considered. Every experience is shaped to feel effortless, personal, and worth remembering.</p><p>This is not a tour. This is how Ireland should be experienced.</p>';
+                            $default_intro_body = '<p>For many people, a journey to Ireland is not just a holiday. It is a return to something. Ancestry, identity, a sense of belonging. Yet too often, that experience is rushed, impersonal, and built for volume rather than meaning.</p><p>Elite Tours was built to change that.</p><p>Every journey we create is built entirely around you. Your interests, your family, your pace. We don\'t move people from place to place. We welcome them into Ireland properly. Every detail is considered. Every experience is shaped to feel effortless, personal, and worth remembering.</p><p>This is not a tour. This is how Ireland should be experienced.</p>';
                             echo esc_textarea( $o( 'intro_body', $default_intro_body ) );
                         ?></textarea>
                         <p class="etm-help">Basic HTML allowed (p, strong, em, br). Each paragraph should be wrapped in &lt;p&gt; tags.</p>
@@ -589,17 +480,23 @@ function etm_homepage_page(): void {
                         </div>
                         <p class="etm-help">Falls back to bundled castle-hillside.jpg if not set.</p>
                     </div>
-                </div>
+                </div><!-- /accordion body -->
+            </div><!-- /accordion -->
 
-                <div class="etm-actions">
-                    <button type="submit" class="etm-btn-save button-primary">Save Homepage Settings</button>
+            <?php /* ── Core Offers ── */ ?>
+            <div class="etm-accordion etm-accordion--sortable" id="etm-panel-offers" data-slug="offers">
+                <div class="etm-accordion__header">
+                    <span class="etm-drag-handle" title="Drag to reorder">&#8942;</span>
+                    <span class="etm-accordion__title" role="button">Core Offers</span>
+                    <label class="etm-toggle" onclick="event.stopPropagation()">
+                        <input type="checkbox" name="section_offers_visible" value="1"
+                               <?php checked( $o( 'section_offers_visible', '1' ), '1' ); ?>>
+                        <span class="etm-toggle__track"></span>
+                        <span class="etm-toggle__thumb"></span>
+                    </label>
+                    <span class="etm-accordion__arrow">&#9662;</span>
                 </div>
-            </div>
-
-            <!-- ── TAB: Core Offers ──────────────────────────────────────── -->
-            <div class="etm-panel" id="etm-panel-offers" style="display:none;">
-                <div class="etm-section">
-                    <h2 class="etm-section__title">Core Offers</h2>
+                <div class="etm-accordion__body" style="display:none;">
                     <p class="etm-section__desc">Two full-bleed image cards — Bespoke and Golf.</p>
                     <div class="etm-field-row etm-field-row--halves">
 
@@ -608,14 +505,14 @@ function etm_homepage_page(): void {
                             1 => [
                                 'label' => 'Bespoke Private Tours',
                                 'heading' => 'Ireland,<br>Built Around You.',
-                                'desc' => 'Deeply personal, privately guided journeys — ancestry, culture, heritage, whiskey, scenic routes. No fixed itineraries. Everything designed from scratch, around the people taking it.',
+                                'desc' => 'Deeply personal, privately guided journeys. Ancestry, culture, heritage, whiskey, scenic routes. No fixed itineraries. Everything designed from scratch, around the people taking it.',
                                 'cta_text' => 'Explore Bespoke Tours',
                                 'cta_url'  => '/bespoke-tours/',
                             ],
                             2 => [
                                 'label' => 'Golf Tours',
                                 'heading' => "Play Ireland's Greatest Courses.",
-                                'desc' => "Fully managed golf journeys across Ireland's most iconic links — with priority access, private chauffeur, and Ray's personal hosting standard throughout.",
+                                'desc' => "Fully managed golf journeys across Ireland's most iconic links, with priority access, private chauffeur, and Ray's personal hosting standard throughout.",
                                 'cta_text' => 'Explore Golf Tours',
                                 'cta_url'  => '/golf-tours/',
                             ],
@@ -624,7 +521,7 @@ function etm_homepage_page(): void {
                             $offer_img_url = $img_url( 'offer_' . $n . '_image_id' );
                         ?>
                         <div class="etm-field-group">
-                            <h3 class="etm-field-group__title">Card <?php echo $n === 1 ? '1 — Bespoke' : '2 — Golf'; ?></h3>
+                            <h3 class="etm-field-group__title">Card <?php echo $n === 1 ? '1 - Bespoke' : '2 - Golf'; ?></h3>
                             <div class="etm-field">
                                 <label class="etm-label">Card Image</label>
                                 <div class="etm-media-upload">
@@ -686,17 +583,24 @@ function etm_homepage_page(): void {
                         <?php endforeach; ?>
 
                     </div>
-                </div>
 
-                <div class="etm-actions">
-                    <button type="submit" class="etm-btn-save button-primary">Save Homepage Settings</button>
-                </div>
-            </div>
+                </div><!-- /accordion body -->
+            </div><!-- /accordion -->
 
-            <!-- ── TAB: How It Works ─────────────────────────────────────── -->
-            <div class="etm-panel" id="etm-panel-process" style="display:none;">
-                <div class="etm-section">
-                    <h2 class="etm-section__title">How It Works</h2>
+            <?php /* ── How It Works ── */ ?>
+            <div class="etm-accordion etm-accordion--sortable" id="etm-panel-process" data-slug="process">
+                <div class="etm-accordion__header">
+                    <span class="etm-drag-handle" title="Drag to reorder">&#8942;</span>
+                    <span class="etm-accordion__title" role="button">How It Works</span>
+                    <label class="etm-toggle" onclick="event.stopPropagation()">
+                        <input type="checkbox" name="section_process_visible" value="1"
+                               <?php checked( $o( 'section_process_visible', '1' ), '1' ); ?>>
+                        <span class="etm-toggle__track"></span>
+                        <span class="etm-toggle__thumb"></span>
+                    </label>
+                    <span class="etm-accordion__arrow">&#9662;</span>
+                </div>
+                <div class="etm-accordion__body" style="display:none;">
 
                     <div class="etm-field-row">
                         <div class="etm-field">
@@ -726,9 +630,9 @@ function etm_homepage_page(): void {
                     <?php
                     $step_defaults = [
                         1 => [ 'num' => '01', 'title' => 'We Listen',                      'desc' => "Tell us who you are, what matters to you, and what you're hoping to feel. No forms. A real conversation." ],
-                        2 => [ 'num' => '02', 'title' => 'We Design',                      'desc' => 'We create a bespoke itinerary built entirely around you — your interests, your family, your pace.' ],
-                        3 => [ 'num' => '03', 'title' => 'We Handle Everything',           'desc' => "From accommodation to access, transfers to timing — every detail is managed, so you don't have to think about a thing." ],
-                        4 => [ 'num' => '04', 'title' => 'You Experience Ireland Properly','desc' => 'Arrive as a visitor. Leave with a deeper connection to Ireland — and often, a lifelong friend.' ],
+                        2 => [ 'num' => '02', 'title' => 'We Design',                      'desc' => 'We create a bespoke itinerary built entirely around you. Your interests, your family, your pace.' ],
+                        3 => [ 'num' => '03', 'title' => 'We Handle Everything',           'desc' => "From accommodation to access, transfers to timing, every detail is managed, so you don't have to think about a thing." ],
+                        4 => [ 'num' => '04', 'title' => 'You Experience Ireland Properly','desc' => 'Arrive as a visitor. Leave with a deeper connection to Ireland, and often, a lifelong friend.' ],
                     ];
                     foreach ( $step_defaults as $n => $def ) :
                     ?>
@@ -756,17 +660,23 @@ function etm_homepage_page(): void {
                         </div>
                     </div>
                     <?php endforeach; ?>
-                </div>
+                </div><!-- /accordion body -->
+            </div><!-- /accordion -->
 
-                <div class="etm-actions">
-                    <button type="submit" class="etm-btn-save button-primary">Save Homepage Settings</button>
+            <?php /* ── Experiences ── */ ?>
+            <div class="etm-accordion etm-accordion--sortable" id="etm-panel-experiences" data-slug="experiences">
+                <div class="etm-accordion__header">
+                    <span class="etm-drag-handle" title="Drag to reorder">&#8942;</span>
+                    <span class="etm-accordion__title" role="button">Experiences Grid</span>
+                    <label class="etm-toggle" onclick="event.stopPropagation()">
+                        <input type="checkbox" name="section_experiences_visible" value="1"
+                               <?php checked( $o( 'section_experiences_visible', '1' ), '1' ); ?>>
+                        <span class="etm-toggle__track"></span>
+                        <span class="etm-toggle__thumb"></span>
+                    </label>
+                    <span class="etm-accordion__arrow">&#9662;</span>
                 </div>
-            </div>
-
-            <!-- ── TAB: Experiences ──────────────────────────────────────── -->
-            <div class="etm-panel" id="etm-panel-experiences" style="display:none;">
-                <div class="etm-section">
-                    <h2 class="etm-section__title">Experiences Grid</h2>
+                <div class="etm-accordion__body" style="display:none;">
                     <p class="etm-section__desc">Six experience cards displayed in a grid. Images fall back to bundled photos if not uploaded.</p>
 
                     <div class="etm-field-row">
@@ -786,7 +696,7 @@ function etm_homepage_page(): void {
                     $exp_defaults = [
                         1 => [ 'label' => 'Ancestry & Roots',        'title' => 'Trace Your Irish Heritage',    'desc' => 'Trace your Irish heritage with depth, dignity, and personal connection.',         'url' => '/bespoke-tours/' ],
                         2 => [ 'label' => 'Whiskey & Culture',       'title' => "Ireland's Craft Distilleries", 'desc' => "Ireland's craft distilleries and rich cultural story, privately curated.",       'url' => '/experiences/' ],
-                        3 => [ 'label' => 'Scenic & Coastal Ireland', 'title' => 'The Wild Atlantic',           'desc' => 'The Wild Atlantic, country roads, cliffs and castles — at your pace.',            'url' => '/bespoke-tours/' ],
+                        3 => [ 'label' => 'Scenic & Coastal Ireland', 'title' => 'The Wild Atlantic',           'desc' => 'The Wild Atlantic, country roads, cliffs and castles, at your pace.',            'url' => '/bespoke-tours/' ],
                         4 => [ 'label' => 'Golf Tours',              'title' => "Ireland's Iconic Links",       'desc' => "Ireland's most iconic links courses, seamlessly handled.",                        'url' => '/golf-tours/' ],
                         5 => [ 'label' => 'Family Private Journey',  'title' => 'For Every Generation',        'desc' => 'A meaningful Irish experience for every generation in your family.',              'url' => '/bespoke-tours/' ],
                         6 => [ 'label' => 'Heritage & History',      'title' => 'Castles & Estate Stays',      'desc' => 'Castles, estates, and the stories of Ireland told through its landscape.',        'url' => '/experiences/' ],
@@ -849,17 +759,23 @@ function etm_homepage_page(): void {
                         </div>
                     </div>
                     <?php endforeach; ?>
-                </div>
+                </div><!-- /accordion body -->
+            </div><!-- /accordion -->
 
-                <div class="etm-actions">
-                    <button type="submit" class="etm-btn-save button-primary">Save Homepage Settings</button>
+            <?php /* ── Testimonials ── */ ?>
+            <div class="etm-accordion etm-accordion--sortable" id="etm-panel-testimonials" data-slug="testimonials">
+                <div class="etm-accordion__header">
+                    <span class="etm-drag-handle" title="Drag to reorder">&#8942;</span>
+                    <span class="etm-accordion__title" role="button">Testimonials</span>
+                    <label class="etm-toggle" onclick="event.stopPropagation()">
+                        <input type="checkbox" name="section_testimonials_visible" value="1"
+                               <?php checked( $o( 'section_testimonials_visible', '1' ), '1' ); ?>>
+                        <span class="etm-toggle__track"></span>
+                        <span class="etm-toggle__thumb"></span>
+                    </label>
+                    <span class="etm-accordion__arrow">&#9662;</span>
                 </div>
-            </div>
-
-            <!-- ── TAB: Testimonials ─────────────────────────────────────── -->
-            <div class="etm-panel" id="etm-panel-testimonials" style="display:none;">
-                <div class="etm-section">
-                    <h2 class="etm-section__title">Testimonials</h2>
+                <div class="etm-accordion__body" style="display:none;">
 
                     <div class="etm-field-row">
                         <div class="etm-field">
@@ -881,9 +797,9 @@ function etm_homepage_page(): void {
 
                     <?php
                     $test_defaults = [
-                        1 => [ 'quote' => "We arrived not knowing what to expect. We left feeling like Ireland was part of us. Ray thought of everything — things we didn't even know we needed. It was the most personal trip we've ever taken.", 'name' => 'Patricia & Tom M.', 'origin' => 'Boston' ],
-                        2 => [ 'quote' => "The golf was extraordinary. Old Head was a moment I'll never forget. But it was the way everything was handled — every tee time, every detail — that made it truly special.",                           'name' => 'James K.',           'origin' => 'New York' ],
-                        3 => [ 'quote' => "We came to find our family's roots in County Cork. What we found was far more than we expected. This wasn't tourism — it was a homecoming.",                                                         'name' => 'The McCarthy Family', 'origin' => 'Chicago' ],
+                        1 => [ 'quote' => "Ray went above and beyond and completely transformed our trip from good to simply amazing. He took time to know us and customize a really special tour that was perfectly suited to our family. I cannot imagine trying to explore Ireland without him.", 'name' => 'Beth G.', 'origin' => 'TripAdvisor' ],
+                        2 => [ 'quote' => "Ray is more than a driver. He's a storyteller, a guide, and now, a dear friend. Whether we were at the Cliffs of Moher, winding through the Gap of Dunloe, or soaking in the charm of Cobh, Ray brought each place to life in a way only someone deeply connected to Ireland could.", 'name' => 'Margaret B.', 'origin' => 'TripAdvisor' ],
+                        3 => [ 'quote' => "By the end of the trip, it felt like we were saying goodbye to a friend rather than a driver. Ray's insider tips led us away from the typical tourist crowds and gave us a more authentic experience. He is truly a gem, and we can't recommend him highly enough.", 'name' => 'Ellie M.', 'origin' => 'Boston' ],
                     ];
                     foreach ( $test_defaults as $n => $def ) :
                     ?>
@@ -911,17 +827,23 @@ function etm_homepage_page(): void {
                         </div>
                     </div>
                     <?php endforeach; ?>
-                </div>
+                </div><!-- /accordion body -->
+            </div><!-- /accordion -->
 
-                <div class="etm-actions">
-                    <button type="submit" class="etm-btn-save button-primary">Save Homepage Settings</button>
+            <?php /* ── Founder CTA ── */ ?>
+            <div class="etm-accordion etm-accordion--sortable" id="etm-panel-founder" data-slug="founder-cta">
+                <div class="etm-accordion__header">
+                    <span class="etm-drag-handle" title="Drag to reorder">&#8942;</span>
+                    <span class="etm-accordion__title" role="button">Founder CTA</span>
+                    <label class="etm-toggle" onclick="event.stopPropagation()">
+                        <input type="checkbox" name="section_founder-cta_visible" value="1"
+                               <?php checked( $o( 'section_founder-cta_visible', '1' ), '1' ); ?>>
+                        <span class="etm-toggle__track"></span>
+                        <span class="etm-toggle__thumb"></span>
+                    </label>
+                    <span class="etm-accordion__arrow">&#9662;</span>
                 </div>
-            </div>
-
-            <!-- ── TAB: Founder CTA ──────────────────────────────────────── -->
-            <div class="etm-panel" id="etm-panel-founder" style="display:none;">
-                <div class="etm-section">
-                    <h2 class="etm-section__title">Founder CTA</h2>
+                <div class="etm-accordion__body" style="display:none;">
 
                     <div class="etm-field-row">
                         <div class="etm-field">
@@ -938,7 +860,7 @@ function etm_homepage_page(): void {
                     </div>
                     <div class="etm-field">
                         <label class="etm-label" for="founder_body">Body Text</label>
-                        <textarea id="founder_body" name="founder_body" class="etm-textarea" rows="4"><?php echo esc_textarea( $o( 'founder_body', "Every journey is tailored to you — designed with care, local insight, and a deep understanding of Ireland. There are no fixed packages here. Just a real conversation about who you are and what you'd love to experience." ) ); ?></textarea>
+                        <textarea id="founder_body" name="founder_body" class="etm-textarea" rows="4"><?php echo esc_textarea( $o( 'founder_body', "Every journey is tailored to you, designed with care, local insight, and a deep understanding of Ireland." ) ); ?></textarea>
                     </div>
                     <div class="etm-field-row">
                         <div class="etm-field">
@@ -990,111 +912,152 @@ function etm_homepage_page(): void {
                         </div>
                         <p class="etm-help">Falls back to bundled castle-hillside.jpg if not set. Portrait orientation recommended.</p>
                     </div>
-                </div>
+                </div><!-- /accordion body -->
+            </div><!-- /accordion -->
 
-                <div class="etm-actions">
-                    <button type="submit" class="etm-btn-save button-primary">Save Homepage Settings</button>
-                </div>
+            </div><!-- /#etm-sortable-sections -->
+
+            <!-- ── Sticky Save ──────────────────────────────────────── -->
+            <div class="etm-actions etm-actions--sticky">
+                <button type="button" class="etm-btn-save button-primary">Save Homepage Settings</button>
+                <span class="etm-dirty-dot" id="etm-dirty-dot" style="display:none;" title="Unsaved changes"></span>
             </div>
 
         </form>
     </div><!-- .wrap -->
 
     <style>
-    /* ── Page tabs ─────────────────────────────────────────────────────────── */
-    .etm-page-tabs {
+    /* ── Accordion ─────────────────────────────────────────────────────────── */
+    .etm-accordion {
+        margin-bottom: 8px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background: #fff;
+        overflow: hidden;
+    }
+    .etm-accordion__toggle {
         display: flex;
-        flex-wrap: wrap;
-        gap: 4px;
-        margin: 16px 0 0;
-        border-bottom: 2px solid #e0e0e0;
-        padding-bottom: 0;
-    }
-    .etm-page-tab {
-        background: none;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 14px 20px;
+        background: #fafafa;
         border: none;
-        border-bottom: 3px solid transparent;
-        padding: 10px 16px;
-        font-size: 13px;
-        font-weight: 500;
-        color: #555;
-        cursor: pointer;
-        margin-bottom: -2px;
-        border-radius: 0;
-        transition: color .15s, border-color .15s;
-    }
-    .etm-page-tab:hover {
-        color: #1A4F31;
-    }
-    .etm-page-tab--active {
-        color: #1A4F31;
-        border-bottom-color: #1A4F31;
+        border-bottom: 1px solid transparent;
+        font-size: 14px;
         font-weight: 600;
+        color: #1A4F31;
+        cursor: pointer;
+        transition: background .15s;
+    }
+    .etm-accordion__toggle:hover { background: #f0f5f0; }
+    .etm-accordion.is-open > .etm-accordion__toggle,
+    .etm-accordion.is-open > .etm-accordion__header {
+        border-bottom-color: #e0e0e0;
+        background: #f0f5f0;
+    }
+    .etm-accordion__arrow {
+        font-size: 16px;
+        transition: transform .2s;
+        cursor: pointer;
+    }
+    .etm-accordion.is-open > .etm-accordion__toggle .etm-accordion__arrow,
+    .etm-accordion.is-open > .etm-accordion__header .etm-accordion__arrow {
+        transform: rotate(180deg);
     }
 
-    /* ── Section rows (drag-and-drop) ──────────────────────────────────────── */
-    .etm-section-row {
+    /* ── Sortable accordion header ─────────────────────────────────────── */
+    .etm-accordion__header {
         display: flex;
         align-items: center;
         gap: 12px;
-        padding: 12px 16px;
-        margin-bottom: 6px;
-        background: #fff;
-        border: 1px solid #e0e0e0;
-        border-radius: 6px;
-        cursor: default;
-        user-select: none;
-        transition: border-color .15s, background .15s;
-    }
-    .etm-section-row:hover {
-        border-color: #b0b0b0;
+        padding: 12px 20px;
         background: #fafafa;
-    }
-    .etm-section-row.is-dragging {
-        opacity: 0.4;
-        border-style: dashed;
-    }
-    .etm-section-row.drag-over {
-        border-color: #1A4F31;
-        background: #f0f7f3;
-    }
-    .etm-section-row--fixed {
-        background: #f5f5f5;
-        border-style: dashed;
+        border-bottom: 1px solid transparent;
+        transition: background .15s;
         cursor: default;
     }
+    .etm-accordion__header:hover { background: #f0f5f0; }
+    .etm-accordion__title {
+        flex: 1;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1A4F31;
+        cursor: pointer;
+    }
+    .etm-accordion--sortable {
+        cursor: grab;
+        transition: border-color .15s, box-shadow .15s, opacity .15s;
+    }
+    .etm-accordion--sortable.is-dragging {
+        opacity: 0;
+    }
+    .etm-drop-placeholder {
+        border: 2px dashed #1A4F31;
+        border-radius: 8px;
+        background: #f0f7f3;
+        margin-bottom: 8px;
+        transition: height .15s;
+    }
+    .etm-sortable-hint {
+        font-size: 12px;
+        color: #888;
+        margin: 16px 0 8px;
+        font-style: italic;
+    }
+    .etm-accordion__body {
+        padding: 20px;
+    }
+
+    /* ── Sticky save bar ──────────────────────────────────────────────────── */
+    .etm-actions--sticky {
+        position: sticky;
+        bottom: 0;
+        z-index: 50;
+        background: #fff;
+        border-top: 2px solid #e0e0e0;
+        padding: 14px 20px;
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+    }
+    .etm-btn-save--dirty {
+        background: #e65100 !important;
+        border-color: #bf360c !important;
+        animation: etm-pulse 1.5s infinite;
+    }
+    .etm-dirty-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #e65100;
+        display: inline-block;
+        animation: etm-pulse 1.5s infinite;
+    }
+    @keyframes etm-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+    }
+
+    /* ── Drag handle ───────────────────────────────────────────────────────── */
     .etm-drag-handle {
         font-size: 20px;
         color: #aaa;
         cursor: grab;
         line-height: 1;
-        padding: 0 2px;
+        padding: 8px 6px;
         flex-shrink: 0;
+        touch-action: none;
+        user-select: none;
+    }
+    .etm-drag-handle:hover {
+        color: #1A4F31;
     }
     .etm-drag-handle:active {
         cursor: grabbing;
-    }
-    .etm-drag-handle--disabled {
-        cursor: default;
-        opacity: 0.3;
-    }
-    .etm-section-name {
-        flex: 1;
-        font-weight: 500;
-        font-size: 14px;
-    }
-    .etm-section-name em {
-        font-weight: 400;
-        color: #888;
-        font-size: 12px;
-    }
-    .etm-section-fixed-badge {
-        font-size: 11px;
-        background: #e8f5e9;
-        color: #2e7d32;
-        padding: 3px 8px;
-        border-radius: 20px;
-        font-weight: 500;
     }
 
     /* ── Toggle switch ──────────────────────────────────────────────────────── */
@@ -1164,17 +1127,109 @@ function etm_homepage_page(): void {
     <script>
     ( function () {
 
-        // ── Page-level tab switching ────────────────────────────────────────
-        var pageTabs   = document.querySelectorAll( '.etm-page-tab' );
-        var pagePanels = document.querySelectorAll( '.etm-panel' );
+        // ── Accordion toggle ────────────────────────────────────────────────
+        function toggleAccordion( acc ) {
+            var body = acc.querySelector( '.etm-accordion__body' );
+            var open = acc.classList.toggle( 'is-open' );
+            body.style.display = open ? '' : 'none';
+        }
+        // Plain button toggles (Hero, Trust)
+        document.querySelectorAll( '.etm-accordion__toggle' ).forEach( function ( btn ) {
+            btn.addEventListener( 'click', function () {
+                toggleAccordion( btn.closest( '.etm-accordion' ) );
+            } );
+        } );
+        // Sortable accordion toggles (click title or arrow)
+        document.querySelectorAll( '.etm-accordion__title, .etm-accordion__header > .etm-accordion__arrow' ).forEach( function ( el ) {
+            el.addEventListener( 'click', function () {
+                toggleAccordion( el.closest( '.etm-accordion' ) );
+            } );
+        } );
 
-        pageTabs.forEach( function ( tab ) {
-            tab.addEventListener( 'click', function () {
-                pageTabs.forEach( function ( t ) { t.classList.remove( 'etm-page-tab--active' ); } );
-                pagePanels.forEach( function ( p ) { p.style.display = 'none'; } );
-                tab.classList.add( 'etm-page-tab--active' );
-                var panel = document.getElementById( tab.dataset.panel );
-                if ( panel ) panel.style.display = '';
+        // ── Dirty state (unsaved changes indicator) ─────────────────────────
+        var form     = document.getElementById( 'etm-hp-form' );
+        var allBtns  = document.querySelectorAll( '.etm-btn-save' );
+        var feedback = document.getElementById( 'etm-save-feedback' );
+        var dirtyDot = document.getElementById( 'etm-dirty-dot' );
+        var isDirty  = false;
+
+        function markDirty() {
+            if ( isDirty ) return;
+            isDirty = true;
+            if ( dirtyDot ) dirtyDot.style.display = '';
+            allBtns.forEach( function ( b ) {
+                b.classList.add( 'etm-btn-save--dirty' );
+            } );
+        }
+        function markClean() {
+            isDirty = false;
+            if ( dirtyDot ) dirtyDot.style.display = 'none';
+            allBtns.forEach( function ( b ) {
+                b.classList.remove( 'etm-btn-save--dirty' );
+            } );
+        }
+
+        // Track changes on all inputs/selects/textareas
+        if ( form ) {
+            form.addEventListener( 'input', markDirty );
+            form.addEventListener( 'change', markDirty );
+        }
+
+        // Warn before leaving with unsaved changes
+        window.addEventListener( 'beforeunload', function ( e ) {
+            if ( isDirty ) { e.preventDefault(); e.returnValue = ''; }
+        } );
+
+        // ── AJAX Save ───────────────────────────────────────────────────────
+        function setBtns( text, disabled ) {
+            allBtns.forEach( function ( b ) {
+                b.textContent = text;
+                b.disabled    = disabled;
+            } );
+        }
+
+        allBtns.forEach( function ( btn ) {
+            btn.addEventListener( 'click', function () {
+                if ( ! form ) { alert( 'Form not found — please refresh the page.' ); return; }
+
+                updateOrderInput();
+
+                var data = new FormData( form );
+                data.append( 'action', 'etm_hp_save' );
+
+                setBtns( 'Saving\u2026', true );
+                if ( feedback ) { feedback.textContent = ''; feedback.className = 'etm-notice'; }
+
+                fetch( ajaxurl, {
+                    method      : 'POST',
+                    body        : data,
+                    credentials : 'same-origin',
+                } )
+                .then( function ( r ) { return r.json(); } )
+                .then( function ( res ) {
+                    if ( res.success ) {
+                        markClean();
+                        setBtns( 'Saved \u2714', false );
+                        if ( feedback ) {
+                            feedback.textContent = 'Settings saved successfully.';
+                            feedback.className   = 'etm-notice etm-notice--success';
+                        }
+                        setTimeout( function () { setBtns( 'Save Homepage Settings', false ); }, 2500 );
+                    } else {
+                        setBtns( 'Save Homepage Settings', false );
+                        if ( feedback ) {
+                            feedback.textContent = 'Save failed \u2014 ' + ( res.data || 'unknown error' );
+                            feedback.className   = 'etm-notice etm-notice--error';
+                        }
+                    }
+                } )
+                .catch( function ( err ) {
+                    setBtns( 'Save Homepage Settings', false );
+                    if ( feedback ) {
+                        feedback.textContent = 'Network error \u2014 ' + err;
+                        feedback.className   = 'etm-notice etm-notice--error';
+                    }
+                } );
             } );
         } );
 
@@ -1228,77 +1283,96 @@ function etm_homepage_page(): void {
             } );
         } );
 
-        // ── Drag-and-drop section reordering ────────────────────────────────
+        // ── Drag-and-drop section reordering (handle-based) ────────────────
         var sortable     = document.getElementById( 'etm-sortable-sections' );
         var orderInput   = document.getElementById( 'etm-section-order-input' );
         var dragSrc      = null;
+        var draggedEl    = null;
+        var placeholder  = document.createElement( 'div' );
+        placeholder.className = 'etm-drop-placeholder';
 
         function getRows() {
-            return Array.from( sortable.querySelectorAll( '.etm-section-row[draggable="true"]' ) );
+            return Array.from( sortable.querySelectorAll( '.etm-accordion--sortable' ) );
         }
 
         function updateOrderInput() {
             var slugs = getRows().map( function ( row ) { return row.dataset.slug; } );
             orderInput.value = JSON.stringify( slugs );
+            markDirty();
         }
 
-        sortable.addEventListener( 'dragstart', function ( e ) {
-            var row = e.target.closest( '[draggable="true"]' );
-            if ( ! row ) return;
-            dragSrc = row;
-            row.classList.add( 'is-dragging' );
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData( 'text/plain', row.dataset.slug );
-        } );
+        // Use pointer events on the drag handle for reliable cross-browser drag
+        sortable.addEventListener( 'pointerdown', function ( e ) {
+            var handle = e.target.closest( '.etm-drag-handle' );
+            if ( ! handle ) return;
+            {
+                var acc = handle.closest( '.etm-accordion--sortable' );
+                if ( ! acc ) return;
 
-        sortable.addEventListener( 'dragend', function () {
-            getRows().forEach( function ( row ) {
-                row.classList.remove( 'is-dragging', 'drag-over' );
-            } );
-            dragSrc = null;
-        } );
+                e.preventDefault();
+                draggedEl = acc;
+                var rect  = acc.getBoundingClientRect();
+                var shiftY = e.clientY - rect.top;
 
-        sortable.addEventListener( 'dragover', function ( e ) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            var row = e.target.closest( '[draggable="true"]' );
-            if ( ! row || row === dragSrc ) return;
-            getRows().forEach( function ( r ) { r.classList.remove( 'drag-over' ); } );
-            row.classList.add( 'drag-over' );
-        } );
+                // Create a visual clone for dragging
+                var ghost = acc.cloneNode( true );
+                ghost.className = 'etm-drag-ghost';
+                ghost.style.width = rect.width + 'px';
+                ghost.style.position = 'fixed';
+                ghost.style.zIndex = '10000';
+                ghost.style.opacity = '0.85';
+                ghost.style.pointerEvents = 'none';
+                ghost.style.left = rect.left + 'px';
+                ghost.style.top = e.clientY - shiftY + 'px';
+                ghost.style.boxShadow = '0 8px 24px rgba(0,0,0,0.18)';
+                ghost.style.borderRadius = '8px';
+                ghost.style.transform = 'scale(1.02)';
+                document.body.appendChild( ghost );
 
-        sortable.addEventListener( 'dragleave', function ( e ) {
-            var row = e.target.closest( '[draggable="true"]' );
-            if ( row ) row.classList.remove( 'drag-over' );
-        } );
+                // Collapse the source visually
+                acc.classList.add( 'is-dragging' );
 
-        sortable.addEventListener( 'drop', function ( e ) {
-            e.preventDefault();
-            var target = e.target.closest( '[draggable="true"]' );
-            if ( ! target || ! dragSrc || target === dragSrc ) return;
+                // Insert placeholder
+                placeholder.style.height = rect.height + 'px';
+                acc.parentNode.insertBefore( placeholder, acc );
+                acc.style.display = 'none';
 
-            // Determine insert position
-            var rows     = getRows();
-            var srcIdx   = rows.indexOf( dragSrc );
-            var tgtIdx   = rows.indexOf( target );
-            var rect     = target.getBoundingClientRect();
-            var midY     = rect.top + rect.height / 2;
+                function onMove( ev ) {
+                    ghost.style.top = ev.clientY - shiftY + 'px';
 
-            if ( e.clientY < midY ) {
-                // Insert before target
-                sortable.insertBefore( dragSrc, target );
-            } else {
-                // Insert after target
-                var next = target.nextElementSibling;
-                if ( next ) {
-                    sortable.insertBefore( dragSrc, next );
-                } else {
-                    sortable.appendChild( dragSrc );
+                    // Find which row we're over
+                    var rows = getRows().filter( function ( r ) { return r !== draggedEl; } );
+                    for ( var i = 0; i < rows.length; i++ ) {
+                        var r    = rows[ i ];
+                        var rr   = r.getBoundingClientRect();
+                        var midY = rr.top + rr.height / 2;
+                        if ( ev.clientY < midY ) {
+                            sortable.insertBefore( placeholder, r );
+                            return;
+                        }
+                    }
+                    // Past all rows — put at end
+                    sortable.appendChild( placeholder );
                 }
-            }
 
-            target.classList.remove( 'drag-over' );
-            updateOrderInput();
+                function onUp() {
+                    document.removeEventListener( 'pointermove', onMove );
+                    document.removeEventListener( 'pointerup', onUp );
+
+                    // Place the real element where the placeholder is
+                    sortable.insertBefore( draggedEl, placeholder );
+                    draggedEl.style.display = '';
+                    draggedEl.classList.remove( 'is-dragging' );
+                    if ( placeholder.parentNode ) placeholder.parentNode.removeChild( placeholder );
+                    if ( ghost.parentNode ) ghost.parentNode.removeChild( ghost );
+                    draggedEl = null;
+
+                    updateOrderInput();
+                }
+
+                document.addEventListener( 'pointermove', onMove );
+                document.addEventListener( 'pointerup', onUp );
+            }
         } );
 
     } )();

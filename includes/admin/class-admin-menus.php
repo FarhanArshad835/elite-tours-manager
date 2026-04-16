@@ -6,6 +6,8 @@ class ETM_Admin_Menus {
     public function __construct() {
         add_action( 'admin_menu',       [ $this, 'register_menus' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
+        add_filter( 'admin_footer_text',   [ $this, 'hide_wp_footer' ] );
+        add_filter( 'update_footer',       [ $this, 'hide_wp_footer' ], 99 );
     }
 
     public function register_menus(): void {
@@ -59,6 +61,14 @@ class ETM_Admin_Menus {
             </div>
         </div>
         <?php
+    }
+
+    public function hide_wp_footer( string $text ): string {
+        $screen = get_current_screen();
+        if ( $screen && strpos( $screen->id, 'elite-tours' ) !== false ) {
+            return '';
+        }
+        return $text;
     }
 
     public function enqueue_assets( string $hook ): void {

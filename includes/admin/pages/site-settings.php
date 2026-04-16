@@ -1,12 +1,12 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-// ── Save ─────────────────────────────────────────────────────────────────────
-add_action( 'admin_post_etm_save_site_settings', function () {
-    if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
-    check_admin_referer( 'etm_site_settings' );
+// ── Save (AJAX) ──────────────────────────────────────────────────────────────
+add_action( 'wp_ajax_etm_save_site_settings', function () {
+    check_ajax_referer( 'etm_site_settings', '_wpnonce' );
+    if ( ! current_user_can( 'manage_options' ) ) wp_send_json_error( 'Unauthorised', 403 );
 
-    $fields = [ 'logo_id', 'phone_us', 'nav_cta_text', 'contact_email',
+    $fields = [ 'logo_id', 'phone_us', 'nav_cta_text', 'contact_email', 'address',
                 'social_instagram', 'social_facebook', 'social_tripadvisor',
                 'founder_image_id' ];
     $data   = [];
@@ -14,9 +14,7 @@ add_action( 'admin_post_etm_save_site_settings', function () {
         $data[ $f ] = isset( $_POST[ $f ] ) ? sanitize_text_field( wp_unslash( $_POST[ $f ] ) ) : '';
     }
     update_option( 'et_site_settings', $data );
-
-    wp_redirect( add_query_arg( [ 'page' => 'et-site-settings', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
-    exit;
+    wp_send_json_success( 'Saved' );
 } );
 
 // ── Render ────────────────────────────────────────────────────────────────────
@@ -32,9 +30,8 @@ function etm_site_settings_page(): void {
             <div class="etm-notice etm-notice--success">Settings saved successfully.</div>
         <?php endif; ?>
 
-        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+        <form method="post" id="etm-settings-form">
             <?php wp_nonce_field( 'etm_site_settings' ); ?>
-            <input type="hidden" name="action" value="etm_save_site_settings">
 
             <div class="etm-section">
                 <h2 class="etm-section__title">Logo</h2>
@@ -65,11 +62,11 @@ function etm_site_settings_page(): void {
                 <h2 class="etm-section__title">Navigation</h2>
 
                 <div class="etm-field">
-                    <label class="etm-label" for="phone_us">US Phone Number</label>
+                    <label class="etm-label" for="phone_us">Phone Number</label>
                     <input type="text" id="phone_us" name="phone_us" class="etm-input"
                            value="<?php echo esc_attr( $opts['phone_us'] ?? '' ); ?>"
-                           placeholder="+1 888 000 0000">
-                    <p class="etm-help">Shown in the navigation bar header. Include country code.</p>
+                           placeholder="+353 86 050 0500">
+                    <p class="etm-help">Shown in the navigation bar header and footer. Include country code.</p>
                 </div>
 
                 <div class="etm-field">
@@ -87,7 +84,14 @@ function etm_site_settings_page(): void {
                     <label class="etm-label" for="contact_email">Contact Email</label>
                     <input type="email" id="contact_email" name="contact_email" class="etm-input"
                            value="<?php echo esc_attr( $opts['contact_email'] ?? '' ); ?>"
-                           placeholder="info@elitetoursireland.com">
+                           placeholder="elitetoursireland@gmail.com">
+                    <p class="etm-help">Shown in the footer contact column.</p>
+                </div>
+                <div class="etm-field">
+                    <label class="etm-label" for="address">Business Address</label>
+                    <input type="text" id="address" name="address" class="etm-input etm-input--wide"
+                           value="<?php echo esc_attr( $opts['address'] ?? '' ); ?>"
+                           placeholder="26 Mallow St, Limerick, V94 V049, Ireland">
                     <p class="etm-help">Shown in the footer contact column.</p>
                 </div>
             </div>
@@ -147,14 +151,52 @@ function etm_site_settings_page(): void {
             </div>
 
             <div class="etm-actions">
-                <button type="submit" class="etm-btn-save button-primary">Save Settings</button>
+                <button type="button" class="etm-btn-save button-primary">Save Settings</button>
             </div>
+            <div id="etm-save-feedback" class="etm-notice" style="margin-top:12px;"></div>
 
         </form>
     </div>
 
     <script>
     ( function () {
+        // ── AJAX Save ───────────────────────────────────────────────────────
+        var form     = document.getElementById( 'etm-settings-form' );
+        var saveBtn  = document.querySelector( '.etm-btn-save' );
+        var feedback = document.getElementById( 'etm-save-feedback' );
+
+        if ( saveBtn ) {
+            saveBtn.addEventListener( 'click', function () {
+                if ( ! form ) { alert( 'Form not found.' ); return; }
+                var data = new FormData( form );
+                data.append( 'action', 'etm_save_site_settings' );
+
+                saveBtn.textContent = 'Saving\u2026';
+                saveBtn.disabled    = true;
+                if ( feedback ) { feedback.textContent = ''; feedback.className = 'etm-notice'; }
+
+                fetch( ajaxurl, { method: 'POST', body: data, credentials: 'same-origin' } )
+                    .then( function ( r ) { return r.json(); } )
+                    .then( function ( res ) {
+                        if ( res.success ) {
+                            saveBtn.textContent = 'Saved \u2714';
+                            if ( feedback ) { feedback.textContent = 'Settings saved.'; feedback.className = 'etm-notice etm-notice--success'; }
+                            setTimeout( function () { saveBtn.textContent = 'Save Settings'; saveBtn.disabled = false; }, 2500 );
+                        } else {
+                            saveBtn.textContent = 'Save Settings';
+                            saveBtn.disabled    = false;
+                            if ( feedback ) { feedback.textContent = 'Save failed \u2014 ' + ( res.data || 'unknown error' ); feedback.className = 'etm-notice etm-notice--error'; }
+                        }
+                    } )
+                    .catch( function ( err ) {
+                        saveBtn.textContent = 'Save Settings';
+                        saveBtn.disabled    = false;
+                        if ( feedback ) { feedback.textContent = 'Network error \u2014 ' + err; feedback.className = 'etm-notice etm-notice--error'; }
+                    } );
+            } );
+        }
+
+        // ── Media upload ────────────────────────────────────────────────────
         document.querySelectorAll( '.etm-btn-upload' ).forEach( function ( btn ) {
             btn.addEventListener( 'click', function () {
                 var targetId  = btn.dataset.target;

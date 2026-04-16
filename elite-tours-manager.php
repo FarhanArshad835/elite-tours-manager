@@ -11,7 +11,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'ETM_VERSION', '1.2.0' );
+define( 'ETM_VERSION', '1.3.0' );
+
+// ── One-time migration: clear stale homepage settings so fresh defaults apply ─
+if ( get_option( 'etm_migration_v130' ) !== 'done' ) {
+    delete_option( 'et_homepage_settings' );
+    update_option( 'etm_migration_v130', 'done' );
+}
 define( 'ETM_PATH',    plugin_dir_path( __FILE__ ) );
 define( 'ETM_URL',     plugin_dir_url( __FILE__ ) );
 
