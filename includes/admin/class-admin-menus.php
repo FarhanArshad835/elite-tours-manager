@@ -28,6 +28,7 @@ class ETM_Admin_Menus {
         // Sub-pages
         add_submenu_page( 'elite-tours', 'Site Settings', 'Site Settings', 'manage_options', 'et-site-settings',   'etm_site_settings_page' );
         add_submenu_page( 'elite-tours', 'Homepage',      'Homepage',      'manage_options', 'et-homepage',        'etm_homepage_page' );
+        add_submenu_page( 'elite-tours', 'Experiences',   'Experiences',   'manage_options', 'et-experiences',     'etm_experiences_page' );
 
         // Remove duplicate top-level item
         remove_submenu_page( 'elite-tours', 'elite-tours' );
@@ -49,6 +50,7 @@ class ETM_Admin_Menus {
                     $sections = [
                         [ 'icon' => '⚙️', 'title' => 'Site Settings',  'desc' => 'Logo, phone number, nav CTA text.',         'url' => admin_url( 'admin.php?page=et-site-settings' ) ],
                         [ 'icon' => '🏠', 'title' => 'Homepage',        'desc' => 'Hero video/image, headline, trust bar.',    'url' => admin_url( 'admin.php?page=et-homepage' ) ],
+                        [ 'icon' => '🗺️', 'title' => 'Experiences',     'desc' => 'Add, edit, reorder experience cards.',     'url' => admin_url( 'admin.php?page=et-experiences' ) ],
                     ];
                     foreach ( $sections as $s ) : ?>
                         <a href="<?php echo esc_url( $s['url'] ); ?>" class="etm-card">

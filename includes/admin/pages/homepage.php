@@ -677,88 +677,16 @@ function etm_homepage_page(): void {
                     <span class="etm-accordion__arrow">&#9662;</span>
                 </div>
                 <div class="etm-accordion__body" style="display:none;">
-                    <p class="etm-section__desc">Six experience cards displayed in a grid. Images fall back to bundled photos if not uploaded.</p>
-
-                    <div class="etm-field-row">
-                        <div class="etm-field">
-                            <label class="etm-label" for="exp_label">Section Label</label>
-                            <input type="text" id="exp_label" name="exp_label" class="etm-input"
-                                   value="<?php echo esc_attr( $o( 'exp_label', 'Experiences' ) ); ?>">
-                        </div>
-                        <div class="etm-field">
-                            <label class="etm-label" for="exp_heading">Heading</label>
-                            <input type="text" id="exp_heading" name="exp_heading" class="etm-input etm-input--wide"
-                                   value="<?php echo esc_attr( $o( 'exp_heading', "Every Journey Is Different. Here's Where Yours Might Begin." ) ); ?>">
-                        </div>
+                    <div class="etm-field">
+                        <label class="etm-label" for="exp_heading">Section Heading</label>
+                        <input type="text" id="exp_heading" name="exp_heading" class="etm-input etm-input--wide"
+                               value="<?php echo esc_attr( $o( 'exp_heading', "Every Journey Is Different. Here's Where Yours Might Begin." ) ); ?>">
                     </div>
-
-                    <?php
-                    $exp_defaults = [
-                        1 => [ 'label' => 'Ancestry & Roots',        'title' => 'Trace Your Irish Heritage',    'desc' => 'Trace your Irish heritage with depth, dignity, and personal connection.',         'url' => '/bespoke-tours/' ],
-                        2 => [ 'label' => 'Whiskey & Culture',       'title' => "Ireland's Craft Distilleries", 'desc' => "Ireland's craft distilleries and rich cultural story, privately curated.",       'url' => '/experiences/' ],
-                        3 => [ 'label' => 'Scenic & Coastal Ireland', 'title' => 'The Wild Atlantic',           'desc' => 'The Wild Atlantic, country roads, cliffs and castles, at your pace.',            'url' => '/bespoke-tours/' ],
-                        4 => [ 'label' => 'Golf Tours',              'title' => "Ireland's Iconic Links",       'desc' => "Ireland's most iconic links courses, seamlessly handled.",                        'url' => '/golf-tours/' ],
-                        5 => [ 'label' => 'Family Private Journey',  'title' => 'For Every Generation',        'desc' => 'A meaningful Irish experience for every generation in your family.',              'url' => '/bespoke-tours/' ],
-                        6 => [ 'label' => 'Heritage & History',      'title' => 'Castles & Estate Stays',      'desc' => 'Castles, estates, and the stories of Ireland told through its landscape.',        'url' => '/experiences/' ],
-                    ];
-                    foreach ( $exp_defaults as $n => $def ) :
-                        $exp_img_url = $img_url( 'exp_' . $n . '_image_id' );
-                    ?>
-                    <div class="etm-field-group">
-                        <h3 class="etm-field-group__title">Card <?php echo $n; ?></h3>
-                        <div class="etm-field">
-                            <label class="etm-label">Card Image</label>
-                            <div class="etm-media-upload">
-                                <img src="<?php echo esc_url( $exp_img_url ); ?>"
-                                     id="etm-exp-<?php echo $n; ?>-preview"
-                                     class="etm-media-preview" alt=""
-                                     <?php echo $exp_img_url ? '' : 'style="display:none;"'; ?>>
-                                <input type="hidden" name="exp_<?php echo $n; ?>_image_id"
-                                       id="etm-exp-<?php echo $n; ?>-image-id"
-                                       value="<?php echo esc_attr( $oi( 'exp_' . $n . '_image_id' ) ?: '' ); ?>">
-                                <div class="etm-media-btns">
-                                    <button type="button" class="etm-btn-upload button"
-                                            data-target="etm-exp-<?php echo $n; ?>-image-id"
-                                            data-preview="etm-exp-<?php echo $n; ?>-preview"
-                                            data-title="Select Experience <?php echo $n; ?> Image">
-                                        <?php echo $exp_img_url ? 'Change Image' : 'Upload Image'; ?>
-                                    </button>
-                                    <?php if ( $exp_img_url ) : ?>
-                                        <button type="button" class="etm-btn-remove button-link-delete"
-                                                data-target="etm-exp-<?php echo $n; ?>-image-id"
-                                                data-preview="etm-exp-<?php echo $n; ?>-preview">Remove</button>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="etm-field-row">
-                            <div class="etm-field">
-                                <label class="etm-label" for="exp_<?php echo $n; ?>_label">Label</label>
-                                <input type="text" id="exp_<?php echo $n; ?>_label"
-                                       name="exp_<?php echo $n; ?>_label" class="etm-input"
-                                       value="<?php echo esc_attr( $o( 'exp_' . $n . '_label', $def['label'] ) ); ?>">
-                            </div>
-                            <div class="etm-field">
-                                <label class="etm-label" for="exp_<?php echo $n; ?>_title">Title</label>
-                                <input type="text" id="exp_<?php echo $n; ?>_title"
-                                       name="exp_<?php echo $n; ?>_title" class="etm-input"
-                                       value="<?php echo esc_attr( $o( 'exp_' . $n . '_title', $def['title'] ) ); ?>">
-                            </div>
-                        </div>
-                        <div class="etm-field">
-                            <label class="etm-label" for="exp_<?php echo $n; ?>_desc">Description</label>
-                            <input type="text" id="exp_<?php echo $n; ?>_desc"
-                                   name="exp_<?php echo $n; ?>_desc" class="etm-input etm-input--wide"
-                                   value="<?php echo esc_attr( $o( 'exp_' . $n . '_desc', $def['desc'] ) ); ?>">
-                        </div>
-                        <div class="etm-field">
-                            <label class="etm-label" for="exp_<?php echo $n; ?>_url">Link URL</label>
-                            <input type="url" id="exp_<?php echo $n; ?>_url"
-                                   name="exp_<?php echo $n; ?>_url" class="etm-input"
-                                   value="<?php echo esc_attr( $o( 'exp_' . $n . '_url', $def['url'] ) ); ?>">
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
+                    <p class="etm-help" style="margin-top:16px;">
+                        Experience cards are managed in the
+                        <a href="<?php echo esc_url( admin_url( 'admin.php?page=et-experiences' ) ); ?>" style="color:#1A4F31;font-weight:600;">Experiences</a>
+                        tab. Add, edit, reorder, and delete experiences there.
+                    </p>
                 </div><!-- /accordion body -->
             </div><!-- /accordion -->
 
