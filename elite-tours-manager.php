@@ -76,4 +76,6 @@ if ( is_admin() ) {
     require_once ETM_PATH . 'includes/admin/pages/site-settings.php';
     require_once ETM_PATH . 'includes/admin/pages/homepage.php';
     require_once ETM_PATH . 'includes/admin/pages/experiences.php';
+    require_once ETM_PATH . 'includes/admin/pages/hotels.php';
+    require_once ETM_PATH . 'includes/admin/pages/itineraries.php';
 }

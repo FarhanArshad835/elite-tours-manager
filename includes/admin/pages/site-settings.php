@@ -13,6 +13,8 @@ add_action( 'wp_ajax_etm_save_site_settings', function () {
     foreach ( $fields as $f ) {
         $data[ $f ] = isset( $_POST[ $f ] ) ? sanitize_text_field( wp_unslash( $_POST[ $f ] ) ) : '';
     }
+    // Checkbox: present in $_POST when ticked, absent when unticked
+    $data['wishlist_enabled'] = isset( $_POST['wishlist_enabled'] ) ? '1' : '0';
     update_option( 'et_site_settings', $data );
     wp_send_json_success( 'Saved' );
 } );
@@ -117,6 +119,22 @@ function etm_site_settings_page(): void {
                     <input type="url" id="social_tripadvisor" name="social_tripadvisor" class="etm-input"
                            value="<?php echo esc_attr( $opts['social_tripadvisor'] ?? '' ); ?>"
                            placeholder="https://tripadvisor.com/...">
+                </div>
+            </div>
+
+            <div class="etm-section">
+                <h2 class="etm-section__title">Features</h2>
+                <?php
+                // Default ON when key missing (preserves pre-toggle behaviour)
+                $wishlist_on = ! isset( $opts['wishlist_enabled'] ) || $opts['wishlist_enabled'] === '1';
+                ?>
+                <div class="etm-field">
+                    <label class="etm-label" for="wishlist_enabled" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                        <input type="checkbox" id="wishlist_enabled" name="wishlist_enabled" value="1"
+                               <?php checked( $wishlist_on ); ?>>
+                        <span>Enable Wishlist</span>
+                    </label>
+                    <p class="etm-help">When off: hides the heart icon in the navigation, removes the heart buttons from every tour/hotel/experience card, and redirects <code>/wishlist/</code> to the homepage. Saved wishlist data on visitors' devices is untouched and reappears if you turn it back on.</p>
                 </div>
             </div>
 

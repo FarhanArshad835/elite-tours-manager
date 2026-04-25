@@ -12,7 +12,7 @@ add_action( 'wp_ajax_etm_hp_save', function () {
     // ── Text fields (sanitize_text_field) ────────────────────────────────────
     $text_fields = [
         // Hero
-        'hero_label', 'hero_headline', 'hero_cta_primary', 'hero_cta_secondary', 'hero_video_url',
+        'hero_label', 'hero_headline', 'hero_cta_primary', 'hero_cta_secondary', 'hero_proof_text', 'hero_video_url',
         // Trust strip
         'trust_ta_sub',
         'trust_failte_sub', 'trust_asta_sub', 'trust_iagto_sub',
@@ -252,6 +252,14 @@ function etm_homepage_page(): void {
                             <input type="text" id="hero_cta_secondary" name="hero_cta_secondary" class="etm-input"
                                    value="<?php echo esc_attr( $o( 'hero_cta_secondary', 'Explore Our Tours' ) ); ?>">
                         </div>
+                    </div>
+
+                    <!-- TripAdvisor proof badge — appears above the buttons -->
+                    <div class="etm-field">
+                        <label class="etm-label" for="hero_proof_text">TripAdvisor Proof Line <small>(above buttons)</small></label>
+                        <input type="text" id="hero_proof_text" name="hero_proof_text" class="etm-input"
+                               value="<?php echo esc_attr( $o( 'hero_proof_text', "Ireland's Highest-Rated Tour Provider on TripAdvisor" ) ); ?>">
+                        <p class="etm-help">Short social-proof line shown with 5 green stars, just above the hero buttons. Leave blank to hide.</p>
                     </div>
                 </div><!-- /accordion body -->
             </div><!-- /accordion -->
