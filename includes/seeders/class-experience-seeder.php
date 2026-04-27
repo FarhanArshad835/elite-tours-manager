@@ -14,6 +14,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Seeder version. Bump on every meaningful change to what gets seeded
+ * (new images, new option keys, new steps). The number is shown in the
+ * Seed Content admin page header so the live site can be checked at a glance.
+ */
+if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 3 );
+
 class ETM_Experience_Seeder {
 
     /** @var string Absolute path to the bundled seed images. */

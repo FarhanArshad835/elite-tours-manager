@@ -32,8 +32,16 @@ function etm_seed_content_page(): void {
         delete_transient( $log_key );
     }
     ?>
+    <?php
+    if ( ! defined( 'ETM_SEEDER_VERSION' ) ) {
+        require_once ETM_PATH . 'includes/seeders/class-experience-seeder.php';
+    }
+    ?>
     <div class="wrap etm-wrap">
-        <h1 class="etm-page-title">🌱 Seed Experience Content</h1>
+        <h1 class="etm-page-title">
+            🌱 Seed Experience Content
+            <span style="font-size:13px;font-weight:500;color:#6b7280;background:#eef2f7;padding:3px 10px;border-radius:999px;margin-left:10px;vertical-align:middle;">Seeder v<?php echo (int) ETM_SEEDER_VERSION; ?></span>
+        </h1>
 
         <div style="max-width:780px;margin-top:14px;">
 
