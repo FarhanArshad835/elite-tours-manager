@@ -2,7 +2,7 @@
 /**
  * Plugin Name:   Elite Tours Manager
  * Description:   Content management panel for Elite Tours Ireland website. Last updated: April 2026.
- * Version:       1.2.11
+ * Version:       1.2.12
  * Author:        Elite Tours Ireland
  * Text Domain:   elite-tours-manager
  * GitHub Plugin URI: FarhanArshad835/elite-tours-manager
@@ -156,25 +156,26 @@ add_filter( 'plugin_row_meta', function ( array $meta, string $file ): array {
     return $meta;
 }, 10, 2 );
 
-// ── Auto-create pages (runs once) ─────────────────────────────────────────────
-if ( get_option( 'etm_pages_created_v2' ) !== 'done' ) {
+// ── Auto-create pages (runs once per version) ────────────────────────────────
+// v3 (Phase 8) adds Privacy Policy + Terms & Conditions pages.
+if ( get_option( 'etm_pages_created_v3' ) !== 'done' ) {
     add_action( 'init', function () {
         $pages = [
-            [ 'title' => 'Bespoke Tours',  'slug' => 'bespoke-tours',  'template' => 'page-bespoke-tours.php' ],
-            [ 'title' => 'Golf Tours',      'slug' => 'golf-tours',     'template' => 'page-golf-tours.php' ],
-            [ 'title' => 'Experiences',     'slug' => 'experiences',    'template' => 'page-experiences.php' ],
-            [ 'title' => 'Accommodation',   'slug' => 'accommodation',  'template' => 'page-accommodation.php' ],
-            [ 'title' => 'About Us',        'slug' => 'about-us',       'template' => 'page-about-us.php' ],
-            [ 'title' => 'Blog',            'slug' => 'blog',           'template' => 'page-blog.php' ],
-            [ 'title' => 'Contact',         'slug' => 'contact',        'template' => 'page-contact.php' ],
-            [ 'title' => 'Wishlist',        'slug' => 'wishlist',       'template' => 'page-wishlist.php' ],
+            [ 'title' => 'Bespoke Tours',           'slug' => 'bespoke-tours',          'template' => 'page-bespoke-tours.php' ],
+            [ 'title' => 'Golf Tours',              'slug' => 'golf-tours',             'template' => 'page-golf-tours.php' ],
+            [ 'title' => 'Experiences',             'slug' => 'experiences',            'template' => 'page-experiences.php' ],
+            [ 'title' => 'Accommodation',           'slug' => 'accommodation',          'template' => 'page-accommodation.php' ],
+            [ 'title' => 'About Us',                'slug' => 'about-us',               'template' => 'page-about-us.php' ],
+            [ 'title' => 'Blog',                    'slug' => 'blog',                   'template' => 'page-blog.php' ],
+            [ 'title' => 'Contact',                 'slug' => 'contact',                'template' => 'page-contact.php' ],
+            [ 'title' => 'Wishlist',                'slug' => 'wishlist',               'template' => 'page-wishlist.php' ],
+            [ 'title' => 'Privacy Policy',          'slug' => 'privacy-policy',         'template' => 'page-privacy-policy.php' ],
+            [ 'title' => 'Terms & Conditions',      'slug' => 'terms-and-conditions',   'template' => 'page-terms-and-conditions.php' ],
         ];
 
         foreach ( $pages as $p ) {
-            // Skip if a page with this slug already exists
             $existing = get_page_by_path( $p['slug'] );
             if ( $existing ) {
-                // Just ensure the template is set
                 update_post_meta( $existing->ID, '_wp_page_template', $p['template'] );
                 continue;
             }
@@ -192,7 +193,7 @@ if ( get_option( 'etm_pages_created_v2' ) !== 'done' ) {
             }
         }
 
-        update_option( 'etm_pages_created_v2', 'done' );
+        update_option( 'etm_pages_created_v3', 'done' );
     } );
 }
 
