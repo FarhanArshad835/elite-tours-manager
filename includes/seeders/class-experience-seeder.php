@@ -63,8 +63,52 @@ class ETM_Experience_Seeder {
         $this->seed_site_content();
 
         $this->log[] = '';
+        $this->log[] = '── Step 6: Homepage hero / intro / offer / founder images ──';
+        $this->seed_homepage_images();
+
+        $this->log[] = '';
         $this->log[] = 'Done.';
         return $this->log;
+    }
+
+    // ─── Step 6: Homepage image_id slots ─────────────────────────
+
+    /**
+     * Imports the bundled homepage hero/intro/offer/founder images and merges
+     * their attachment IDs into et_homepage_settings. Runs *after*
+     * seed_site_content() so it never gets clobbered by the editorial-copy seed.
+     *
+     * Image-to-slot mapping:
+     *   hero_image_id       → coastal-road-fog.jpg       (4K, full-bleed safe)
+     *   intro_image_id      → muckross-lake-view.jpg     (1200×900)
+     *   offer_1_image_id    → gap-of-dunloe.jpg          (Bespoke offer block)
+     *   offer_2_image_id    → links-golf-coast.jpg       (Golf offer block)
+     *   founder_image_id    → Raphell mulaly image.jpeg  (reused from CTA portrait)
+     */
+    private function seed_homepage_images(): void {
+        $hero_id     = $this->seed_image( 'coastal-road-fog.jpg' );
+        $intro_id    = $this->seed_image( 'muckross-lake-view.jpg' );
+        $offer_1_id  = $this->seed_image( 'gap-of-dunloe.jpg' );
+        $offer_2_id  = $this->seed_image( 'links-golf-coast.jpg' );
+        $founder_id  = $this->seed_image( 'Raphell mulaly image.jpeg' );
+
+        $home = get_option( 'et_homepage_settings', [] );
+        if ( ! is_array( $home ) ) $home = [];
+
+        $home['hero_image_id']    = $hero_id    ?: '';
+        $home['intro_image_id']   = $intro_id   ?: '';
+        $home['offer_1_image_id'] = $offer_1_id ?: '';
+        $home['offer_2_image_id'] = $offer_2_id ?: '';
+        $home['founder_image_id'] = $founder_id ?: '';
+
+        update_option( 'et_homepage_settings', $home );
+        $this->log[] = "Wired homepage image IDs: hero={$hero_id} intro={$intro_id} offer_1={$offer_1_id} offer_2={$offer_2_id} founder={$founder_id}";
+
+        // Also mirror founder image into Site Settings (et_site_settings.founder_image_id)
+        $site = get_option( 'et_site_settings', [] );
+        if ( ! is_array( $site ) ) $site = [];
+        $site['founder_image_id'] = $founder_id ?: '';
+        update_option( 'et_site_settings', $site );
     }
 
     // ─── Step 5: Homepage / experience-cards / taxonomies wp_options ────
@@ -294,8 +338,10 @@ class ETM_Experience_Seeder {
     // ─── Step 2: Bespoke images ──────────────────────────────
 
     private function seed_bespoke_images(): void {
+        // Hero is upgraded to a hi-res TripAdvisor shot (Gap of Dunloe, 1100×1467)
+        // because the previous 22.jpg was 788×800 — too soft on a full-bleed hero.
         $files = [
-            'hero'           => '22.jpg',
+            'hero'           => 'gap-of-dunloe.jpg',
             'story_main'     => '0.png',
             'story_accent'   => '23.png',
             'pillar_culture' => '29.png',
@@ -402,8 +448,13 @@ class ETM_Experience_Seeder {
             return;
         }
 
-        if ( $img['0.png'] )  set_post_thumbnail( $id_heritage,     $img['0.png'] );
-        if ( $img['29.png'] ) set_post_thumbnail( $id_distilleries, $img['29.png'] );
+        // Heritage post-thumbnail is upgraded to the hi-res Kylemore Abbey
+        // reflection (1200×675) — the existing 0.png is 736×981 which softens
+        // at full hero scale. Distilleries keeps 29.png because no equivalent
+        // pub/whiskey shot exists in the high-res library yet.
+        $kylemore_hires = $this->seed_image( 'kylemore-abbey-reflection.jpg' );
+        if ( $kylemore_hires )  set_post_thumbnail( $id_heritage,     $kylemore_hires );
+        if ( $img['29.png'] )   set_post_thumbnail( $id_distilleries, $img['29.png'] );
 
         $heritage_meta = [
             '_etm_eyebrow'                     => 'An Elite Tours Experience · Ancestry & Roots',
