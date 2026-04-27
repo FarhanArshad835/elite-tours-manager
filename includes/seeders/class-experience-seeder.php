@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * (new images, new option keys, new steps). The number is shown in the
  * Seed Content admin page header so the live site can be checked at a glance.
  */
-if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 7 );
+if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 8 );
 
 class ETM_Experience_Seeder {
 
