@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * (new images, new option keys, new steps). The number is shown in the
  * Seed Content admin page header so the live site can be checked at a glance.
  */
-if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 3 );
+if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 4 );
 
 class ETM_Experience_Seeder {
 
@@ -432,6 +432,10 @@ class ETM_Experience_Seeder {
             '0.png','7.png','9.png','10.png','16.png','17.png','22.jpg','23.png',
             '25.png','26.png','27.png','28.png','29.png','30.png','33.png','34.png','36.png',
             'Raphell mulaly image.jpeg',
+            // Hi-res whiskey/distillery shots (Pexels) for Distilleries hero + pillars.
+            'distillery-barrels-irish.jpg',
+            'whiskey-casks-warehouse.jpg',
+            'copper-still-closeup.jpg',
         ];
         $img = [];
         foreach ( $img_files as $f ) {
@@ -457,11 +461,15 @@ class ETM_Experience_Seeder {
 
         // Heritage post-thumbnail is upgraded to the hi-res Kylemore Abbey
         // reflection (1200×675) — the existing 0.png is 736×981 which softens
-        // at full hero scale. Distilleries keeps 29.png because no equivalent
-        // pub/whiskey shot exists in the high-res library yet.
-        $kylemore_hires = $this->seed_image( 'kylemore-abbey-reflection.jpg' );
-        if ( $kylemore_hires )  set_post_thumbnail( $id_heritage,     $kylemore_hires );
-        if ( $img['29.png'] )   set_post_thumbnail( $id_distilleries, $img['29.png'] );
+        // at full hero scale. Distilleries is upgraded to a hi-res whiskey
+        // cask warehouse shot (1920×3410, Pexels) — the existing 29.png pub
+        // corner was 600×900 and tonally pub-leaning rather than craft-leaning;
+        // the warehouse better matches the "houses, people, and the practice"
+        // copy of the experience.
+        $kylemore_hires    = $this->seed_image( 'kylemore-abbey-reflection.jpg' );
+        $whiskey_warehouse = $img['whiskey-casks-warehouse.jpg'] ?? 0;
+        if ( $kylemore_hires )    set_post_thumbnail( $id_heritage,     $kylemore_hires );
+        if ( $whiskey_warehouse ) set_post_thumbnail( $id_distilleries, $whiskey_warehouse );
 
         $heritage_meta = [
             '_etm_eyebrow'                     => 'An Elite Tours Experience · Ancestry & Roots',
@@ -633,13 +641,13 @@ class ETM_Experience_Seeder {
             '_etm_pillars'                     => [
                 [ 'pillar' => 'Heritage', 'title' => 'The two-hundred-year tradition, retold.',
                   'body' => 'We visit three houses with century-old archives — Bushmills, Kilbeggan, and a smaller mill outside Dingle — to understand where the practice began before tasting where it is going.',
-                  'image_id' => $img['25.png'] ],
+                  'image_id' => $img['distillery-barrels-irish.jpg'] ?? $img['25.png'] ],
                 [ 'pillar' => 'Craft', 'title' => 'The people who shape what is in the glass.',
                   'body' => 'Master distillers, head blenders, a still-room foreman in Cork. We secure private time with the people who matter most, never with marketers.',
-                  'image_id' => $img['29.png'] ],
+                  'image_id' => $img['copper-still-closeup.jpg'] ?? $img['29.png'] ],
                 [ 'pillar' => 'The Cask', 'title' => 'What the wood gives, and how it gives it.',
                   'body' => 'A morning at a working cooperage in Co. Tipperary. The smell of the kiln. The slow lean of the staves. The whiskey is shaped here as much as in the still.',
-                  'image_id' => $img['28.png'] ],
+                  'image_id' => $img['whiskey-casks-warehouse.jpg'] ?? $img['28.png'] ],
             ],
 
             '_etm_process_card_eyebrow'        => 'The Method',

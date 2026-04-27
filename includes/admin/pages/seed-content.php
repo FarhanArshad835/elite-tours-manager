@@ -51,7 +51,7 @@ function etm_seed_content_page(): void {
             </p>
             <ul style="font-size:14px;line-height:1.7;color:#3c434a;list-style:disc;margin-left:22px;">
                 <li><strong>3 experience pages</strong> — Bespoke Private Tour of Ireland, Trace Your Irish Heritage, Ireland's Craft Distilleries (~150 meta-field values across the three).</li>
-                <li><strong>23 image attachments</strong> — uploaded from the bundled <code>seed-data/images/</code> folder into the Media Library and wired to the right meta fields. Includes hi-res hero shots (Gap of Dunloe, Kylemore Abbey, coastal road fog) plus the 18 original story/pillar/process images.</li>
+                <li><strong>31 image attachments</strong> — uploaded from the bundled <code>seed-data/images/</code> folder into the Media Library and wired to the right meta fields. Includes hi-res hero shots (Gap of Dunloe, Kylemore Abbey, coastal road fog, whiskey casks warehouse, copper still, Irish Whiskey Museum) plus 4 region heroes (Dublin, Galway, Sligo, Belfast — bundled for upcoming regional pages) and the 18 original story/pillar/process images.</li>
                 <li><strong>Homepage settings</strong> — hero, intro, offer blocks, process steps, testimonials, founder CTA and section visibility.</li>
                 <li><strong>Homepage images</strong> — full-bleed hero photo, intro section image, Bespoke + Golf offer images, founder portrait. All wired into <em>Homepage</em> screen automatically.</li>
                 <li><strong>Experience cards array</strong> — the 3 cards used on the homepage Experiences grid.</li>
