@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * (new images, new option keys, new steps). The number is shown in the
  * Seed Content admin page header so the live site can be checked at a glance.
  */
-if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 10 );
+if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 11 );
 
 class ETM_Experience_Seeder {
 
@@ -50,39 +50,27 @@ class ETM_Experience_Seeder {
         require_once ABSPATH . 'wp-admin/includes/file.php';
         require_once ABSPATH . 'wp-admin/includes/image.php';
 
-        $this->log[] = '── Step 1: Bespoke Private Tour of Ireland — post + meta ──';
-        $this->seed_bespoke();
+        $this->log[] = '── Step 1: Clean up carryover experience posts ──';
+        $this->cleanup_carryover_experiences();
 
         $this->log[] = '';
-        $this->log[] = '── Step 2: Bespoke — images ──';
-        $this->seed_bespoke_images();
-
-        $this->log[] = '';
-        $this->log[] = '── Step 3: Bespoke — highlights with images ──';
-        $this->seed_bespoke_highlights();
-
-        $this->log[] = '';
-        $this->log[] = '── Step 4: Heritage + Distilleries — posts, meta, images ──';
-        $this->seed_other_experiences();
-
-        $this->log[] = '';
-        $this->log[] = '── Step 5: Signature Journey + Essence — Bespoke tour products ──';
+        $this->log[] = '── Step 2: Signature Journey + Essence — Bespoke tour products ──';
         $this->seed_signature_and_essence();
 
         $this->log[] = '';
-        $this->log[] = '── Step 6: Homepage settings, experience cards, taxonomies ──';
+        $this->log[] = '── Step 3: Homepage settings, experience cards, taxonomies ──';
         $this->seed_site_content();
 
         $this->log[] = '';
-        $this->log[] = '── Step 7: Homepage hero / intro / offer / founder images ──';
+        $this->log[] = '── Step 4: Homepage hero / intro / offer / founder images ──';
         $this->seed_homepage_images();
 
         $this->log[] = '';
-        $this->log[] = '── Step 8: Regions of Ireland — image attachments ──';
+        $this->log[] = '── Step 5: Regions of Ireland — image attachments ──';
         $this->seed_region_images();
 
         $this->log[] = '';
-        $this->log[] = '── Step 9: Hotel image attachments ──';
+        $this->log[] = '── Step 6: Hotel image attachments ──';
         $this->seed_hotel_images();
 
         $this->log[] = '';
@@ -90,24 +78,48 @@ class ETM_Experience_Seeder {
         return $this->log;
     }
 
-    // ─── Step 5: Signature Journey + Essence Experience ──────────
+    // ─── Step 1: Clean up carryover experience posts ─────────────
 
     /**
-     * Two new Bespoke tour products from the client's 2026-04-27 brief drop:
+     * Force-deletes the three carryover Experience CPT posts that pre-dated
+     * the 2026-04-27 client batch (Bespoke umbrella, Heritage, Distilleries).
+     * Idempotent — does nothing if the posts no longer exist. Runs before
+     * any seeding so subsequent steps see a clean slate.
+     */
+    private function cleanup_carryover_experiences(): void {
+        $carryover_slugs = [
+            'bespoke-private-tour-of-ireland',
+            'trace-your-irish-heritage',
+            'irelands-craft-distilleries',
+        ];
+        $removed = 0;
+        foreach ( $carryover_slugs as $slug ) {
+            $post = get_page_by_path( $slug, OBJECT, 'experience' );
+            if ( ! $post ) {
+                $this->log[] = "Already gone: {$slug}";
+                continue;
+            }
+            wp_delete_post( (int) $post->ID, true );
+            $this->log[] = "Deleted carryover post #{$post->ID} — {$slug}";
+            $removed++;
+        }
+        $this->log[] = "Removed {$removed} carryover post(s).";
+    }
+
+    // ─── Step 2: Signature Journey + Essence Experience ──────────
+
+    /**
+     * The two Bespoke tour products from the client's 2026-04-27 brief drop:
      *   - The Signature Ireland Journey  (11–15 days)
      *   - The Essence of Ireland Experience (6–10 days)
      *
      * Both follow the existing 7-section funnel template (hero / highlights /
-     * story / pillars / process / CTA / similar) and reuse hero images already
-     * bundled in seed-data/images/. They are added alongside the existing
-     * Bespoke Private Tour, Heritage, and Distilleries — so the published
-     * Experience CPT count goes 3 → 5 after this step.
+     * story / pillars / process / CTA / similar) and reuse hero images
+     * bundled in seed-data/images/. They are the only Experience CPT entries
+     * that ship — the Bespoke umbrella, Heritage, and Distilleries carryovers
+     * were removed in Step 1.
      */
     private function seed_signature_and_essence(): void {
-        $id_bespoke      = (int) ( get_page_by_path( 'bespoke-private-tour-of-ireland', OBJECT, 'experience' )->ID ?? 0 );
-        $id_heritage     = (int) ( get_page_by_path( 'trace-your-irish-heritage',       OBJECT, 'experience' )->ID ?? 0 );
-        $id_distilleries = (int) ( get_page_by_path( 'irelands-craft-distilleries',     OBJECT, 'experience' )->ID ?? 0 );
-
         $hero_signature_id = $this->seed_image( 'coastal-road-fog.jpg' );
         $hero_essence_id   = $this->seed_image( 'gap-of-dunloe.jpg' );
         $kylemore_id       = $this->seed_image( 'kylemore-abbey-reflection.jpg' );
@@ -230,7 +242,8 @@ class ETM_Experience_Seeder {
             '_etm_similar_heading_part2'       => 'to experience Ireland.',
             '_etm_similar_view_all_text'       => 'View all experiences →',
             '_etm_similar_view_all_url'        => home_url( '/experiences/' ),
-            '_etm_similar_ids'                 => array_filter( [ $id_bespoke, $id_heritage, $id_distilleries ] ),
+            // Cross-linked at the bottom of this method once $id_essence exists.
+            '_etm_similar_ids'                 => [],
 
             '_etm_card_meta'                   => '11–15 days · Fully bespoke · Privately hosted',
         ];
@@ -349,7 +362,8 @@ class ETM_Experience_Seeder {
             '_etm_similar_heading_part2'       => 'to experience Ireland.',
             '_etm_similar_view_all_text'       => 'View all experiences →',
             '_etm_similar_view_all_url'        => home_url( '/experiences/' ),
-            '_etm_similar_ids'                 => array_filter( [ $id_signature, $id_bespoke, $id_heritage ] ),
+            // Cross-linked below once both posts exist.
+            '_etm_similar_ids'                 => [],
 
             '_etm_card_meta'                   => '6–10 days · Fully bespoke · Privately hosted',
         ];
@@ -358,10 +372,11 @@ class ETM_Experience_Seeder {
             $this->log[] = "Seeded Essence Experience (post #{$id_essence}) — " . count( $essence_meta ) . " fields";
         }
 
-        // Cross-link the original Bespoke entry to the two new tour products.
-        if ( $id_bespoke && $id_signature && $id_essence ) {
-            update_post_meta( $id_bespoke, '_etm_similar_ids', [ $id_signature, $id_essence, $id_heritage, $id_distilleries ] );
-            $this->log[] = "Updated Bespoke similar links to include Signature + Essence";
+        // Cross-link the two tour products to each other.
+        if ( $id_signature && $id_essence ) {
+            update_post_meta( $id_signature, '_etm_similar_ids', [ $id_essence ] );
+            update_post_meta( $id_essence,   '_etm_similar_ids', [ $id_signature ] );
+            $this->log[] = "Cross-linked Signature ↔ Essence similar IDs";
         }
     }
 

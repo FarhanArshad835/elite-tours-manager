@@ -129,33 +129,6 @@ return [
             'duration' => '6-10',
             'image_id' => 0,
         ],
-        [
-            'label'    => 'Ancestry, Culture & Scenery',
-            'title'    => 'Bespoke Private Tour of Ireland',
-            'desc'     => 'The umbrella Bespoke entry — start here if you\'re open to either length. We\'ll help you choose between Signature and Essence based on your time.',
-            'url'      => '/experiences/bespoke-private-tour-of-ireland/',
-            'type'     => 'bespoke',
-            'duration' => 'bespoke',
-            'image_id' => 0,
-        ],
-        [
-            'label'    => 'Ancestry & Roots',
-            'title'    => 'Trace Your Irish Heritage',
-            'desc'     => 'A guided return to the parish, townland, and people your family came from. Researched in advance with professional genealogists.',
-            'url'      => '/experiences/trace-your-irish-heritage/',
-            'type'     => 'photography',
-            'duration' => 'bespoke',
-            'image_id' => 0,
-        ],
-        [
-            'label'    => 'Whiskey & Culture',
-            'title'    => 'Ireland\'s Craft Distilleries',
-            'desc'     => 'Six craft distilleries, three private tastings, one cooperage. A privately guided journey through Ireland\'s whiskey renaissance.',
-            'url'      => '/experiences/irelands-craft-distilleries/',
-            'type'     => 'culinary',
-            'duration' => '6-10',
-            'image_id' => 0,
-        ],
     ],
 
     // ── Regions of Ireland (Phase 5) ─────────────────────────

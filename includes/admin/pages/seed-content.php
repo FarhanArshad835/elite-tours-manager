@@ -83,7 +83,7 @@ function etm_seed_content_page(): void {
                 <?php wp_nonce_field( 'etm_run_seeders' ); ?>
                 <input type="hidden" name="action" value="etm_run_seeders">
                 <button type="submit" class="button button-primary button-hero"
-                        onclick="return confirm('Run the seeder? This will overwrite content on the 3 experience posts.');">
+                        onclick="return confirm('Run the seeder? This will overwrite content on the 2 tour-product posts (Signature Journey, Essence Experience) and refresh homepage / region / hotel data.');">
                     🌱 Run Seeders
                 </button>
             </form>
@@ -100,8 +100,11 @@ function etm_seed_content_page(): void {
                     <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=experience' ) ); ?>" class="button">
                         Open Experiences
                     </a>
-                    <a href="<?php echo esc_url( home_url( '/experiences/bespoke-private-tour-of-ireland/' ) ); ?>" class="button" target="_blank">
-                        View Bespoke page
+                    <a href="<?php echo esc_url( home_url( '/experiences/signature-ireland-journey/' ) ); ?>" class="button" target="_blank">
+                        View Signature Journey
+                    </a>
+                    <a href="<?php echo esc_url( home_url( '/experiences/essence-of-ireland/' ) ); ?>" class="button" target="_blank">
+                        View Essence Experience
                     </a>
                 </p>
             <?php elseif ( $just_ran ) : ?>
