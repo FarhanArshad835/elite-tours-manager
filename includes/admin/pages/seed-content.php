@@ -38,28 +38,33 @@ function etm_seed_content_page(): void {
         <div style="max-width:780px;margin-top:14px;">
 
             <p style="font-size:14px;line-height:1.6;color:#3c434a;">
-                Populates the three experience pages
-                — <strong>Bespoke Private Tour of Ireland</strong>,
-                <strong>Trace Your Irish Heritage</strong>, and
-                <strong>Ireland's Craft Distilleries</strong> —
-                with their complete editorial content (60+ meta fields per
-                experience) and the supporting images bundled with this plugin.
+                Populates the site with its complete editorial content from a
+                fresh environment.
             </p>
+            <ul style="font-size:14px;line-height:1.7;color:#3c434a;list-style:disc;margin-left:22px;">
+                <li><strong>3 experience pages</strong> — Bespoke Private Tour of Ireland, Trace Your Irish Heritage, Ireland's Craft Distilleries (~150 meta-field values across the three).</li>
+                <li><strong>18 image attachments</strong> — uploaded from the bundled <code>seed-data/images/</code> folder into the Media Library and wired to the right meta fields.</li>
+                <li><strong>Homepage settings</strong> — hero, intro, offer blocks, process steps, testimonials, founder CTA and section visibility.</li>
+                <li><strong>Experience cards array</strong> — the 3 cards used on the homepage Experiences grid.</li>
+                <li><strong>Experience filters</strong> — type and duration taxonomies (Bespoke / Photography / Culinary / Golf, etc.).</li>
+            </ul>
 
             <p style="font-size:14px;line-height:1.6;color:#3c434a;">
                 Use this on a fresh environment (live, staging, a new local clone)
-                to bring the experience pages to the same state they have on the
-                primary development site. The seeder is <strong>idempotent</strong>
-                — running it twice will not create duplicates; it updates existing
-                posts and reuses already-imported images.
+                to bring everything to the same state as the primary development
+                site. The seeder is <strong>idempotent</strong> — running it twice
+                will not create duplicates; it updates existing posts and reuses
+                already-imported images.
             </p>
 
             <div style="background:#fff7e6;border-left:4px solid #f0b849;padding:12px 16px;margin:18px 0;font-size:13px;line-height:1.5;">
-                <strong>Heads up:</strong> Running the seeder will overwrite any
-                manual edits you have made to those three experience posts'
-                meta fields. Featured images, hero copy, highlights, story copy,
-                pillars, process steps, CTA copy and similar links will all be
-                reset to the bundled content. Other posts and pages are untouched.
+                <strong>Heads up — this overwrites:</strong>
+                Running the seeder will overwrite any manual edits made on this
+                site to: the 3 experience posts' meta fields, the
+                <em>Homepage</em> screen settings, the <em>Experiences</em> cards
+                array, and the type/duration taxonomies. Site Settings (logo,
+                phone, address, social URLs), Hotels, Itineraries, and any other
+                pages or posts are untouched.
             </div>
 
             <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin:22px 0;">
@@ -93,14 +98,6 @@ function etm_seed_content_page(): void {
                 </div>
             <?php endif; ?>
 
-            <h2 style="margin-top:40px;font-size:16px;">What gets created</h2>
-            <ul style="font-size:13px;line-height:1.7;color:#3c434a;list-style:disc;margin-left:22px;">
-                <li><strong>3 experience CPT posts</strong> — published, with permalinks at <code>/experiences/&lt;slug&gt;/</code>.</li>
-                <li><strong>~150 meta-field values</strong> across the three posts (hero, highlights, story, pillars, process, CTA, similar).</li>
-                <li><strong>18 image attachments</strong> uploaded to the Media Library (tagged with <code>_etm_seed_source</code> so they aren't re-imported on subsequent runs).</li>
-                <li><strong>Featured images, story plates, pillar cards, process visuals, CTA portrait</strong> — all wired to the right meta fields.</li>
-                <li><strong>Cross-links</strong> between the three experiences via the Similar section.</li>
-            </ul>
         </div>
     </div>
     <?php

@@ -59,8 +59,38 @@ class ETM_Experience_Seeder {
         $this->seed_other_experiences();
 
         $this->log[] = '';
+        $this->log[] = '── Step 5: Homepage settings, experience cards, taxonomies ──';
+        $this->seed_site_content();
+
+        $this->log[] = '';
         $this->log[] = 'Done.';
         return $this->log;
+    }
+
+    // ─── Step 5: Homepage / experience-cards / taxonomies wp_options ────
+
+    /**
+     * Imports the bundled site-content.php into wp_options. Overwrites any
+     * existing values for the keys it sets — safe because the keys it touches
+     * (et_homepage_settings, et_experiences, et_experience_taxonomies) are
+     * managed entirely through this plugin's admin screens.
+     */
+    private function seed_site_content(): void {
+        $file = rtrim( ETM_PATH, '/\\' ) . '/seed-data/site-content.php';
+        if ( ! file_exists( $file ) ) {
+            $this->log[] = "MISSING: site-content.php";
+            return;
+        }
+        $payload = include $file;
+        if ( ! is_array( $payload ) ) {
+            $this->log[] = "site-content.php did not return an array";
+            return;
+        }
+        foreach ( $payload as $option_name => $value ) {
+            update_option( $option_name, $value );
+            $count = is_array( $value ) ? count( $value ) : 1;
+            $this->log[] = "Set {$option_name} ({$count} keys)";
+        }
     }
 
     // ─── Helpers ─────────────────────────────────────────────
