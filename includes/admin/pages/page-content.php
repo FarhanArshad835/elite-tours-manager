@@ -134,10 +134,20 @@ add_action( 'wp_ajax_etm_save_page_content', function () {
     // Stored as a flat dictionary; render code reads with `$strings['key'] ?? ''`.
     $string_keys = [
         'bespoke_itinerary_disclaimer',
+        'bespoke_philosophy_title',
+        'bespoke_philosophy_body',
         'golf_itinerary_disclaimer',
         'golf_availability_note',
+        'golf_philosophy_title',
+        'golf_philosophy_body',
+        'golf_philosophy_blockquote',
         'accommodation_trust_quote',
         'about_origin_story',
+        'about_founder_title',
+        'about_founder_subtitle',
+        'about_founder_body',
+        'about_founder_quote',
+        'about_founder_quote_attribution',
     ];
     $strings = [];
     $payload_strings = (array) ( $data['page_strings'] ?? [] );
@@ -280,9 +290,69 @@ function etm_page_content_page(): void {
 
                     <div class="etm-pc-string">
                         <label style="display:block;font-size:13px;font-weight:600;color:#222;margin-bottom:4px;">About — origin story</label>
-                        <p class="etm-help" style="margin:0 0 6px 0;">The 4-paragraph origin story on /about-us/. Use blank lines to separate paragraphs.</p>
+                        <p class="etm-help" style="margin:0 0 6px 0;">The 4-paragraph origin story on /about-us/. Use blank lines to separate paragraphs. Wrap text in <code>*asterisks*</code> for italics.</p>
                         <textarea data-string-key="about_origin_story" rows="10" class="etm-input" style="width:100%;font-family:inherit;" placeholder="For many visitors, a trip to Ireland..."><?php echo esc_textarea( $page_strings['about_origin_story'] ?? '' ); ?></textarea>
                     </div>
+                </div>
+            </div>
+
+            <div class="etm-section">
+                <h2 class="etm-section__title">Bespoke Tours — Philosophy Block</h2>
+                <p class="etm-help">The "This Is Not a Tour Package" two-column block on /bespoke-tours/.</p>
+
+                <div class="etm-field">
+                    <label class="etm-label">Section Title</label>
+                    <input type="text" data-string-key="bespoke_philosophy_title" class="etm-input" style="width:100%;" value="<?php echo esc_attr( $page_strings['bespoke_philosophy_title'] ?? '' ); ?>" placeholder="This Is Not a Tour Package">
+                </div>
+                <div class="etm-field">
+                    <label class="etm-label">Body (paragraphs separated by blank lines)</label>
+                    <textarea data-string-key="bespoke_philosophy_body" rows="10" class="etm-input" style="width:100%;font-family:inherit;" placeholder="Most companies offer you a list of itineraries..."><?php echo esc_textarea( $page_strings['bespoke_philosophy_body'] ?? '' ); ?></textarea>
+                </div>
+            </div>
+
+            <div class="etm-section">
+                <h2 class="etm-section__title">Golf Tours — Philosophy Block</h2>
+                <p class="etm-help">The "This Is Not a Golf Package" two-column block on /golf-tours/.</p>
+
+                <div class="etm-field">
+                    <label class="etm-label">Section Title</label>
+                    <input type="text" data-string-key="golf_philosophy_title" class="etm-input" style="width:100%;" value="<?php echo esc_attr( $page_strings['golf_philosophy_title'] ?? '' ); ?>" placeholder="This Is Not a Golf Package">
+                </div>
+                <div class="etm-field">
+                    <label class="etm-label">Body (paragraphs separated by blank lines)</label>
+                    <textarea data-string-key="golf_philosophy_body" rows="8" class="etm-input" style="width:100%;font-family:inherit;" placeholder="We don't hand you a list of courses..."><?php echo esc_textarea( $page_strings['golf_philosophy_body'] ?? '' ); ?></textarea>
+                </div>
+                <div class="etm-field">
+                    <label class="etm-label">Blockquote (callout line)</label>
+                    <input type="text" data-string-key="golf_philosophy_blockquote" class="etm-input" style="width:100%;" value="<?php echo esc_attr( $page_strings['golf_philosophy_blockquote'] ?? '' ); ?>" placeholder="The best golf trip of your life, without having to think about anything.">
+                </div>
+            </div>
+
+            <div class="etm-section">
+                <h2 class="etm-section__title">About Us — Founder Feature</h2>
+                <p class="etm-help">The "Raphael Mulally" founder block on /about-us/.</p>
+
+                <div class="etm-field-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div class="etm-field">
+                        <label class="etm-label">Heading</label>
+                        <input type="text" data-string-key="about_founder_title" class="etm-input" style="width:100%;" value="<?php echo esc_attr( $page_strings['about_founder_title'] ?? '' ); ?>" placeholder="Raphael Mulally">
+                    </div>
+                    <div class="etm-field">
+                        <label class="etm-label">Subheading</label>
+                        <input type="text" data-string-key="about_founder_subtitle" class="etm-input" style="width:100%;" value="<?php echo esc_attr( $page_strings['about_founder_subtitle'] ?? '' ); ?>" placeholder="Founder, host & the Irish connection">
+                    </div>
+                </div>
+                <div class="etm-field">
+                    <label class="etm-label">Body (paragraphs separated by blank lines; wrap text in <code>**double asterisks**</code> for bold)</label>
+                    <textarea data-string-key="about_founder_body" rows="10" class="etm-input" style="width:100%;font-family:inherit;" placeholder="The product is not the route..."><?php echo esc_textarea( $page_strings['about_founder_body'] ?? '' ); ?></textarea>
+                </div>
+                <div class="etm-field">
+                    <label class="etm-label">Pull Quote</label>
+                    <textarea data-string-key="about_founder_quote" rows="3" class="etm-input" style="width:100%;font-family:inherit;" placeholder="I've spent decades..."><?php echo esc_textarea( $page_strings['about_founder_quote'] ?? '' ); ?></textarea>
+                </div>
+                <div class="etm-field">
+                    <label class="etm-label">Quote Attribution</label>
+                    <input type="text" data-string-key="about_founder_quote_attribution" class="etm-input" style="width:100%;" value="<?php echo esc_attr( $page_strings['about_founder_quote_attribution'] ?? '' ); ?>" placeholder="Raphael Mulally · Founder, Elite Tours Ireland">
                 </div>
             </div>
 

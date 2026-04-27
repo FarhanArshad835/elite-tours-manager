@@ -33,6 +33,7 @@ class ETM_Admin_Menus {
         add_submenu_page( 'elite-tours', 'Golf Courses',   'Golf Courses',  'manage_options', 'et-golf-courses',    'etm_golf_courses_page' );
         add_submenu_page( 'elite-tours', 'Itineraries',    'Itineraries',   'manage_options', 'et-itineraries',     'etm_itineraries_page' );
         add_submenu_page( 'elite-tours', 'Page Content',   'Page Content',  'manage_options', 'et-page-content',    'etm_page_content_page' );
+        add_submenu_page( 'elite-tours', 'Page Heroes & CTAs', 'Heroes & CTAs', 'manage_options', 'et-page-heroes', 'etm_page_heroes_page' );
         add_submenu_page( 'elite-tours', 'Funnel Leads',   'Funnel Leads',  'manage_options', 'et-funnel-leads',    'etm_funnel_leads_page' );
         add_submenu_page( 'elite-tours', 'Seed Content',   'Seed Content',  'manage_options', 'et-seed-content',    'etm_seed_content_page' );
 
@@ -61,6 +62,7 @@ class ETM_Admin_Menus {
                         [ 'icon' => '⛳', 'title' => 'Golf Courses',    'desc' => 'Manage Ireland\'s featured golf courses.',  'url' => admin_url( 'admin.php?page=et-golf-courses' ) ],
                         [ 'icon' => '📋', 'title' => 'Itineraries',      'desc' => 'Sample bespoke and golf itineraries.',     'url' => admin_url( 'admin.php?page=et-itineraries' ) ],
                         [ 'icon' => '📄', 'title' => 'Page Content',    'desc' => 'Editorial blocks across Bespoke, Golf, Accommodation, Contact pages.', 'url' => admin_url( 'admin.php?page=et-page-content' ) ],
+                        [ 'icon' => '🪧', 'title' => 'Heroes & CTAs',   'desc' => 'Top hero blocks and bottom CTA sections per page.', 'url' => admin_url( 'admin.php?page=et-page-heroes' ) ],
                         [ 'icon' => '📥', 'title' => 'Funnel Leads',     'desc' => 'Captured leads from experience contact forms.', 'url' => admin_url( 'admin.php?page=et-funnel-leads' ) ],
                         [ 'icon' => '🌱', 'title' => 'Seed Content',     'desc' => 'Bulk-populate the 3 experience pages with their full content + images.', 'url' => admin_url( 'admin.php?page=et-seed-content' ) ],
                     ];

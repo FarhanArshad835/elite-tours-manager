@@ -2,7 +2,7 @@
 /**
  * Plugin Name:   Elite Tours Manager
  * Description:   Content management panel for Elite Tours Ireland website. Last updated: April 2026.
- * Version:       1.2.14
+ * Version:       1.2.15
  * Author:        Elite Tours Ireland
  * Text Domain:   elite-tours-manager
  * GitHub Plugin URI: FarhanArshad835/elite-tours-manager
@@ -11,7 +11,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'ETM_VERSION', '1.9.0' );
+define( 'ETM_VERSION', '1.11.0' );
 
 // ── One-time migration: clear stale homepage settings so fresh defaults apply ─
 if ( get_option( 'etm_migration_v130' ) !== 'done' ) {
@@ -290,6 +290,141 @@ if ( get_option( 'etm_migration_v190' ) !== 'done' ) {
     update_option( 'etm_migration_v190', 'done' );
 }
 
+// ── One-time migration v1.10.0: seed Page Heroes + Bottom CTAs ──────────────
+// Lifts hardcoded hero blocks and bottom CTA sections from the page templates
+// into wp_options keyed by page slug. Idempotent.
+if ( get_option( 'etm_migration_v1100' ) !== 'done' ) {
+
+    if ( ! get_option( 'et_page_heroes' ) ) {
+        update_option( 'et_page_heroes', [
+            'bespoke-tours' => [
+                'eyebrow'        => '',
+                'title'          => 'Your Ireland.<br>Built Around You.',
+                'subtitle'       => 'No fixed routes. No templates. Every journey designed from scratch, for you.',
+                'cta_text'       => 'Begin Your First Conversation',
+                'cta_url'        => '/contact/',
+                'image_id'       => 0,
+                'image_filename' => 'winding-road.jpg',
+            ],
+            'golf-tours' => [
+                'eyebrow'        => '',
+                'title'          => "Play Ireland's<br>greatest courses.",
+                'subtitle'       => "Old Head, Lahinch, Doonbeg, Royal County Down, Adare Manor — fully managed, privately hosted, with Ray's standard of care across every round, transfer, and evening.",
+                'cta_text'       => 'Begin Your First Conversation',
+                'cta_url'        => '/contact/',
+                'image_id'       => 0,
+                'image_filename' => 'golf-coastal.jpg',
+            ],
+            'experiences' => [
+                'eyebrow'        => '',
+                'title'          => 'Ireland in Eleven Regions.<br>One Carefully Designed Journey.',
+                'subtitle'       => "From Dublin's foundations to the Causeway Coast, each region of Ireland brings its own character — its own people, landscapes, and stories. Below is the country we travel.",
+                'cta_text'       => '',
+                'cta_url'        => '',
+                'image_id'       => 0,
+                'image_filename' => 'irish-pub.jpg',
+            ],
+            'accommodation' => [
+                'eyebrow'        => '',
+                'title'          => 'Where you stay,<br>chosen for how it feels.',
+                'subtitle'       => 'Accommodation throughout your journey is carefully selected to reflect both the standard of experience and the character of Ireland itself. From Ashford Castle to handpicked Kinsale stays, each location is chosen for how it contributes to the journey — not just for its star rating.',
+                'cta_text'       => '',
+                'cta_url'        => '',
+                'image_id'       => 0,
+                'image_filename' => 'gothic-castle.jpg',
+            ],
+            'about-us' => [
+                'eyebrow'        => '',
+                'title'          => 'Ireland, through Ray.',
+                'subtitle'       => 'Elite Tours is not a tour company. It is a privately hosted experience of Ireland — built on more than fifty years of relationships across the country, and led personally by Ray himself.',
+                'cta_text'       => '',
+                'cta_url'        => '',
+                'image_id'       => 0,
+                'image_filename' => 'kylemore-abbey.jpg',
+            ],
+            'contact' => [
+                'eyebrow'        => '',
+                'title'          => 'Start Your Journey Here',
+                'subtitle'       => "There are no fixed packages. No automated quote tools. Just a real conversation about who you are and what you'd love to experience in Ireland.",
+                'cta_text'       => '',
+                'cta_url'        => '',
+                'image_id'       => 0,
+                'image_filename' => '',
+            ],
+        ] );
+    }
+
+    if ( ! get_option( 'et_page_ctas' ) ) {
+        update_option( 'et_page_ctas', [
+            'bespoke-tours' => [
+                'title'    => 'Ready to Begin?',
+                'subtitle' => "Tell us who you are and what you're looking for. We'll come back to you personally, usually within 24 hours, with the start of your journey.",
+                'cta_text' => 'Begin Your First Conversation',
+                'cta_url'  => '/contact/',
+            ],
+            'golf-tours' => [
+                'title'    => "Let's plan your golf journey.",
+                'subtitle' => "Ireland's top courses book out early, especially in peak season — and Ryder Cup-host venues like Adare Manor and Royal County Down even earlier. The earlier you speak to us, the better we can secure the rounds that matter most.",
+                'cta_text' => 'Begin Your First Conversation',
+                'cta_url'  => '/contact/',
+            ],
+            'experiences' => [
+                'title'    => "Don't See What You're Looking For?",
+                'subtitle' => "We design experiences from scratch. Tell us what interests you and we'll build something entirely around it.",
+                'cta_text' => 'Speak to Us',
+                'cta_url'  => '/contact/',
+            ],
+            'accommodation' => [
+                'title'    => 'All accommodation handled for you.',
+                'subtitle' => 'Every stay across your Bespoke journey is selected, booked, and looked after by us — paired carefully so the rhythm of the trip flows from one to the next.',
+                'cta_text' => 'Begin Your First Conversation',
+                'cta_url'  => '/contact/',
+            ],
+            'about-us' => [
+                'title'    => 'Every journey begins with a conversation.',
+                'subtitle' => "Tell us a name, a region, a curiosity, a feeling — we'll write back within a working day.",
+                'cta_text' => 'Begin Your First Conversation',
+                'cta_url'  => '/contact/',
+            ],
+        ] );
+    }
+
+    update_option( 'etm_migration_v1100', 'done' );
+}
+
+// ── One-time migration v1.11.0: seed page editorial story blocks ─────────────
+// Adds new keys to et_page_strings (Bespoke / Golf philosophy blocks +
+// About Us Founder Feature). Idempotent — only adds keys that aren't set.
+if ( get_option( 'etm_migration_v1110' ) !== 'done' ) {
+
+    $strings = get_option( 'et_page_strings', [] );
+    if ( ! is_array( $strings ) ) $strings = [];
+
+    $defaults = [
+        'bespoke_philosophy_title' => 'This Is Not a Tour Package',
+        'bespoke_philosophy_body'  => "Most companies offer you a list of itineraries and ask you to choose. We don't.\n\nEvery Elite Tours journey begins with a conversation about who you are, what brought you to Ireland, and what you want to feel when you leave. Then we build it entirely around you.\n\nNo two tours are the same. That is not a marketing line. It is simply how we work.\n\nFrom ancestry searches in County Mayo to whiskey tastings on the Dingle Peninsula, every experience is chosen, sequenced, and delivered for the specific people taking it.",
+
+        'golf_philosophy_title'      => 'This Is Not a Golf Package',
+        'golf_philosophy_body'       => "We don't hand you a list of courses and ask you to pick three.\n\nWe design a golf experience around the golfer. Your handicap, your bucket list courses, your pace, your group dynamic. Every tee time, every transfer, every detail is managed. You simply show up and play.\n\nThis is what separates Elite Tours from every other golf operator in Ireland.",
+        'golf_philosophy_blockquote' => 'The best golf trip of your life, without having to think about anything.',
+
+        'about_founder_title'             => 'Raphael Mulally',
+        'about_founder_subtitle'          => 'Founder, host & the Irish connection',
+        'about_founder_body'              => "The product is not the route, the hotels, or the itinerary. It is Ray's perspective, his relationships, his storytelling, and his instinct — built across more than fifty years on these roads.\n\nRay knows everyone. Shop owners, local guides, the publican who'll open for a private after-hours visit, the cousin still on the family land. He is — to use his own word — a chameleon: equally at home pouring whiskey in a Donegal bar and seating clients at a long Dublin lunch. Clients are not processed; they are personally hosted, from the first conversation to the last goodbye.\n\nEvery Bespoke is designed by Ray himself. He still drives. He still tells the stories. He still sings, when the moment calls for it. **No Ray, no Elite Tours.** That has been the deal from the beginning, and it is what makes this company impossible to copy.",
+        'about_founder_quote'             => "I've spent decades helping people experience Ireland in a truly personal way. The most memorable moments are usually the ones you never see coming.",
+        'about_founder_quote_attribution' => 'Raphael Mulally · Founder, Elite Tours Ireland',
+    ];
+
+    foreach ( $defaults as $k => $v ) {
+        if ( ! isset( $strings[ $k ] ) || $strings[ $k ] === '' ) {
+            $strings[ $k ] = $v;
+        }
+    }
+    update_option( 'et_page_strings', $strings );
+
+    update_option( 'etm_migration_v1110', 'done' );
+}
+
 define( 'ETM_PATH',    plugin_dir_path( __FILE__ ) );
 define( 'ETM_URL',     plugin_dir_url( __FILE__ ) );
 
@@ -346,6 +481,13 @@ if ( get_option( 'etm_pages_created_v3' ) !== 'done' ) {
 // CPTs (must load on front-end too so single-experience.php template resolves)
 require_once ETM_PATH . 'includes/cpt-experience.php';
 require_once ETM_PATH . 'includes/contact-form.php';
+
+// Page Heroes / CTAs — always loaded so the front-end render helpers
+// (etm_render_page_hero / etm_render_page_cta) are available to themes.
+// The admin UI render and AJAX handlers inside this file are no-op on
+// the front-end (the menu callback isn't registered, ajax actions only
+// fire on admin-ajax.php).
+require_once ETM_PATH . 'includes/admin/pages/page-heroes.php';
 
 // Load admin panel
 if ( is_admin() ) {
