@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * (new images, new option keys, new steps). The number is shown in the
  * Seed Content admin page header so the live site can be checked at a glance.
  */
-if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 6 );
+if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 7 );
 
 class ETM_Experience_Seeder {
 
@@ -76,6 +76,10 @@ class ETM_Experience_Seeder {
         $this->log[] = '';
         $this->log[] = '── Step 7: Homepage hero / intro / offer / founder images ──';
         $this->seed_homepage_images();
+
+        $this->log[] = '';
+        $this->log[] = '── Step 8: Regions of Ireland — image attachments ──';
+        $this->seed_region_images();
 
         $this->log[] = '';
         $this->log[] = 'Done.';
@@ -355,6 +359,36 @@ class ETM_Experience_Seeder {
             update_post_meta( $id_bespoke, '_etm_similar_ids', [ $id_signature, $id_essence, $id_heritage, $id_distilleries ] );
             $this->log[] = "Updated Bespoke similar links to include Signature + Essence";
         }
+    }
+
+    // ─── Step 8: Regions image_id slots ──────────────────────────
+
+    /**
+     * The 11 region cards on the Experiences page each carry an
+     * 'image_filename' string in et_regions (set by seed_site_content from
+     * site-content.php). This method imports each filename into the Media
+     * Library and merges the resulting attachment ID back as 'image_id' so
+     * the page-experiences template can render full-bleed Pexels-grade
+     * heroes per card.
+     */
+    private function seed_region_images(): void {
+        $regions = get_option( 'et_regions', [] );
+        if ( ! is_array( $regions ) || empty( $regions ) ) {
+            $this->log[] = "et_regions option is empty — skipping region images";
+            return;
+        }
+        $wired = 0;
+        foreach ( $regions as $i => $region ) {
+            $filename = $region['image_filename'] ?? '';
+            if ( $filename === '' ) continue;
+            $id = $this->seed_image( $filename );
+            if ( $id ) {
+                $regions[ $i ]['image_id'] = $id;
+                $wired++;
+            }
+        }
+        update_option( 'et_regions', $regions );
+        $this->log[] = "Wired image IDs for {$wired} of " . count( $regions ) . " regions";
     }
 
     // ─── Step 7: Homepage image_id slots ─────────────────────────
