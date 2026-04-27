@@ -16,7 +16,7 @@ add_action( 'wp_ajax_etm_save_experiences', function () {
             'label'    => sanitize_text_field( $item['label'] ?? '' ),
             'title'    => sanitize_text_field( $item['title'] ?? '' ),
             'desc'     => sanitize_text_field( $item['desc'] ?? '' ),
-            'type'     => sanitize_key( $item['type'] ?? 'tailormade' ),
+            'type'     => sanitize_key( $item['type'] ?? 'bespoke' ),
             'duration' => sanitize_key( $item['duration'] ?? 'bespoke' ),
             'url'      => esc_url_raw( $item['url'] ?? '' ),
             'image_id' => absint( $item['image_id'] ?? 0 ),
@@ -58,7 +58,7 @@ function etm_experiences_page(): void {
     $taxonomies = get_option( 'et_experience_taxonomies', [] );
     $type_options = ! empty( $taxonomies['types'] )
         ? $taxonomies['types']
-        : [ 'tailormade' => 'Tailormade', 'golf' => 'Golf', 'culinary' => 'Culinary', 'adventure' => 'Adventure', 'family' => 'Family' ];
+        : [ 'bespoke' => 'Bespoke', 'golf' => 'Golf', 'culinary' => 'Culinary', 'adventure' => 'Adventure', 'family' => 'Family' ];
     $duration_options = ! empty( $taxonomies['durations'] )
         ? $taxonomies['durations']
         : [ '6-10' => '6-10 Days', '11-15' => '11-15 Days', 'bespoke' => 'Bespoke' ];
@@ -540,7 +540,7 @@ function etm_experiences_page(): void {
 
         // Add new experience
         addBtn.addEventListener('click', function() {
-            experiences.push({ label: '', title: '', desc: '', type: 'tailormade', duration: 'bespoke', url: '', image_id: 0 });
+            experiences.push({ label: '', title: '', desc: '', type: 'bespoke', duration: 'bespoke', url: '', image_id: 0 });
             var item = renderItem(experiences[experiences.length - 1], experiences.length - 1);
             var empty = list.querySelector('.etm-exp-empty');
             if (empty) empty.remove();
