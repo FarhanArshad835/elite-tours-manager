@@ -440,7 +440,7 @@ function etm_homepage_page(): void {
                         <div class="etm-field">
                             <label class="etm-label" for="intro_cta_text">CTA Button Text</label>
                             <input type="text" id="intro_cta_text" name="intro_cta_text" class="etm-input"
-                                   value="<?php echo esc_attr( $o( 'intro_cta_text', 'Meet Our Story' ) ); ?>">
+                                   value="<?php echo esc_attr( $o( 'intro_cta_text', 'The Elite Tours Story & About Us' ) ); ?>">
                         </div>
                         <div class="etm-field">
                             <label class="etm-label" for="intro_cta_url">CTA URL</label>
