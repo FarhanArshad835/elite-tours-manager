@@ -32,6 +32,7 @@ class ETM_Admin_Menus {
         add_submenu_page( 'elite-tours', 'Hotels',         'Hotels',        'manage_options', 'et-hotels',          'etm_hotels_page' );
         add_submenu_page( 'elite-tours', 'Itineraries',    'Itineraries',   'manage_options', 'et-itineraries',     'etm_itineraries_page' );
         add_submenu_page( 'elite-tours', 'Funnel Leads',   'Funnel Leads',  'manage_options', 'et-funnel-leads',    'etm_funnel_leads_page' );
+        add_submenu_page( 'elite-tours', 'Seed Content',   'Seed Content',  'manage_options', 'et-seed-content',    'etm_seed_content_page' );
 
         // Remove duplicate top-level item
         remove_submenu_page( 'elite-tours', 'elite-tours' );
@@ -57,6 +58,7 @@ class ETM_Admin_Menus {
                         [ 'icon' => '🏰', 'title' => 'Hotels',           'desc' => 'Manage accommodation listings.',           'url' => admin_url( 'admin.php?page=et-hotels' ) ],
                         [ 'icon' => '📋', 'title' => 'Itineraries',      'desc' => 'Sample bespoke and golf itineraries.',     'url' => admin_url( 'admin.php?page=et-itineraries' ) ],
                         [ 'icon' => '📥', 'title' => 'Funnel Leads',     'desc' => 'Captured leads from experience contact forms.', 'url' => admin_url( 'admin.php?page=et-funnel-leads' ) ],
+                        [ 'icon' => '🌱', 'title' => 'Seed Content',     'desc' => 'Bulk-populate the 3 experience pages with their full content + images.', 'url' => admin_url( 'admin.php?page=et-seed-content' ) ],
                     ];
                     foreach ( $sections as $s ) : ?>
                         <a href="<?php echo esc_url( $s['url'] ); ?>" class="etm-card">
