@@ -365,6 +365,99 @@ return [
         [ 'name' => 'Private Estates & Residences','location' => 'Cork / Kerry / Connemara','desc' => 'A collection of private homes and estates across Ireland — fully serviced luxury residences with private chefs, full staff (optional), tailored dining, and complete privacy. For travellers who want space, privacy, and a more personal way to experience Ireland.', 'category' => 'castle',   'url' => '', 'image_id' => 0 ],
     ],
 
+    // ── Sample Itineraries (Phase 6) ──────────────────────────
+    // 3 bespoke + 3 golf samples, region-level summaries (not day-by-day,
+    // per client's "do not go into full detail" instruction). Bespoke
+    // samples render on /bespoke-tours/, golf on /golf-tours/. Stored in
+    // et_itineraries; admin can edit via Elite Tours > Itineraries.
+    'et_itineraries' => [
+        // Bespoke
+        [
+            'name'       => 'The Classic Signature',
+            'meta'       => '13 days · Privately hosted · Spring–Autumn',
+            'route'      => 'Dublin → Cork & Kinsale → Kerry & Dingle → Galway & Connemara → Mayo & Ashford → Sligo → Donegal → Causeway → Belfast',
+            'highlights' => [
+                'Cobh private walking tour with Michael Martin (Titanic & Lusitania storytelling)',
+                'Slea Head Drive on the Dingle Peninsula',
+                'Ashford Castle stay — falconry, horse riding, full estate experiences',
+                'Slieve League Cliffs in Donegal — quieter than Moher, far less crowded',
+                'Giant\'s Causeway and the Dark Hedges',
+                'Black taxi political tour finish in Belfast',
+                "Ray's signature off-itinerary pub experience along the way",
+            ],
+            'type'       => 'bespoke',
+        ],
+        [
+            'name'       => 'The Essence — South & West',
+            'meta'       => '8 days · Privately hosted · Year-round',
+            'route'      => 'Dublin → Cork & Kinsale → Kerry & Dingle → Cliffs of Moher (via Doolin) → Galway → Dublin',
+            'highlights' => [
+                'Kinsale waterfront stay (Actons / Perryville House / Trident)',
+                'Ring of Kerry & Daniel O\'Connell at Derrynane',
+                'Cliffs of Moher — done properly via Doolin, not the bus',
+                'Glenlo Abbey Orient Express dining experience',
+                "Foxy John's pub & Páidí Ó Sé's Irish coffees",
+            ],
+            'type'       => 'bespoke',
+        ],
+        [
+            'name'       => 'The Heritage Trace',
+            'meta'       => '5–8 days · Genealogist research included · Year-round',
+            'route'      => 'Dublin (genealogist briefing) → ancestral region (varies) → quiet return to Dublin',
+            'highlights' => [
+                'Professional genealogist file prepared months before you arrive',
+                'Walk the parish, townland, schoolhouse, and church on foot',
+                'Cousin introductions where the line is still living',
+                'A bound family file — parish records, maps, photographs — to take home',
+                'Quiet, slow pacing — the most personal journey we design',
+            ],
+            'type'       => 'bespoke',
+        ],
+
+        // Golf
+        [
+            'name'       => 'The Wild Atlantic Links',
+            'meta'       => '8 days · 5 rounds · April–October',
+            'route'      => 'Shannon → Lahinch → Doonbeg → Old Head of Kinsale → Tralee → Ballybunion → Dromoland Castle finish',
+            'highlights' => [
+                'Lahinch Golf Club — links golf at its finest, overlooking the Atlantic',
+                'Old Head of Kinsale — one of the most spectacular settings in world golf',
+                'Doonbeg — Greg Norman links on the Atlantic dunes',
+                'Ballybunion — championship links on the Wild Atlantic Way',
+                'Tralee — Arnold Palmer\'s first European links design',
+                'Anchored by Dromoland Castle, paired with an Adare Manor finish',
+            ],
+            'type'       => 'golf',
+        ],
+        [
+            'name'       => 'The Royal Tour',
+            'meta'       => '10 days · 7 rounds · Top-100 courses · April–October',
+            'route'      => 'Belfast → Royal County Down → Royal Portrush → Adare Manor → The K Club → Old Head of Kinsale → Lahinch',
+            'highlights' => [
+                'Royal County Down — consistently in the world\'s top 10',
+                'Royal Portrush — Open Championship venue, North Coast drama',
+                'Adare Manor — Ryder Cup 2027 host venue',
+                'The K Club — twice Ryder Cup host',
+                'Old Head of Kinsale — clifftop drama at its peak',
+                'Lahinch — pure links character to finish',
+            ],
+            'type'       => 'golf',
+        ],
+        [
+            'name'       => "The Connoisseur's Week",
+            'meta'       => '6 days · 4 rounds · Boutique pacing · Year-round',
+            'route'      => 'Shannon → Adare Manor → Old Head of Kinsale → Lahinch → Doonbeg → Shannon',
+            'highlights' => [
+                'Adare Manor as the anchor stay (Ryder Cup 2027 host)',
+                'Old Head of Kinsale clifftop morning',
+                'Lahinch links afternoon',
+                'Doonbeg Greg Norman coastal session',
+                'Long lunches, no rush — golf as a slow craft, not a checklist',
+            ],
+            'type'       => 'golf',
+        ],
+    ],
+
     'et_experience_taxonomies' => [
         'types' => [
             'photography' => 'Photography',
