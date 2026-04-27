@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * (new images, new option keys, new steps). The number is shown in the
  * Seed Content admin page header so the live site can be checked at a glance.
  */
-if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 9 );
+if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 10 );
 
 class ETM_Experience_Seeder {
 
@@ -80,6 +80,10 @@ class ETM_Experience_Seeder {
         $this->log[] = '';
         $this->log[] = '── Step 8: Regions of Ireland — image attachments ──';
         $this->seed_region_images();
+
+        $this->log[] = '';
+        $this->log[] = '── Step 9: Hotel image attachments ──';
+        $this->seed_hotel_images();
 
         $this->log[] = '';
         $this->log[] = 'Done.';
@@ -359,6 +363,35 @@ class ETM_Experience_Seeder {
             update_post_meta( $id_bespoke, '_etm_similar_ids', [ $id_signature, $id_essence, $id_heritage, $id_distilleries ] );
             $this->log[] = "Updated Bespoke similar links to include Signature + Essence";
         }
+    }
+
+    // ─── Step 9: Hotels image_id slots ───────────────────────────
+
+    /**
+     * Same pattern as seed_region_images: each hotel in et_hotels carries an
+     * 'image_filename' string set by seed_site_content. This imports each
+     * filename into the Media Library and merges the resulting attachment ID
+     * back as 'image_id' so the page-accommodation template renders proper
+     * cards instead of the generic-castle fallback.
+     */
+    private function seed_hotel_images(): void {
+        $hotels = get_option( 'et_hotels', [] );
+        if ( ! is_array( $hotels ) || empty( $hotels ) ) {
+            $this->log[] = "et_hotels option is empty — skipping hotel images";
+            return;
+        }
+        $wired = 0;
+        foreach ( $hotels as $i => $hotel ) {
+            $filename = $hotel['image_filename'] ?? '';
+            if ( $filename === '' ) continue;
+            $id = $this->seed_image( $filename );
+            if ( $id ) {
+                $hotels[ $i ]['image_id'] = $id;
+                $wired++;
+            }
+        }
+        update_option( 'et_hotels', $hotels );
+        $this->log[] = "Wired image IDs for {$wired} of " . count( $hotels ) . " hotels";
     }
 
     // ─── Step 8: Regions image_id slots ──────────────────────────
