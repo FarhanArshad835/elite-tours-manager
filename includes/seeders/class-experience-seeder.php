@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * (new images, new option keys, new steps). The number is shown in the
  * Seed Content admin page header so the live site can be checked at a glance.
  */
-if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 14 );
+if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 15 );
 
 class ETM_Experience_Seeder {
 
@@ -147,34 +147,31 @@ class ETM_Experience_Seeder {
         // ─── The Signature Ireland Journey (11–15 days) ─────────
         $id_signature = $this->get_or_create_post(
             'signature-ireland-journey',
-            'The Signature Ireland Journey.',
-            'A privately curated 11–15 day journey through Ireland — fully bespoke, hosted by Ray, designed around you.'
+            'ET The Signature Ireland Journey',
+            'A privately curated journey through Ireland, designed around you, guided by local expertise, and delivered with a level of care that turns travel into something far more meaningful.'
         );
         if ( $id_signature && $hero_signature_id ) set_post_thumbnail( $id_signature, $hero_signature_id );
 
         $signature_meta = [
-            // Hero — copy lifted directly from "ET The Signature Ireland Journey.pdf" hero block.
-            '_etm_eyebrow'                     => 'An Elite Tours Experience · 11–15 Days · Fully Bespoke · Privately Hosted',
-            '_etm_hero_title_em'               => 'Signature Ireland Journey',
-            '_etm_hero_deck'                   => 'A privately curated journey through Ireland, designed around you, guided by local expertise, and delivered with a level of care that turns travel into something far more meaningful.',
+            // Hero — copy verbatim from "ET The Signature Ireland Journey.pdf" hero block.
+            '_etm_eyebrow'                     => '11–15 Days | Fully Bespoke | Privately Hosted',
+            '_etm_hero_title_em'               => 'The Signature Ireland Journey',
+            '_etm_hero_deck'                   => 'This is not a fixed tour. A privately curated journey through Ireland, designed around you, guided by local expertise, and delivered with a level of care that turns travel into something far more meaningful.',
             '_etm_hero_breadcrumb'             => [ 'Bespoke Tours', 'Privately Hosted', 'The Signature Journey' ],
             '_etm_hero_meta_strip'             => [ '11–15 Days', 'Fully Bespoke', 'Privately Hosted' ],
-            '_etm_hero_aside_text'             => 'This is not a fixed tour. Every journey is different. Every experience is intentional. And the most memorable moments are often the ones you never see coming.',
+            '_etm_hero_aside_text'             => 'Every journey is different. Every experience is intentional. And the most memorable moments are often the ones you never see coming.',
             '_etm_hero_aside_facts'            => [
                 [ 'label' => 'Length', 'value' => '11–15 days' ],
                 [ 'label' => 'Style',  'value' => 'Fully bespoke' ],
             ],
-            '_etm_hero_cta_primary'            => 'Begin Your Journey',
+            '_etm_hero_cta_primary'            => 'Start planning your journey',
             '_etm_hero_cta_primary_url'        => '#et-exp-cta',
-            '_etm_hero_cta_secondary'          => 'Speak to a Designer',
-            '_etm_hero_cta_secondary_url'      => '#et-exp-cta',
+            '_etm_hero_cta_secondary'          => '',
+            '_etm_hero_cta_secondary_url'      => '',
 
-            // Highlights — the four SOUTHERN regions from the client PDF's "Journey
-            // Highlights" section. Positioning lines below are quoted verbatim
-            // from the source. The Wild Atlantic Journey (West & North) regions
-            // are shown as Pillars further down.
-            '_etm_highlights_heading'          => 'Journey Highlights.',
-            '_etm_highlights_intro'            => 'The journey opens with the foundations of Ireland — east, south, and west — before turning north into the Wild Atlantic. Each region introduced at the right pace, never rushed.',
+            // Highlights — verbatim from PDF "Journey Highlights" (southern half).
+            '_etm_highlights_heading'          => 'Journey Highlights',
+            '_etm_highlights_intro'            => '',
             '_etm_highlights'                  => [
                 [ 'title' => 'Dublin & Ancient Ireland',
                   'desc'  => 'Begin with the foundations of Ireland — its history, heritage, and deep-rooted connection to the world. Ancient landmarks, storytelling, and cultural context set the tone for everything that follows.',
@@ -190,90 +187,93 @@ class ETM_Experience_Seeder {
                   'image_id' => $cottage_23_id ],
             ],
 
-            // Story — the client PDF's "What This Journey Feels Like" block,
-            // copy lifted verbatim from the source.
-            '_etm_story_heading_part1'         => 'What this journey',
-            '_etm_story_heading_part2'         => 'feels like.',
-            '_etm_story_plate'                 => 'The Signature Ireland Journey · 11–15 days',
+            // Story — verbatim from PDF "What This Journey Feels Like".
+            '_etm_story_heading_part1'         => 'What This Journey',
+            '_etm_story_heading_part2'         => 'Feels Like',
+            '_etm_story_plate'                 => '',
             '_etm_story_lede'                  => 'From the moment you arrive, Ireland unfolds in layers — history, culture, landscape, and atmosphere — each carefully introduced, never rushed.',
             '_etm_story_para1'                 => 'You move effortlessly from vibrant cities to quiet coastal villages, from world-class estates to hidden local spots, experiencing the country in a way that feels both elevated and deeply authentic.',
             '_etm_story_para2'                 => 'This is Ireland properly experienced.',
             '_etm_story_image_main'            => $muckross_id,
             '_etm_story_image_accent'          => $kylemore_id,
-            '_etm_story_people_label'          => 'Your People for the Journey',
-            '_etm_story_people'                => [
-                [ 'name' => 'Raphael Mulally', 'alt' => '',
-                  'role' => 'Founder & Personal Host',
-                  'note' => 'Personally hosts every Signature Journey, end-to-end. Fifty-two years on these roads.' ],
-            ],
+            '_etm_story_people_label'          => '',
+            '_etm_story_people'                => [],
 
-            // Pillars — the seven WILD ATLANTIC regions from the client PDF
-            // grouped into 3 movements (Galway+Connemara, Mayo+Ashford+Sligo,
-            // Donegal+Causeway+Belfast) so they fit the 3-card pillar component.
-            // Region positioning lines are quoted verbatim from the source.
-            '_etm_pillars_heading_part1'       => 'The Wild Atlantic',
-            '_etm_pillars_heading_part2'       => 'Journey.',
-            '_etm_pillars_subheading'          => 'West & North — three movements across the second half of the journey.',
-            '_etm_pillars_intro'               => "After the foundations are set in the south and east, the journey turns west and north into the Wild Atlantic — Ireland at its most vibrant, most untouched, and most dramatic.",
+            // Pillars — verbatim from PDF "The Wild Atlantic Journey (West & North)".
+            // Each region's two-line PDF entry rendered as that pillar's body text.
+            '_etm_pillars_heading_part1'       => 'The Wild Atlantic Journey',
+            '_etm_pillars_heading_part2'       => '(West & North)',
+            '_etm_pillars_subheading'          => '',
+            '_etm_pillars_intro'               => '',
             '_etm_pillars'                     => [
-                [ 'pillar' => 'Galway & Connemara', 'title' => 'Music, energy & wild west.',
-                  'body' => 'Galway — Ireland at its most vibrant. Music, culture, energy, and storytelling — a city that draws people in and rarely lets go. Connemara — wild, open, and untouched. The Ireland people imagine — rugged landscapes, quiet beauty, and space to slow down.',
+                [ 'pillar' => 'Galway', 'title' => '',
+                  'body' => 'Ireland at its most vibrant. Music, culture, energy, and storytelling — a city that draws people in and rarely lets go.',
                   'image_id' => $cathedral_id ],
-                [ 'pillar' => 'Mayo, Ashford & Sligo', 'title' => 'Luxury, authenticity & poetry.',
-                  'body' => 'Mayo & Ashford — a refined balance of luxury and authenticity. World-class estates paired with genuine local experiences, often where the most memorable moments happen. Sligo — a quieter, more reflective side of Ireland, rich in poetry, landscape, and atmosphere.',
+                [ 'pillar' => 'Connemara', 'title' => '',
+                  'body' => 'Wild, open, and untouched. This is the Ireland people imagine — rugged landscapes, quiet beauty, and space to slow down.',
                   'image_id' => $sligo_id ],
-                [ 'pillar' => 'Donegal, Causeway & Belfast', 'title' => 'A rugged, modern finish.',
-                  'body' => 'Donegal — dramatic, remote, and often overlooked. Untamed coastlines and powerful scenery a world away from the expected. Derry & The Causeway Coast — where history, perspective, and natural wonder meet. Belfast — a compelling, modern finish to the journey; a city shaped by its past, now full of character, culture, and contrast.',
+                [ 'pillar' => 'Mayo & Ashford', 'title' => '',
+                  'body' => 'A refined balance of luxury and authenticity. World-class estates paired with genuine local experiences — often where the most memorable moments happen.',
+                  'image_id' => $belfast_id ],
+                [ 'pillar' => 'Sligo', 'title' => '',
+                  'body' => 'A quieter, more reflective side of Ireland. Rich in poetry, landscape, and atmosphere.',
+                  'image_id' => $sligo_id ],
+                [ 'pillar' => 'Donegal', 'title' => '',
+                  'body' => 'Dramatic, remote, and often overlooked. Untamed coastlines and powerful scenery that feel a world away from the expected.',
+                  'image_id' => $belfast_id ],
+                [ 'pillar' => 'Derry & The Causeway Coast', 'title' => '',
+                  'body' => 'History, perspective, and natural wonder meet. From powerful storytelling to some of the most unique landscapes in Ireland.',
+                  'image_id' => $causeway_30_id ],
+                [ 'pillar' => 'Belfast', 'title' => '',
+                  'body' => 'A compelling and modern finish. A city shaped by its past, now full of character, culture, and contrast.',
                   'image_id' => $belfast_id ],
             ],
 
-            // Process — adapts the client PDF's "A Truly Bespoke Experience" +
-            // "The Moments You Don't See Coming" + "Begin Your Journey" sections
-            // into the existing 4-step funnel structure.
+            // Process — verbatim from PDF "A Truly Bespoke Experience" +
+            // "The Moments You Don't See Coming".
             '_etm_process_card_eyebrow'        => 'A Truly Bespoke Experience',
-            '_etm_process_card_title'          => 'How a Signature Journey is Built',
-            '_etm_process_card_subtitle'       => 'four quiet conversations, then a two-week journey',
+            '_etm_process_card_title'          => 'A Truly Bespoke Experience',
+            '_etm_process_card_subtitle'       => '',
             '_etm_process_steps'               => [
-                [ 'number' => '01', 'title' => 'A first conversation',
-                  'body' => 'Every itinerary begins with a conversation — never a form. We ask about who you are, what brought you to Ireland, and what you hope the journey will feel like.' ],
-                [ 'number' => '02', 'title' => 'Carefully shaped',
-                  'body' => 'From there your journey through Ireland is carefully shaped, refined, and brought to life — every detail handled, every experience considered.' ],
-                [ 'number' => '03', 'title' => 'Designed around your pace',
-                  'body' => "Designed around your pace, your interests, and your preferences, with the flexibility to adapt in real time. If something captures your attention, we stay. If something doesn't, we move on. That is the difference between a tour and a truly private journey." ],
-                [ 'number' => '04', 'title' => "The moments you don't see coming",
-                  'body' => 'Some of the most meaningful parts will never appear on an itinerary. They are not listed. They are not planned. They are golden moments — created through local relationships, instinct, and experience — that turn a great trip into something unforgettable.' ],
+                [ 'number' => '01', 'title' => '',
+                  'body' => 'This journey is not fixed — and it never will be.' ],
+                [ 'number' => '02', 'title' => '',
+                  'body' => 'It is designed around your pace, your interests, and your preferences, with the flexibility to adapt in real time.' ],
+                [ 'number' => '03', 'title' => '',
+                  'body' => "If something captures your attention, we stay. If something doesn't, we move on." ],
+                [ 'number' => '04', 'title' => '',
+                  'body' => 'That is the difference between a tour and a truly private journey.' ],
             ],
-            '_etm_process_aside_heading_part1' => 'A truly bespoke',
-            '_etm_process_aside_heading_part2' => 'experience.',
-            '_etm_process_aside_body'          => 'This journey is not fixed — and it never will be. It is designed entirely around the people travelling.',
+            '_etm_process_aside_heading_part1' => "The Moments You Don't",
+            '_etm_process_aside_heading_part2' => 'See Coming',
+            '_etm_process_aside_body'          => 'Some of the most meaningful parts of this experience will never appear on an itinerary. They are not listed. They are not planned in advance. And they are not shared publicly. They are golden moments — created through local relationships, instinct, and experience — that turn a great trip into something unforgettable.',
             '_etm_process_image_1'             => $hero_signature_id,
             '_etm_process_image_2'             => $kylemore_id,
             '_etm_process_facts'               => [
-                [ 'label' => 'From',   'value' => 'On request' ],
                 [ 'label' => 'Length', 'value' => '11–15 days' ],
-                [ 'label' => 'Group',  'value' => '2 – 8' ],
+                [ 'label' => 'Style',  'value' => 'Fully Bespoke' ],
+                [ 'label' => 'Hosting','value' => 'Privately Hosted' ],
             ],
 
-            // CTA — the client PDF's closing "Begin Your Journey" block, copy
-            // lifted verbatim where possible.
-            '_etm_cta_heading_part1'           => 'Every itinerary',
-            '_etm_cta_heading_part2'           => 'begins with',
-            '_etm_cta_heading_part3'           => 'a conversation.',
-            '_etm_cta_body'                    => 'From there, your journey through Ireland is carefully shaped, refined, and brought to life — with every detail handled, and every experience considered. Start planning your journey.',
+            // CTA — verbatim from PDF "Begin Your Journey".
+            '_etm_cta_heading_part1'           => 'Begin Your',
+            '_etm_cta_heading_part2'           => 'Journey',
+            '_etm_cta_heading_part3'           => '',
+            '_etm_cta_body'                    => 'Every itinerary begins with a conversation. From there, your journey through Ireland is carefully shaped, refined, and brought to life — with every detail handled, and every experience considered. Start planning your journey.',
             '_etm_cta_phone'                   => '+353 87 345 2874',
             '_etm_cta_email'                   => 'concierge@elitetours.ie',
             '_etm_cta_portrait'                => $portrait_id,
-            '_etm_cta_quote'                   => 'From the moment you arrive, Ireland unfolds in layers — history, culture, landscape, and atmosphere — each carefully introduced, never rushed.',
-            '_etm_cta_quote_attribution'       => 'Raphael Mulally · Founder, Elite Tours',
+            '_etm_cta_quote'                   => '',
+            '_etm_cta_quote_attribution'       => '',
 
-            '_etm_similar_heading_part1'       => 'Other ways',
-            '_etm_similar_heading_part2'       => 'to experience Ireland.',
-            '_etm_similar_view_all_text'       => 'View all experiences →',
+            '_etm_similar_heading_part1'       => '',
+            '_etm_similar_heading_part2'       => '',
+            '_etm_similar_view_all_text'       => '',
             '_etm_similar_view_all_url'        => home_url( '/experiences/' ),
             // Cross-linked at the bottom of this method once $id_essence exists.
             '_etm_similar_ids'                 => [],
 
-            '_etm_card_meta'                   => '11–15 days · Fully bespoke · Privately hosted',
+            '_etm_card_meta'                   => '11–15 Days | Fully Bespoke | Privately Hosted',
         ];
         if ( $id_signature ) {
             foreach ( $signature_meta as $k => $v ) update_post_meta( $id_signature, $k, $v );
@@ -283,128 +283,129 @@ class ETM_Experience_Seeder {
         // ─── The Essence of Ireland Experience (6–10 days) ──────
         $id_essence = $this->get_or_create_post(
             'essence-of-ireland',
-            'The Essence of Ireland Experience.',
-            'A 6–10 day refined Bespoke journey — Ireland\'s most beautiful landscapes and meaningful history, without unnecessary movement.'
+            'The Essence of Ireland Experience',
+            'For those with less time, this journey captures the very best of Ireland — without ever feeling rushed.'
         );
         if ( $id_essence && $hero_essence_id ) set_post_thumbnail( $id_essence, $hero_essence_id );
 
         $essence_meta = [
-            // Hero — copy lifted directly from "The Essence of Ireland Experience.pdf".
-            '_etm_eyebrow'                     => 'An Elite Tours Experience · 6–10 Days · Fully Bespoke · Privately Hosted',
-            '_etm_hero_title_em'               => 'Essence of Ireland',
+            // Hero — verbatim from "The Essence of Ireland Experience.pdf".
+            '_etm_eyebrow'                     => '6–10 Days | Fully Bespoke | Privately Hosted',
+            '_etm_hero_title_em'               => 'The Essence of Ireland Experience',
             '_etm_hero_deck'                   => 'For those with less time, this journey captures the very best of Ireland — without ever feeling rushed.',
             '_etm_hero_breadcrumb'             => [ 'Bespoke Tours', 'Privately Hosted', 'The Essence Experience' ],
             '_etm_hero_meta_strip'             => [ '6–10 Days', 'Fully Bespoke', 'Privately Hosted' ],
-            '_etm_hero_aside_text'             => "Rather than trying to see everything, we focus on experiencing the right things, properly. A complete, high-end Irish experience within a shorter timeframe — balancing iconic highlights with lesser-known moments most travellers never reach.",
+            '_etm_hero_aside_text'             => 'Rather than trying to see everything, we focus on experiencing the right things, properly. Each itinerary is carefully designed to deliver a complete, high-end Irish experience within a shorter timeframe — balancing iconic highlights with lesser-known moments that most travellers never reach.',
             '_etm_hero_aside_facts'            => [
                 [ 'label' => 'Length', 'value' => '6–10 days' ],
                 [ 'label' => 'Style',  'value' => 'Fully bespoke' ],
             ],
-            '_etm_hero_cta_primary'            => 'Begin Your Journey',
+            '_etm_hero_cta_primary'            => 'Start planning your journey',
             '_etm_hero_cta_primary_url'        => '#et-exp-cta',
-            '_etm_hero_cta_secondary'          => 'Speak to a Designer',
-            '_etm_hero_cta_secondary_url'      => '#et-exp-cta',
+            '_etm_hero_cta_secondary'          => '',
+            '_etm_hero_cta_secondary_url'      => '',
 
-            // Highlights — lifted from the client PDF's "What This Journey
-            // Feels Like" bullet list. "You will still experience: ..."
-            '_etm_highlights_heading'          => 'What this journey feels like.',
-            '_etm_highlights_intro'            => 'This is not a condensed tour. It is a refined version of the full experience — without unnecessary movement or overwhelm. You will still experience:',
+            // Highlights — verbatim from PDF "A Tailored Approach to Time".
+            '_etm_highlights_heading'          => 'A Tailored Approach to Time',
+            '_etm_highlights_intro'            => 'No two 6–10 day journeys are the same.',
             '_etm_highlights'                  => [
-                [ 'title' => "Ireland's most beautiful landscapes",
-                  'desc'  => 'Iconic cliffs, scenic routes, dramatic coastlines — chosen for distinction rather than fame.',
+                [ 'title' => 'South & West',
+                  'desc'  => "Some clients choose to immerse themselves in the South & West, taking in coastal landscapes, historic towns, and Ireland's most scenic routes.",
                   'image_id' => $hero_essence_id ],
-                [ 'title' => 'Its most meaningful history',
-                  'desc'  => 'The stories that anchor the country — told properly, by the people who keep them.',
-                  'image_id' => $cathedral_id ],
-                [ 'title' => 'Its most character-filled towns and cities',
-                  'desc'  => 'Vibrant streets, harbourside life, music and atmosphere — places where Ireland feels alive.',
+                [ 'title' => 'West & North',
+                  'desc'  => 'Others lean towards the West & North, exploring wilder, more rugged parts of the country, rich in story, atmosphere, and contrast.',
+                  'image_id' => $sligo_id ],
+                [ 'title' => 'A blend of both',
+                  'desc'  => 'And for many, the journey becomes a carefully selected blend of both.',
                   'image_id' => $kylemore_id ],
-                [ 'title' => 'The moments that make the country unforgettable',
-                  'desc'  => 'Slow lunches, late starts, long evenings. Curated days that feel effortless rather than crammed.',
+                [ 'title' => 'Our role',
+                  'desc'  => 'Our role is to guide that decision — and build a route that feels effortless, balanced, and complete.',
                   'image_id' => $muckross_id ],
             ],
 
-            // Story — copy lifted from the client PDF's "A Tailored Approach
-            // to Time" section.
-            '_etm_story_heading_part1'         => 'A tailored approach',
-            '_etm_story_heading_part2'         => 'to time.',
-            '_etm_story_plate'                 => 'The Essence Experience · 6–10 days',
-            '_etm_story_lede'                  => 'No two 6–10 day journeys are the same.',
-            '_etm_story_para1'                 => "Some clients choose to immerse themselves in the South & West, taking in coastal landscapes, historic towns, and Ireland's most scenic routes. Others lean towards the West & North, exploring wilder, more rugged parts of the country, rich in story, atmosphere, and contrast. And for many, the journey becomes a carefully selected blend of both.",
-            '_etm_story_para2'                 => 'Our role is to guide that decision — and build a route that feels effortless, balanced, and complete.',
+            // Story — verbatim from PDF "What This Journey Feels Like".
+            '_etm_story_heading_part1'         => 'What This Journey',
+            '_etm_story_heading_part2'         => 'Feels Like',
+            '_etm_story_plate'                 => '',
+            '_etm_story_lede'                  => 'This is not a condensed tour. It is a refined version of the full experience.',
+            '_etm_story_para1'                 => "You will still experience: Ireland's most beautiful landscapes; its most meaningful history; its most character-filled towns and cities; and the moments that make the country unforgettable.",
+            '_etm_story_para2'                 => 'Just without unnecessary movement or overwhelm.',
             '_etm_story_image_main'            => $hero_essence_id,
             '_etm_story_image_accent'          => $muckross_id,
-            '_etm_story_people_label'          => 'Your People for the Journey',
-            '_etm_story_people'                => [
-                [ 'name' => 'Raphael Mulally', 'alt' => '',
-                  'role' => 'Founder & Personal Host',
-                  'note' => 'Personally designs every Essence Experience. The shape may be shorter — the care is the same.' ],
-            ],
+            '_etm_story_people_label'          => '',
+            '_etm_story_people'                => [],
 
-            // Pillars — the client PDF's "Journey Possibilities" section
-            // grouped into 3 thematic shapes (rather than 6 short blurbs)
-            // so they fit the 3-card pillar component.
+            // Pillars — verbatim from PDF "Journey Possibilities".
             '_etm_pillars_heading_part1'       => 'Journey',
-            '_etm_pillars_heading_part2'       => 'possibilities.',
+            '_etm_pillars_heading_part2'       => 'Possibilities',
             '_etm_pillars_subheading'          => 'Depending on your preferences, your journey may include elements of:',
-            '_etm_pillars_intro'               => "We apply our knowledge of Ireland to design a journey that gives you the best possible version of the country — within the time you have. Your route is built on your timeframe, your interests, your pace, and the type of experience you want to have.",
+            '_etm_pillars_intro'               => '',
             '_etm_pillars'                     => [
-                [ 'pillar' => 'The South & West', 'title' => 'Castles, coast & iconic scenery.',
-                  'body' => "Dublin & Ancient Ireland — a strong cultural and historical introduction, grounding the journey in Ireland's story. The South & West — coastal towns, castles, and some of the country's most iconic scenery, delivered at the right pace. Kerry & The Atlantic Coast — visually striking routes, local character, and moments that feel cinematic.",
+                [ 'pillar' => 'Dublin & Ancient Ireland', 'title' => '',
+                  'body' => "A strong cultural and historical introduction — grounding the journey in Ireland's story.",
+                  'image_id' => $cathedral_id ],
+                [ 'pillar' => 'The South & West', 'title' => '',
+                  'body' => "Coastal towns, castles, and some of the country's most iconic scenery — delivered at the right pace.",
                   'image_id' => $hero_essence_id ],
-                [ 'pillar' => 'Galway & Connemara', 'title' => 'Energy, culture & wild west.',
-                  'body' => "Galway & Connemara — energy, culture, and wild landscapes, where Ireland feels most alive and most untouched. The West & North — a more rugged, less-travelled experience: dramatic coastlines, deeper history, and quieter beauty.",
+                [ 'pillar' => 'Kerry & The Atlantic Coast', 'title' => '',
+                  'body' => 'Visually striking routes, local character, and moments that feel cinematic.',
+                  'image_id' => $hero_essence_id ],
+                [ 'pillar' => 'Galway & Connemara', 'title' => '',
+                  'body' => 'Energy, culture, and wild landscapes — where Ireland feels most alive and most untouched.',
+                  'image_id' => $cathedral_id ],
+                [ 'pillar' => 'The West & North', 'title' => '',
+                  'body' => 'A more rugged, less-travelled experience — dramatic coastlines, deeper history, and quieter beauty.',
                   'image_id' => $sligo_id ],
-                [ 'pillar' => 'Northern Ireland & Belfast', 'title' => 'Powerful storytelling & contrast.',
-                  'body' => 'For those wanting contrast — powerful storytelling, modern culture, and a different perspective on the island. Belfast and the Causeway Coast layer in a different kind of finish: contemporary, complex, and richly told.',
+                [ 'pillar' => 'Northern Ireland & Belfast', 'title' => '',
+                  'body' => 'For those wanting contrast — powerful storytelling, modern culture, and a different perspective on the island.',
                   'image_id' => $belfast_id ],
             ],
 
-            // Process — the client PDF's "Designed Around You" + "The Moments
-            // That Matter Most" sections distilled into the 4-step structure.
+            // Process — verbatim from PDF "Designed Around You" +
+            // "The Moments That Matter Most".
             '_etm_process_card_eyebrow'        => 'Designed Around You',
-            '_etm_process_card_title'          => 'How an Essence Journey is Built',
-            '_etm_process_card_subtitle'       => "the right things, properly, in the time you have",
+            '_etm_process_card_title'          => 'Designed Around You',
+            '_etm_process_card_subtitle'       => 'Every route is built based on:',
             '_etm_process_steps'               => [
-                [ 'number' => '01', 'title' => 'A first conversation',
-                  'body' => "An hour by phone with Ray. We start with what you know about your time, your interests, and what you'd like the journey to feel like." ],
-                [ 'number' => '02', 'title' => 'The shape, drawn',
-                  'body' => 'We apply our knowledge of Ireland to design a journey that gives you the best possible version of the country — within the time you have. Nothing is fixed.' ],
-                [ 'number' => '03', 'title' => 'Quietly arranged',
-                  'body' => "Once you approve the shape, we book the houses, secure the access, and make the introductions. Your itinerary travels with you in a printed wallet." ],
-                [ 'number' => '04', 'title' => "The moments that matter most",
-                  'body' => "Just like our longer journeys, the most memorable parts of this experience are often the ones you won't see listed. Unplanned stops. Local introductions. Moments that happen naturally along the way." ],
+                [ 'number' => '01', 'title' => '',
+                  'body' => 'Your timeframe' ],
+                [ 'number' => '02', 'title' => '',
+                  'body' => 'Your interests' ],
+                [ 'number' => '03', 'title' => '',
+                  'body' => 'Your pace' ],
+                [ 'number' => '04', 'title' => '',
+                  'body' => 'And the type of experience you want to have' ],
             ],
-            '_etm_process_aside_heading_part1' => 'Without compromise.',
-            '_etm_process_aside_heading_part2' => '',
-            '_etm_process_aside_body'          => 'Whether you have 6 days or 10, the goal remains the same: to experience Ireland properly, effortlessly, and without compromise.',
+            '_etm_process_aside_heading_part1' => 'The Moments That',
+            '_etm_process_aside_heading_part2' => 'Matter Most',
+            '_etm_process_aside_body'          => "Nothing is fixed. We simply apply our knowledge of Ireland to design a journey that gives you the best possible version of the country — within the time you have. Just like our longer journeys, the most memorable parts of this experience are often the ones you won't see listed. Unplanned stops. Local introductions. Moments that happen naturally along the way. These are the details that define the journey — and they are never shared publicly.",
             '_etm_process_image_1'             => $links_id,
             '_etm_process_image_2'             => $causeway_30_id,
             '_etm_process_facts'               => [
-                [ 'label' => 'From',   'value' => 'On request' ],
                 [ 'label' => 'Length', 'value' => '6–10 days' ],
-                [ 'label' => 'Group',  'value' => '2 – 8' ],
+                [ 'label' => 'Style',  'value' => 'Fully Bespoke' ],
+                [ 'label' => 'Hosting','value' => 'Privately Hosted' ],
             ],
 
-            // CTA — the client PDF's closing "Begin Your Journey" copy.
-            '_etm_cta_heading_part1'           => 'Whether you have',
-            '_etm_cta_heading_part2'           => 'six days or ten,',
-            '_etm_cta_heading_part3'           => 'the goal remains the same.',
-            '_etm_cta_body'                    => 'To experience Ireland properly, effortlessly, and without compromise. Start planning your journey.',
+            // CTA — verbatim from PDF "Begin Your Journey".
+            '_etm_cta_heading_part1'           => 'Begin Your',
+            '_etm_cta_heading_part2'           => 'Journey',
+            '_etm_cta_heading_part3'           => '',
+            '_etm_cta_body'                    => 'Whether you have 6 days or 10, the goal remains the same: to experience Ireland properly, effortlessly, and without compromise. Start planning your journey.',
             '_etm_cta_phone'                   => '+353 87 345 2874',
             '_etm_cta_email'                   => 'concierge@elitetours.ie',
             '_etm_cta_portrait'                => $portrait_id,
-            '_etm_cta_quote'                   => 'Rather than trying to see everything, we focus on experiencing the right things, properly. That is the whole idea.',
-            '_etm_cta_quote_attribution'       => 'Raphael Mulally · Founder, Elite Tours',
+            '_etm_cta_quote'                   => '',
+            '_etm_cta_quote_attribution'       => '',
 
-            '_etm_similar_heading_part1'       => 'Other ways',
-            '_etm_similar_heading_part2'       => 'to experience Ireland.',
-            '_etm_similar_view_all_text'       => 'View all experiences →',
+            '_etm_similar_heading_part1'       => '',
+            '_etm_similar_heading_part2'       => '',
+            '_etm_similar_view_all_text'       => '',
             '_etm_similar_view_all_url'        => home_url( '/experiences/' ),
             // Cross-linked below once both posts exist.
             '_etm_similar_ids'                 => [],
 
-            '_etm_card_meta'                   => '6–10 days · Fully bespoke · Privately hosted',
+            '_etm_card_meta'                   => '6–10 Days | Fully Bespoke | Privately Hosted',
         ];
         if ( $id_essence ) {
             foreach ( $essence_meta as $k => $v ) update_post_meta( $id_essence, $k, $v );
