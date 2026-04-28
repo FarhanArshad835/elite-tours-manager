@@ -2,7 +2,7 @@
 /**
  * Plugin Name:   Elite Tours Manager
  * Description:   Content management panel for Elite Tours Ireland website. Last updated: April 2026.
- * Version:       1.2.22
+ * Version:       1.2.23
  * Author:        Elite Tours Ireland
  * Text Domain:   elite-tours-manager
  * GitHub Plugin URI: FarhanArshad835/elite-tours-manager
@@ -173,16 +173,12 @@ if ( get_option( 'etm_migration_v170' ) !== 'done' ) {
 // don't already exist.
 if ( get_option( 'etm_migration_v180' ) !== 'done' ) {
 
-    if ( ! get_option( 'et_bespoke_journey_types' ) ) {
-        update_option( 'et_bespoke_journey_types', [
-            [ 'label' => 'Ancestry & Roots',   'title' => 'Find Where You Came From',             'desc' => 'Trace your Irish heritage. Walk the land your family walked. Discover records, townlands, and living connections to your past.', 'image_id' => 0, 'url' => '' ],
-            [ 'label' => 'Whiskey & Culture',   'title' => "Ireland's Story, Poured Into a Glass", 'desc' => "Private visits to Ireland's finest craft distilleries, paired with rich cultural storytelling.",                                  'image_id' => 0, 'url' => '' ],
-            [ 'label' => 'Scenic & Coastal',    'title' => 'The Roads Less Taken',                 'desc' => 'The Wild Atlantic Way, the Ring of Kerry, country roads and landscapes that stop you in your tracks.',                                'image_id' => 0, 'url' => '' ],
-            [ 'label' => 'Heritage & History',  'title' => "Ireland's History, Brought to Life",   'desc' => 'Castles, monastic ruins, Georgian estates, and the stories behind them.',                                                              'image_id' => 0, 'url' => '' ],
-            [ 'label' => 'Family Journeys',     'title' => 'Memorable for Every Generation',       'desc' => 'A meaningful, multi-generational Irish experience paced for every age in your group.',                                                'image_id' => 0, 'url' => '' ],
-            [ 'label' => 'Your Own Journey',    'title' => 'Something Completely Your Own',        'desc' => 'Have something specific in mind? Tell us. We will build it entirely from scratch, around you.',                                       'image_id' => 0, 'url' => '' ],
-        ] );
-    }
+    // et_bespoke_journey_types deliberately removed — the 6-tile "Where Would
+    // You Like to Begin?" section it powered was a carryover from early site
+    // building, not in the client's content brief. The /bespoke-tours/
+    // template no longer renders it (Two ways to travel + Duration Breakdown
+    // already cover the bespoke decision flow). Existing data on live is
+    // left untouched; the option simply isn't read anywhere any more.
 
     if ( ! get_option( 'et_bespoke_durations' ) ) {
         update_option( 'et_bespoke_durations', [

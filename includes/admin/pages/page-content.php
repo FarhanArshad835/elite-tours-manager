@@ -191,25 +191,6 @@ function etm_page_content_page(): void {
                 <div class="etm-exp-item__header">
                     <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
                     <div class="etm-exp-item__info">
-                        <div class="etm-exp-item__title">Bespoke Tours — Journey Types Grid</div>
-                    </div>
-                    <div class="etm-exp-item__actions">
-                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
-                    </div>
-                </div>
-                <div class="etm-exp-item__body">
-                
-                <p class="etm-help">The "Where Would You Like to Begin?" tile grid on /bespoke-tours/. Drag to reorder.</p>
-                <div class="etm-pc-rows" data-section="bespoke_journey_types"
-                     data-fields='[{"k":"label","l":"Label (eyebrow)","placeholder":"Ancestry & Roots"},{"k":"title","l":"Title","placeholder":"Find Where You Came From"},{"k":"desc","l":"Description","type":"textarea","placeholder":"Trace your Irish heritage..."},{"k":"url","l":"Link URL (optional)","type":"url","placeholder":"https://..."},{"k":"image_id","l":"Image","type":"image"}]'></div>
-                <button type="button" class="button etm-pc-add" data-section="bespoke_journey_types">+ Add Journey Type</button>
-                            </div>
-            </div>
-
-            <div class="etm-exp-item is-open">
-                <div class="etm-exp-item__header">
-                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
-                    <div class="etm-exp-item__info">
                         <div class="etm-exp-item__title">Bespoke Tours — Duration Cards</div>
                     </div>
                     <div class="etm-exp-item__actions">
