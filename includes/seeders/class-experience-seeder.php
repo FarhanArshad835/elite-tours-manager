@@ -79,6 +79,14 @@ class ETM_Experience_Seeder {
 
         $this->log[] = '';
         $this->log[] = 'Done.';
+
+        // Record this run so the admin page can show "last ran on …".
+        update_option( 'etm_seeder_last_run', [
+            'time'    => time(),
+            'version' => (int) ETM_SEEDER_VERSION,
+            'user_id' => (int) get_current_user_id(),
+        ] );
+
         return $this->log;
     }
 

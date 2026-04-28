@@ -37,11 +37,51 @@ function etm_seed_content_page(): void {
         require_once ETM_PATH . 'includes/seeders/class-experience-seeder.php';
     }
     ?>
+    <?php
+    // Last-run indicator: track if/when the seeder was last successfully run
+    // and which version it was on. Three states:
+    //   - never run  -> amber "Not yet run" notice
+    //   - up to date -> green "Last run X · matches current vN" badge
+    //   - outdated   -> amber "Ran at v(old). Current is v(N) — run again"
+    $last_run         = get_option( 'etm_seeder_last_run', null );
+    $current_version  = (int) ETM_SEEDER_VERSION;
+    $run_state        = 'never';      // never | current | outdated
+    $last_time        = 0;
+    $last_version     = 0;
+    if ( is_array( $last_run ) && ! empty( $last_run['time'] ) ) {
+        $last_time    = (int) $last_run['time'];
+        $last_version = (int) ( $last_run['version'] ?? 0 );
+        $run_state    = ( $last_version === $current_version ) ? 'current' : 'outdated';
+    }
+    $time_human = $last_time
+        ? sprintf( '%s ago (%s)',
+            human_time_diff( $last_time, time() ),
+            wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $last_time )
+          )
+        : '';
+    ?>
     <div class="wrap etm-wrap">
         <h1 class="etm-page-title">
             <?php echo etm_lucide( 'sprout', 22 ); ?> Seed Experience Content
-            <span style="font-size:13px;font-weight:500;color:#6b7280;background:#eef2f7;padding:3px 10px;border-radius:999px;margin-left:10px;vertical-align:middle;">Seeder v<?php echo (int) ETM_SEEDER_VERSION; ?></span>
+            <span style="font-size:13px;font-weight:500;color:#6b7280;background:#eef2f7;padding:3px 10px;border-radius:999px;margin-left:10px;vertical-align:middle;">Seeder v<?php echo $current_version; ?></span>
         </h1>
+
+        <?php if ( $run_state === 'current' ) : ?>
+            <div style="background:#ecfdf5;border-left:4px solid #10b981;padding:12px 16px;margin:14px 0;font-size:13px;line-height:1.5;display:flex;align-items:center;gap:10px;">
+                <span style="color:#047857;flex-shrink:0;"><?php echo etm_lucide( 'check-circle', 18 ); ?></span>
+                <span style="color:#064e3b;"><strong>Seeder has been run.</strong> Last run <?php echo esc_html( $time_human ); ?> on Seeder v<?php echo (int) $last_version; ?> — matches the current version. Re-running will refresh content from the bundled defaults.</span>
+            </div>
+        <?php elseif ( $run_state === 'outdated' ) : ?>
+            <div style="background:#fff7e6;border-left:4px solid #f0b849;padding:12px 16px;margin:14px 0;font-size:13px;line-height:1.5;display:flex;align-items:center;gap:10px;">
+                <span style="color:#92400e;flex-shrink:0;"><?php echo etm_lucide( 'sprout', 18 ); ?></span>
+                <span style="color:#78350f;"><strong>Seeder is out of date.</strong> Last run <?php echo esc_html( $time_human ); ?> on <strong>Seeder v<?php echo (int) $last_version; ?></strong>. The current version is <strong>v<?php echo $current_version; ?></strong> — run again to apply newer seed data.</span>
+            </div>
+        <?php else : ?>
+            <div style="background:#fff7e6;border-left:4px solid #f0b849;padding:12px 16px;margin:14px 0;font-size:13px;line-height:1.5;display:flex;align-items:center;gap:10px;">
+                <span style="color:#92400e;flex-shrink:0;"><?php echo etm_lucide( 'sprout', 18 ); ?></span>
+                <span style="color:#78350f;"><strong>Seeder has not been run on this site yet.</strong> Click <em>Run Seeders</em> below to populate the experience pages, regions, hotels, key experiences and homepage from the bundled defaults.</span>
+            </div>
+        <?php endif; ?>
 
         <div style="max-width:780px;margin-top:14px;">
 
