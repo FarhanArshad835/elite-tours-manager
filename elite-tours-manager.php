@@ -2,7 +2,7 @@
 /**
  * Plugin Name:   Elite Tours Manager
  * Description:   Content management panel for Elite Tours Ireland website. Last updated: April 2026.
- * Version:       1.2.25
+ * Version:       1.2.26
  * Author:        Elite Tours Ireland
  * Text Domain:   elite-tours-manager
  * GitHub Plugin URI: FarhanArshad835/elite-tours-manager
@@ -419,6 +419,38 @@ if ( get_option( 'etm_migration_v1110' ) !== 'done' ) {
     update_option( 'et_page_strings', $strings );
 
     update_option( 'etm_migration_v1110', 'done' );
+}
+
+// ── One-time migration v1.12.0: restore <br> in homepage headings ──
+// The pre-fix homepage admin save handler ran sanitize_text_field on heading
+// fields, which strips ALL HTML tags including <br>. So any heading the user
+// edited via admin lost its line breaks ("Ireland.<br>Very" → "Ireland.Very").
+// This migration restores <br> in known headings if their stored value
+// matches the stripped pattern but lacks the line break.
+if ( get_option( 'etm_migration_v1120' ) !== 'done' ) {
+    $hp = get_option( 'et_homepage_settings', [] );
+    if ( is_array( $hp ) ) {
+        // Map of heading key → known stripped pattern → fixed pattern with <br>.
+        // Only patches if the current value matches the stripped form exactly,
+        // so we don't overwrite custom user edits that already include <br>.
+        $patches = [
+            'intro_heading'        => [
+                'Most people visit Ireland.Very few experience it properly.' => 'Most people visit Ireland.<br>Very few experience it properly.',
+                'More Than a Tour.A Deeper Connection to Ireland.'           => 'More Than a Tour.<br>A Deeper Connection to Ireland.',
+            ],
+            'intro_badge_text'     => [
+                'Years ofRelationships' => 'Years of<br>Relationships',
+                'Years ofExperience'    => 'Years of<br>Experience',
+            ],
+        ];
+        foreach ( $patches as $key => $map ) {
+            if ( isset( $hp[ $key ] ) && isset( $map[ $hp[ $key ] ] ) ) {
+                $hp[ $key ] = $map[ $hp[ $key ] ];
+            }
+        }
+        update_option( 'et_homepage_settings', $hp );
+    }
+    update_option( 'etm_migration_v1120', 'done' );
 }
 
 define( 'ETM_PATH',    plugin_dir_path( __FILE__ ) );

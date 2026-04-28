@@ -12,7 +12,7 @@ add_action( 'wp_ajax_etm_hp_save', function () {
     // ── Text fields (sanitize_text_field) ────────────────────────────────────
     $text_fields = [
         // Hero
-        'hero_label', 'hero_headline', 'hero_cta_primary', 'hero_cta_secondary', 'hero_proof_text', 'hero_video_url',
+        'hero_label', 'hero_cta_primary', 'hero_cta_secondary', 'hero_proof_text', 'hero_video_url',
         // Trust strip
         'trust_ta_sub',
         'trust_failte_sub', 'trust_asta_sub', 'trust_iagto_sub',
@@ -23,18 +23,18 @@ add_action( 'wp_ajax_etm_hp_save', function () {
         'stats_3_icon', 'stats_3_label', 'stats_3_desc',
         'stats_4_icon', 'stats_4_label', 'stats_4_desc',
         // Intro
-        'intro_label', 'intro_heading', 'intro_cta_text', 'intro_badge_num', 'intro_badge_text',
+        'intro_label', 'intro_cta_text', 'intro_badge_num',
         // Offers
-        'offer_1_label', 'offer_1_heading', 'offer_1_cta_text',
-        'offer_2_label', 'offer_2_heading', 'offer_2_cta_text',
+        'offer_1_label', 'offer_1_cta_text',
+        'offer_2_label', 'offer_2_cta_text',
         // Process
-        'process_label', 'process_heading', 'process_cta_text',
+        'process_label', 'process_cta_text',
         'step_1_num', 'step_1_title',
         'step_2_num', 'step_2_title',
         'step_3_num', 'step_3_title',
         'step_4_num', 'step_4_title',
         // Experiences
-        'exp_label', 'exp_heading',
+        'exp_label',
         'exp_1_label', 'exp_1_title', 'exp_1_desc',
         'exp_2_label', 'exp_2_title', 'exp_2_desc',
         'exp_3_label', 'exp_3_title', 'exp_3_desc',
@@ -42,16 +42,34 @@ add_action( 'wp_ajax_etm_hp_save', function () {
         'exp_5_label', 'exp_5_title', 'exp_5_desc',
         'exp_6_label', 'exp_6_title', 'exp_6_desc',
         // Testimonials
-        'testimonials_label', 'testimonials_heading', 'testimonials_sub',
+        'testimonials_label', 'testimonials_sub',
         't_1_name', 't_1_origin',
         't_2_name', 't_2_origin',
         't_3_name', 't_3_origin',
         // Founder
-        'founder_label', 'founder_heading', 'founder_cta_text', 'founder_cite',
+        'founder_label', 'founder_cta_text', 'founder_cite',
     ];
     foreach ( $text_fields as $f ) {
         $raw = isset( $_POST[ $f ] ) ? wp_unslash( $_POST[ $f ] ) : '';
         $data[ $f ] = sanitize_text_field( $raw );
+    }
+
+    // ── Heading / label fields that may contain <br> for line breaks ─────────
+    // sanitize_text_field would strip the <br>, leaving "Ireland.Very" instead
+    // of "Ireland.<br>Very". wp_kses with a tight allowlist preserves <br>
+    // (and only <br>) without opening up XSS.
+    $br_fields = [
+        'hero_headline',
+        'intro_heading', 'intro_badge_text',
+        'offer_1_heading', 'offer_2_heading',
+        'process_heading',
+        'exp_heading',
+        'testimonials_heading',
+        'founder_heading',
+    ];
+    foreach ( $br_fields as $f ) {
+        $raw = isset( $_POST[ $f ] ) ? wp_unslash( $_POST[ $f ] ) : '';
+        $data[ $f ] = wp_kses( $raw, [ 'br' => [], 'em' => [] ] );
     }
 
     // ── HTML fields (wp_kses_post) ───────────────────────────────────────────
