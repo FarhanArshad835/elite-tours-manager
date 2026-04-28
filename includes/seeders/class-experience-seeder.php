@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * (new images, new option keys, new steps). The number is shown in the
  * Seed Content admin page header so the live site can be checked at a glance.
  */
-if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 16 );
+if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 17 );
 
 class ETM_Experience_Seeder {
 
@@ -562,18 +562,18 @@ class ETM_Experience_Seeder {
      * seed_site_content() so it never gets clobbered by the editorial-copy seed.
      *
      * Image-to-slot mapping:
-     *   hero_image_id       → coastal-road-fog.jpg       (4K, full-bleed safe)
-     *   intro_image_id      → muckross-lake-view.jpg     (1200×900)
-     *   offer_1_image_id    → gap-of-dunloe.jpg          (Bespoke offer block)
-     *   offer_2_image_id    → links-golf-coast.jpg       (Golf offer block)
-     *   founder_image_id    → Raphell mulaly image.jpeg  (reused from CTA portrait)
+     *   hero_image_id       → cliffs-of-moher-from-sea.jpg  (8K Pexels, client-provided)
+     *   intro_image_id      → muckross-lake-view.jpg        (1200×900)
+     *   offer_1_image_id    → gap-of-dunloe.jpg             (Bespoke offer block)
+     *   offer_2_image_id    → links-golf-coast.jpg          (Golf offer block)
+     *   founder_image_id    → founder-ray-coach.jpg         (client-provided WhatsApp 2026-04-28)
      */
     private function seed_homepage_images(): void {
-        $hero_id     = $this->seed_image( 'coastal-road-fog.jpg' );
+        $hero_id     = $this->seed_image( 'cliffs-of-moher-from-sea.jpg' );
         $intro_id    = $this->seed_image( 'muckross-lake-view.jpg' );
         $offer_1_id  = $this->seed_image( 'gap-of-dunloe.jpg' );
         $offer_2_id  = $this->seed_image( 'links-golf-coast.jpg' );
-        $founder_id  = $this->seed_image( 'Raphell mulaly image.jpeg' );
+        $founder_id  = $this->seed_image( 'founder-ray-coach.jpg' );
 
         $home = get_option( 'et_homepage_settings', [] );
         if ( ! is_array( $home ) ) $home = [];
