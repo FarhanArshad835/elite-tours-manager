@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * (new images, new option keys, new steps). The number is shown in the
  * Seed Content admin page header so the live site can be checked at a glance.
  */
-if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 11 );
+if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 12 );
 
 class ETM_Experience_Seeder {
 
@@ -72,6 +72,10 @@ class ETM_Experience_Seeder {
         $this->log[] = '';
         $this->log[] = '── Step 6: Hotel image attachments ──';
         $this->seed_hotel_images();
+
+        $this->log[] = '';
+        $this->log[] = '── Step 7: Key Experiences image attachments ──';
+        $this->seed_key_experience_images();
 
         $this->log[] = '';
         $this->log[] = 'Done.';
@@ -405,6 +409,35 @@ class ETM_Experience_Seeder {
             update_post_meta( $id_essence,   '_etm_similar_ids', [ $id_signature ] );
             $this->log[] = "Cross-linked Signature ↔ Essence similar IDs";
         }
+    }
+
+    // ─── Step 10: Key Experiences image_id slots ────────────────
+
+    /**
+     * Same pattern as seed_region_images / seed_hotel_images. Each entry in
+     * et_key_experiences carries an 'image_filename' set by seed_site_content;
+     * this imports the file into the Media Library and merges the resulting
+     * attachment ID back as 'image_id'. Powers the 22-card "Featured
+     * Experiences" grid on /experiences/.
+     */
+    private function seed_key_experience_images(): void {
+        $items = get_option( 'et_key_experiences', [] );
+        if ( ! is_array( $items ) || empty( $items ) ) {
+            $this->log[] = "et_key_experiences option is empty — skipping";
+            return;
+        }
+        $wired = 0;
+        foreach ( $items as $i => $item ) {
+            $filename = $item['image_filename'] ?? '';
+            if ( $filename === '' ) continue;
+            $id = $this->seed_image( $filename );
+            if ( $id ) {
+                $items[ $i ]['image_id'] = $id;
+                $wired++;
+            }
+        }
+        update_option( 'et_key_experiences', $items );
+        $this->log[] = "Wired image IDs for {$wired} of " . count( $items ) . " key experiences";
     }
 
     // ─── Step 9: Hotels image_id slots ───────────────────────────

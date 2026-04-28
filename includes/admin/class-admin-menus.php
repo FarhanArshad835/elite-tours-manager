@@ -31,6 +31,7 @@ class ETM_Admin_Menus {
         add_submenu_page( 'elite-tours', 'Experiences',   'Experiences',   'manage_options', 'et-experiences',     'etm_experiences_page' );
         add_submenu_page( 'elite-tours', 'Hotels',         'Hotels',        'manage_options', 'et-hotels',          'etm_hotels_page' );
         add_submenu_page( 'elite-tours', 'Regions',        'Regions',       'manage_options', 'et-regions',         'etm_regions_page' );
+        add_submenu_page( 'elite-tours', 'Key Experiences','Key Experiences','manage_options','et-key-experiences','etm_key_experiences_page' );
         add_submenu_page( 'elite-tours', 'Golf Courses',   'Golf Courses',  'manage_options', 'et-golf-courses',    'etm_golf_courses_page' );
         add_submenu_page( 'elite-tours', 'Itineraries',    'Itineraries',   'manage_options', 'et-itineraries',     'etm_itineraries_page' );
         add_submenu_page( 'elite-tours', 'Page Content',   'Page Content',  'manage_options', 'et-page-content',    'etm_page_content_page' );
@@ -61,6 +62,7 @@ class ETM_Admin_Menus {
                         [ 'icon' => 'tour',             'title' => 'Experiences',     'desc' => 'Add, edit, reorder experience cards.',                                    'url' => admin_url( 'admin.php?page=et-experiences' ) ],
                         [ 'icon' => 'hotel',            'title' => 'Hotels',          'desc' => 'Manage accommodation listings.',                                          'url' => admin_url( 'admin.php?page=et-hotels' ) ],
                         [ 'icon' => 'map',              'title' => 'Regions',         'desc' => 'The 11 region tiles on the Experiences page.',                            'url' => admin_url( 'admin.php?page=et-regions' ) ],
+                        [ 'icon' => 'tour',             'title' => 'Key Experiences', 'desc' => "The 22 named experiences shown below the regions on /experiences/.",      'url' => admin_url( 'admin.php?page=et-key-experiences' ) ],
                         [ 'icon' => 'flag',             'title' => 'Golf Courses',    'desc' => "Manage Ireland's featured golf courses.",                                 'url' => admin_url( 'admin.php?page=et-golf-courses' ) ],
                         [ 'icon' => 'clipboard-list',   'title' => 'Itineraries',     'desc' => 'Sample bespoke and golf itineraries.',                                    'url' => admin_url( 'admin.php?page=et-itineraries' ) ],
                         [ 'icon' => 'file-text',        'title' => 'Page Content',    'desc' => 'Editorial blocks across Bespoke, Golf, Accommodation, Contact pages.',    'url' => admin_url( 'admin.php?page=et-page-content' ) ],
