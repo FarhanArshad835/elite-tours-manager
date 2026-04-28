@@ -2,7 +2,7 @@
 /**
  * Plugin Name:   Elite Tours Manager
  * Description:   Content management panel for Elite Tours Ireland website. Last updated: April 2026.
- * Version:       1.2.15
+ * Version:       1.2.16
  * Author:        Elite Tours Ireland
  * Text Domain:   elite-tours-manager
  * GitHub Plugin URI: FarhanArshad835/elite-tours-manager
@@ -11,7 +11,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'ETM_VERSION', '1.11.0' );
+define( 'ETM_VERSION', '1.12.0' );
 
 // ── One-time migration: clear stale homepage settings so fresh defaults apply ─
 if ( get_option( 'etm_migration_v130' ) !== 'done' ) {
@@ -496,6 +496,7 @@ if ( is_admin() ) {
     require_once ETM_PATH . 'includes/admin/pages/homepage.php';
     require_once ETM_PATH . 'includes/admin/pages/experiences.php';
     require_once ETM_PATH . 'includes/admin/pages/hotels.php';
+    require_once ETM_PATH . 'includes/admin/pages/regions.php';
     require_once ETM_PATH . 'includes/admin/pages/golf-courses.php';
     require_once ETM_PATH . 'includes/admin/pages/itineraries.php';
     require_once ETM_PATH . 'includes/admin/pages/page-content.php';

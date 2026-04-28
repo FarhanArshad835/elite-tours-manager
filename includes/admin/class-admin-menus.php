@@ -30,6 +30,7 @@ class ETM_Admin_Menus {
         add_submenu_page( 'elite-tours', 'Homepage',      'Homepage',      'manage_options', 'et-homepage',        'etm_homepage_page' );
         add_submenu_page( 'elite-tours', 'Experiences',   'Experiences',   'manage_options', 'et-experiences',     'etm_experiences_page' );
         add_submenu_page( 'elite-tours', 'Hotels',         'Hotels',        'manage_options', 'et-hotels',          'etm_hotels_page' );
+        add_submenu_page( 'elite-tours', 'Regions',        'Regions',       'manage_options', 'et-regions',         'etm_regions_page' );
         add_submenu_page( 'elite-tours', 'Golf Courses',   'Golf Courses',  'manage_options', 'et-golf-courses',    'etm_golf_courses_page' );
         add_submenu_page( 'elite-tours', 'Itineraries',    'Itineraries',   'manage_options', 'et-itineraries',     'etm_itineraries_page' );
         add_submenu_page( 'elite-tours', 'Page Content',   'Page Content',  'manage_options', 'et-page-content',    'etm_page_content_page' );
@@ -59,6 +60,7 @@ class ETM_Admin_Menus {
                         [ 'icon' => '🏠', 'title' => 'Homepage',        'desc' => 'Hero video/image, headline, trust bar.',    'url' => admin_url( 'admin.php?page=et-homepage' ) ],
                         [ 'icon' => '🗺️', 'title' => 'Experiences',     'desc' => 'Add, edit, reorder experience cards.',     'url' => admin_url( 'admin.php?page=et-experiences' ) ],
                         [ 'icon' => '🏰', 'title' => 'Hotels',           'desc' => 'Manage accommodation listings.',           'url' => admin_url( 'admin.php?page=et-hotels' ) ],
+                        [ 'icon' => '🗺️', 'title' => 'Regions',         'desc' => 'The 11 region tiles on the Experiences page.', 'url' => admin_url( 'admin.php?page=et-regions' ) ],
                         [ 'icon' => '⛳', 'title' => 'Golf Courses',    'desc' => 'Manage Ireland\'s featured golf courses.',  'url' => admin_url( 'admin.php?page=et-golf-courses' ) ],
                         [ 'icon' => '📋', 'title' => 'Itineraries',      'desc' => 'Sample bespoke and golf itineraries.',     'url' => admin_url( 'admin.php?page=et-itineraries' ) ],
                         [ 'icon' => '📄', 'title' => 'Page Content',    'desc' => 'Editorial blocks across Bespoke, Golf, Accommodation, Contact pages.', 'url' => admin_url( 'admin.php?page=et-page-content' ) ],
