@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 defined( 'ABSPATH' ) || exit;
 
-// ── Save Handler (AJAX) ───────────────────────────────────────────────────────
+// â”€â”€ Save Handler (AJAX) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 add_action( 'wp_ajax_etm_save_experiences', function () {
     check_ajax_referer( 'etm_experiences', '_wpnonce' );
     if ( ! current_user_can( 'manage_options' ) ) wp_send_json_error( 'Unauthorised', 403 );
@@ -50,7 +50,7 @@ add_action( 'wp_ajax_etm_save_experiences', function () {
     wp_send_json_success( count( $clean ) . ' experiences saved' );
 } );
 
-// ── Render ────────────────────────────────────────────────────────────────────
+// â”€â”€ Render â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function etm_experiences_page(): void {
     $experiences = get_option( 'et_experiences', [] );
     if ( ! is_array( $experiences ) ) $experiences = [];
@@ -120,198 +120,6 @@ function etm_experiences_page(): void {
         </form>
     </div>
 
-    <style>
-    .etm-page-desc { color: #666; margin: 0 0 20px; font-size: 14px; }
-
-    /* Taxonomy manager */
-    .etm-tax-manager {
-        display: flex;
-        gap: 24px;
-        margin-bottom: 24px;
-        padding: 20px;
-        background: #fff;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-    }
-    .etm-tax-group { flex: 1; }
-    .etm-tax-group__title { font-size: 13px; font-weight: 600; color: #1A4F31; margin: 0 0 10px; }
-    .etm-tax-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-    .etm-tax-tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        padding: 4px 10px;
-        background: #f0f5f0;
-        border: 1px solid #d0ddd0;
-        border-radius: 14px;
-        font-size: 12px;
-        color: #1A4F31;
-    }
-    .etm-tax-tag__remove {
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 14px;
-        color: #999;
-        padding: 0;
-        line-height: 1;
-    }
-    .etm-tax-tag__remove:hover { color: #c62828; }
-    .etm-tax-add { display: flex; gap: 6px; }
-    .etm-tax-input {
-        padding: 4px 10px;
-        border: 1px solid #ccd0d4;
-        border-radius: 4px;
-        font-size: 13px;
-        flex: 1;
-        max-width: 180px;
-    }
-    @media (max-width: 600px) { .etm-tax-manager { flex-direction: column; } }
-    .etm-exp-item {
-        background: #fff;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        overflow: hidden;
-        transition: box-shadow 0.2s;
-    }
-    .etm-exp-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-    .etm-exp-item__header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 16px;
-        background: #fafafa;
-        cursor: default;
-    }
-    .etm-exp-item__drag {
-        font-size: 18px;
-        color: #aaa;
-        cursor: grab;
-        padding: 4px;
-        touch-action: none;
-        user-select: none;
-    }
-    .etm-exp-item__drag:active { cursor: grabbing; }
-    .etm-exp-item__thumb {
-        width: 48px;
-        height: 36px;
-        border-radius: 4px;
-        object-fit: cover;
-        background: #e8e8e8;
-        flex-shrink: 0;
-    }
-    .etm-exp-item__thumb--empty {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 10px;
-        color: #aaa;
-    }
-    .etm-exp-item__info {
-        flex: 1;
-        min-width: 0;
-    }
-    .etm-exp-item__title {
-        font-size: 14px;
-        font-weight: 600;
-        color: #1A4F31;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .etm-exp-item__meta {
-        font-size: 11px;
-        color: #888;
-    }
-    .etm-exp-item__actions {
-        display: flex;
-        gap: 8px;
-        flex-shrink: 0;
-    }
-    .etm-exp-item__toggle,
-    .etm-exp-item__delete {
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 14px;
-        padding: 4px;
-        color: #888;
-        transition: color 0.2s;
-    }
-    .etm-exp-item__toggle:hover { color: #1A4F31; }
-    .etm-exp-item__delete:hover { color: #c62828; }
-    .etm-exp-item__body {
-        display: none;
-        padding: 16px;
-        border-top: 1px solid #eee;
-    }
-    .etm-exp-item.is-open .etm-exp-item__body { display: block; }
-    .etm-exp-item.is-open .etm-exp-item__toggle { transform: rotate(180deg); }
-    .etm-exp-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-bottom: 12px;
-    }
-    .etm-exp-row--full { grid-template-columns: 1fr; }
-    .etm-exp-field label {
-        display: block;
-        font-size: 12px;
-        font-weight: 600;
-        color: #444;
-        margin-bottom: 4px;
-    }
-    .etm-exp-field input,
-    .etm-exp-field textarea,
-    .etm-exp-field select {
-        width: 100%;
-        padding: 6px 10px;
-        border: 1px solid #ccd0d4;
-        border-radius: 4px;
-        font-size: 13px;
-        font-family: inherit;
-    }
-    .etm-exp-field textarea { resize: vertical; }
-    .etm-exp-img-row {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 12px;
-    }
-    .etm-exp-img-preview {
-        width: 80px;
-        height: 60px;
-        border-radius: 4px;
-        object-fit: cover;
-        background: #f0f0f0;
-    }
-    .etm-btn-add {
-        margin: 16px 0;
-        font-size: 14px;
-    }
-    .etm-exp-count {
-        font-size: 13px;
-        color: #666;
-        margin-left: auto;
-    }
-    .etm-exp-empty {
-        text-align: center;
-        padding: 48px 20px;
-        color: #888;
-        font-size: 15px;
-    }
-    .etm-drop-placeholder-exp {
-        border: 2px dashed #1A4F31;
-        border-radius: 8px;
-        background: #f0f7f3;
-        margin-bottom: 10px;
-        transition: height 0.15s;
-    }
-    @media (max-width: 600px) {
-        .etm-exp-row { grid-template-columns: 1fr; }
-    }
-    </style>
 
     <script>
     (function() {
@@ -328,7 +136,7 @@ function etm_experiences_page(): void {
         var durationOptions = <?php echo wp_json_encode( $duration_options ); ?>;
         var experiences     = <?php echo wp_json_encode( $experiences ); ?>;
 
-        // ── Taxonomy management ─────────────────────────────────
+        // â”€â”€ Taxonomy management â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         function slugify(str) { return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
 
         function addTaxTag(container, key, label) {
