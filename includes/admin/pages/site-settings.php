@@ -26,7 +26,7 @@ function etm_site_settings_page(): void {
     $logo_url = $logo_id ? wp_get_attachment_image_url( (int) $logo_id, 'medium' ) : '';
     ?>
     <div class="wrap etm-wrap">
-        <h1 class="etm-page-title">⚙️ Site Settings</h1>
+        <h1 class="etm-page-title"><?php echo etm_lucide( 'settings', 22 ); ?> Site Settings</h1>
 
         <?php if ( isset( $_GET['saved'] ) ) : ?>
             <div class="etm-notice etm-notice--success">Settings saved successfully.</div>

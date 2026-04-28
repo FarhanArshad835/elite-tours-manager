@@ -56,21 +56,21 @@ class ETM_Admin_Menus {
                 <div class="etm-dashboard__grid">
                     <?php
                     $sections = [
-                        [ 'icon' => '⚙️', 'title' => 'Site Settings',  'desc' => 'Logo, phone number, nav CTA text.',         'url' => admin_url( 'admin.php?page=et-site-settings' ) ],
-                        [ 'icon' => '🏠', 'title' => 'Homepage',        'desc' => 'Hero video/image, headline, trust bar.',    'url' => admin_url( 'admin.php?page=et-homepage' ) ],
-                        [ 'icon' => '🗺️', 'title' => 'Experiences',     'desc' => 'Add, edit, reorder experience cards.',     'url' => admin_url( 'admin.php?page=et-experiences' ) ],
-                        [ 'icon' => '🏰', 'title' => 'Hotels',           'desc' => 'Manage accommodation listings.',           'url' => admin_url( 'admin.php?page=et-hotels' ) ],
-                        [ 'icon' => '🗺️', 'title' => 'Regions',         'desc' => 'The 11 region tiles on the Experiences page.', 'url' => admin_url( 'admin.php?page=et-regions' ) ],
-                        [ 'icon' => '⛳', 'title' => 'Golf Courses',    'desc' => 'Manage Ireland\'s featured golf courses.',  'url' => admin_url( 'admin.php?page=et-golf-courses' ) ],
-                        [ 'icon' => '📋', 'title' => 'Itineraries',      'desc' => 'Sample bespoke and golf itineraries.',     'url' => admin_url( 'admin.php?page=et-itineraries' ) ],
-                        [ 'icon' => '📄', 'title' => 'Page Content',    'desc' => 'Editorial blocks across Bespoke, Golf, Accommodation, Contact pages.', 'url' => admin_url( 'admin.php?page=et-page-content' ) ],
-                        [ 'icon' => '🪧', 'title' => 'Heroes & CTAs',   'desc' => 'Top hero blocks and bottom CTA sections per page.', 'url' => admin_url( 'admin.php?page=et-page-heroes' ) ],
-                        [ 'icon' => '📥', 'title' => 'Funnel Leads',     'desc' => 'Captured leads from experience contact forms.', 'url' => admin_url( 'admin.php?page=et-funnel-leads' ) ],
-                        [ 'icon' => '🌱', 'title' => 'Seed Content',     'desc' => 'Bulk-populate the 3 experience pages with their full content + images.', 'url' => admin_url( 'admin.php?page=et-seed-content' ) ],
+                        [ 'icon' => 'settings',         'title' => 'Site Settings',   'desc' => 'Logo, phone number, nav CTA text.',                                       'url' => admin_url( 'admin.php?page=et-site-settings' ) ],
+                        [ 'icon' => 'home',             'title' => 'Homepage',        'desc' => 'Hero video/image, headline, trust bar.',                                  'url' => admin_url( 'admin.php?page=et-homepage' ) ],
+                        [ 'icon' => 'tour',             'title' => 'Experiences',     'desc' => 'Add, edit, reorder experience cards.',                                    'url' => admin_url( 'admin.php?page=et-experiences' ) ],
+                        [ 'icon' => 'hotel',            'title' => 'Hotels',          'desc' => 'Manage accommodation listings.',                                          'url' => admin_url( 'admin.php?page=et-hotels' ) ],
+                        [ 'icon' => 'map',              'title' => 'Regions',         'desc' => 'The 11 region tiles on the Experiences page.',                            'url' => admin_url( 'admin.php?page=et-regions' ) ],
+                        [ 'icon' => 'flag',             'title' => 'Golf Courses',    'desc' => "Manage Ireland's featured golf courses.",                                 'url' => admin_url( 'admin.php?page=et-golf-courses' ) ],
+                        [ 'icon' => 'clipboard-list',   'title' => 'Itineraries',     'desc' => 'Sample bespoke and golf itineraries.',                                    'url' => admin_url( 'admin.php?page=et-itineraries' ) ],
+                        [ 'icon' => 'file-text',        'title' => 'Page Content',    'desc' => 'Editorial blocks across Bespoke, Golf, Accommodation, Contact pages.',    'url' => admin_url( 'admin.php?page=et-page-content' ) ],
+                        [ 'icon' => 'layout-template',  'title' => 'Heroes & CTAs',   'desc' => 'Top hero blocks and bottom CTA sections per page.',                       'url' => admin_url( 'admin.php?page=et-page-heroes' ) ],
+                        [ 'icon' => 'inbox',            'title' => 'Funnel Leads',    'desc' => 'Captured leads from experience contact forms.',                           'url' => admin_url( 'admin.php?page=et-funnel-leads' ) ],
+                        [ 'icon' => 'sprout',           'title' => 'Seed Content',    'desc' => 'Bulk-populate the experience pages with their full content + images.',    'url' => admin_url( 'admin.php?page=et-seed-content' ) ],
                     ];
                     foreach ( $sections as $s ) : ?>
                         <a href="<?php echo esc_url( $s['url'] ); ?>" class="etm-card">
-                            <span class="etm-card__icon"><?php echo $s['icon']; ?></span>
+                            <span class="etm-card__icon"><?php echo etm_lucide( $s['icon'], 26 ); ?></span>
                             <strong class="etm-card__title"><?php echo esc_html( $s['title'] ); ?></strong>
                             <p class="etm-card__desc"><?php echo esc_html( $s['desc'] ); ?></p>
                         </a>

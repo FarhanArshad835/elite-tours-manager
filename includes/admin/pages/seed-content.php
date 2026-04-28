@@ -39,7 +39,7 @@ function etm_seed_content_page(): void {
     ?>
     <div class="wrap etm-wrap">
         <h1 class="etm-page-title">
-            🌱 Seed Experience Content
+            <?php echo etm_lucide( 'sprout', 22 ); ?> Seed Experience Content
             <span style="font-size:13px;font-weight:500;color:#6b7280;background:#eef2f7;padding:3px 10px;border-radius:999px;margin-left:10px;vertical-align:middle;">Seeder v<?php echo (int) ETM_SEEDER_VERSION; ?></span>
         </h1>
 
@@ -84,7 +84,7 @@ function etm_seed_content_page(): void {
                 <input type="hidden" name="action" value="etm_run_seeders">
                 <button type="submit" class="button button-primary button-hero"
                         onclick="return confirm('Run the seeder? This will overwrite content on the 2 tour-product posts (Signature Journey, Essence Experience) and refresh homepage / region / hotel data.');">
-                    🌱 Run Seeders
+                    <?php echo etm_lucide( 'sprout', 16 ); ?> Run Seeders
                 </button>
             </form>
 

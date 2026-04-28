@@ -51,7 +51,7 @@ function etm_funnel_leads_page(): void {
     $leads = array_reverse( $leads ); // newest first
     ?>
     <div class="wrap etm-wrap">
-        <h1 class="etm-page-title">📥 Funnel Leads
+        <h1 class="etm-page-title"><?php echo etm_lucide( 'inbox', 22 ); ?> Funnel Leads
             <span style="font-size:14px;font-weight:400;color:#666;margin-left:10px;">
                 (<?php echo count( $leads ); ?> total)
             </span>

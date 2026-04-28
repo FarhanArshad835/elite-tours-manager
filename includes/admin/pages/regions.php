@@ -53,7 +53,7 @@ function etm_regions_page(): void {
     if ( ! is_array( $regions ) ) $regions = [];
     ?>
     <div class="wrap etm-wrap">
-        <h1 class="etm-page-title">🗺️ Regions of Ireland</h1>
+        <h1 class="etm-page-title"><?php echo etm_lucide( 'map', 22 ); ?> Regions of Ireland</h1>
         <p class="etm-page-desc">The 11 region tiles shown on <code>/experiences/</code> under "The country, in eleven movements." Drag to reorder. Each region card shows the eyebrow, title, blurb, up to 3 highlights, and a CTA link.</p>
 
         <div id="etm-rg-feedback" class="etm-notice" style="min-height:1.5em;"></div>
@@ -293,7 +293,7 @@ function etm_regions_page(): void {
                 .then(function(res) {
                     if (res.success) {
                         markClean();
-                        saveBtn.textContent = 'Saved ✔';
+                        saveBtn.textContent = 'Saved';
                         feedback.textContent = res.data;
                         feedback.className = 'etm-notice etm-notice--success';
                         setTimeout(function() { saveBtn.textContent = 'Save Regions'; saveBtn.disabled = false; }, 2000);

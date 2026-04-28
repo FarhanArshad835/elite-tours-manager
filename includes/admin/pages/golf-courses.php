@@ -254,7 +254,7 @@ function etm_golf_courses_page(): void {
                 .then(function(res) {
                     if (res.success) {
                         markClean();
-                        saveBtn.textContent = 'Saved ✔';
+                        saveBtn.textContent = 'Saved';
                         feedback.textContent = res.data;
                         feedback.className = 'etm-notice etm-notice--success';
                         setTimeout(function() { saveBtn.textContent = 'Save Courses'; saveBtn.disabled = false; }, 2000);

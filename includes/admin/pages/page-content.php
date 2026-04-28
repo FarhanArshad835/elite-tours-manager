@@ -179,7 +179,7 @@ function etm_page_content_page(): void {
     $interests_objs = array_map( function ( $v ) { return [ 'value' => (string) $v ]; }, (array) $interests );
     ?>
     <div class="wrap etm-wrap">
-        <h1 class="etm-page-title">📄 Page Content</h1>
+        <h1 class="etm-page-title"><?php echo etm_lucide( 'file-text', 22 ); ?> Page Content</h1>
         <p class="etm-page-desc">Editorial blocks across Bespoke Tours, Golf Tours, Accommodation, and Contact pages. Edits here update the live site immediately.</p>
 
         <div id="etm-pc-feedback" class="etm-notice" style="min-height:1.5em;margin-bottom:14px;"></div>
@@ -187,80 +187,189 @@ function etm_page_content_page(): void {
         <form id="etm-pc-form">
             <?php wp_nonce_field( 'etm_page_content' ); ?>
 
-            <div class="etm-section">
-                <h2 class="etm-section__title">Bespoke Tours — Journey Types Grid</h2>
+            <div class="etm-exp-item is-open">
+                <div class="etm-exp-item__header">
+                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title">Bespoke Tours — Journey Types Grid</div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
+                
                 <p class="etm-help">The "Where Would You Like to Begin?" tile grid on /bespoke-tours/. Drag to reorder.</p>
                 <div class="etm-pc-rows" data-section="bespoke_journey_types"
                      data-fields='[{"k":"label","l":"Label (eyebrow)","placeholder":"Ancestry & Roots"},{"k":"title","l":"Title","placeholder":"Find Where You Came From"},{"k":"desc","l":"Description","type":"textarea","placeholder":"Trace your Irish heritage..."},{"k":"url","l":"Link URL (optional)","type":"url","placeholder":"https://..."},{"k":"image_id","l":"Image","type":"image"}]'></div>
                 <button type="button" class="button etm-pc-add" data-section="bespoke_journey_types">+ Add Journey Type</button>
+                            </div>
             </div>
 
-            <div class="etm-section">
-                <h2 class="etm-section__title">Bespoke Tours — Duration Cards</h2>
+            <div class="etm-exp-item is-open">
+                <div class="etm-exp-item__header">
+                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title">Bespoke Tours — Duration Cards</div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
+                
                 <p class="etm-help">The "How Long Would You Like?" 3-card row on /bespoke-tours/.</p>
                 <div class="etm-pc-rows" data-section="bespoke_durations"
                      data-fields='[{"k":"num","l":"Number / Symbol","placeholder":"6-10"},{"k":"title","l":"Title","placeholder":"Days"},{"k":"desc","l":"Description","type":"textarea","placeholder":"A focused, deeply personal..."}]'></div>
                 <button type="button" class="button etm-pc-add" data-section="bespoke_durations">+ Add Duration</button>
+                            </div>
             </div>
 
-            <div class="etm-section">
-                <h2 class="etm-section__title">Bespoke Tours — What's Included</h2>
+            <div class="etm-exp-item is-open">
+                <div class="etm-exp-item__header">
+                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title">Bespoke Tours — What's Included</div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
+                
                 <p class="etm-help">The "What Every Journey Includes" cards on /bespoke-tours/.</p>
                 <div class="etm-pc-rows" data-section="bespoke_includes"
                      data-fields='[{"k":"num","l":"Number","placeholder":"01"},{"k":"title","l":"Title","placeholder":"Private Chauffeur"},{"k":"desc","l":"Description","type":"textarea","placeholder":"Door-to-door throughout..."}]'></div>
                 <button type="button" class="button etm-pc-add" data-section="bespoke_includes">+ Add Inclusion</button>
+                            </div>
             </div>
 
-            <div class="etm-section">
-                <h2 class="etm-section__title">Golf Tours — 5 Pillars</h2>
+            <div class="etm-exp-item is-open">
+                <div class="etm-exp-item__header">
+                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title">Golf Tours — 5 Pillars</div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
+                
                 <p class="etm-help">The "What Every Elite Golf Journey Includes" cards on /golf-tours/.</p>
                 <div class="etm-pc-rows" data-section="golf_pillars"
                      data-fields='[{"k":"num","l":"Number","placeholder":"01"},{"k":"title","l":"Title","placeholder":"Golf-Led Personalisation"},{"k":"desc","l":"Description","type":"textarea","placeholder":"Built around you..."}]'></div>
                 <button type="button" class="button etm-pc-add" data-section="golf_pillars">+ Add Pillar</button>
+                            </div>
             </div>
 
-            <div class="etm-section">
-                <h2 class="etm-section__title">Accommodation — Category Intro Cards</h2>
+            <div class="etm-exp-item is-open">
+                <div class="etm-exp-item__header">
+                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title">Accommodation — Category Intro Cards</div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
+                
                 <p class="etm-help">The 3 category overview tiles at the top of /accommodation/. Use one row per category — keys must be <code>castle</code>, <code>boutique</code>, or <code>coastal</code> (matches hotel category dropdown).</p>
                 <div class="etm-pc-rows" data-section="accommodation_intros"
                      data-fields='[{"k":"key","l":"Category Key","type":"select","options":{"castle":"Castle & Estate","boutique":"Boutique & Country House","coastal":"Luxury Coastal & Scenic"}},{"k":"label","l":"Label (eyebrow)","placeholder":"Castle & Estate Hotels"},{"k":"title","l":"Title","placeholder":"Sleep inside history."},{"k":"desc","l":"Description","type":"textarea","placeholder":"Ashford, Dromoland..."},{"k":"image_id","l":"Image","type":"image"}]'></div>
                 <button type="button" class="button etm-pc-add" data-section="accommodation_intros">+ Add Category Intro</button>
+                            </div>
             </div>
 
-            <div class="etm-section">
-                <h2 class="etm-section__title">Contact — Interest Checkboxes</h2>
+            <div class="etm-exp-item is-open">
+                <div class="etm-exp-item__header">
+                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title">Contact — Interest Checkboxes</div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
+                
                 <p class="etm-help">The "Interests (select all that apply)" checkboxes on the /contact/ enquiry form.</p>
                 <div class="etm-pc-rows" data-section="contact_interests"
                      data-fields='[{"k":"value","l":"Interest","placeholder":"Ancestry"}]'></div>
                 <button type="button" class="button etm-pc-add" data-section="contact_interests">+ Add Interest</button>
+                            </div>
             </div>
 
-            <div class="etm-section">
-                <h2 class="etm-section__title">About Us — The DNA</h2>
+            <div class="etm-exp-item is-open">
+                <div class="etm-exp-item__header">
+                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title">About Us — The DNA</div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
+                
                 <p class="etm-help">The 5 DNA pillars on /about-us/. Title accepts <code>&lt;em&gt;</code> and <code>&lt;strong&gt;</code> for emphasis.</p>
                 <div class="etm-pc-rows" data-section="about_dna"
                      data-fields='[{"k":"title","l":"Title (HTML allowed: em, strong)","placeholder":"Hosted Ireland, not guided"},{"k":"desc","l":"Description","type":"textarea","placeholder":"You are not guided through Ireland..."}]'></div>
                 <button type="button" class="button etm-pc-add" data-section="about_dna">+ Add Pillar</button>
+                            </div>
             </div>
 
-            <div class="etm-section">
-                <h2 class="etm-section__title">About Us — Signature Moments</h2>
+            <div class="etm-exp-item is-open">
+                <div class="etm-exp-item__header">
+                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title">About Us — Signature Moments</div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
+                
                 <p class="etm-help">The 6 Signature Moments on /about-us/. Description accepts <code>&lt;em&gt;</code> and <code>&lt;strong&gt;</code> for emphasis.</p>
                 <div class="etm-pc-rows" data-section="about_moments"
                      data-fields='[{"k":"title","l":"Title","placeholder":"The First Conversation"},{"k":"desc","l":"Description (HTML allowed: em, strong)","type":"textarea","placeholder":"Sitting down with Ray..."}]'></div>
                 <button type="button" class="button etm-pc-add" data-section="about_moments">+ Add Moment</button>
+                            </div>
             </div>
 
-            <div class="etm-section">
-                <h2 class="etm-section__title">About Us — Differentiator Table</h2>
+            <div class="etm-exp-item is-open">
+                <div class="etm-exp-item__header">
+                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title">About Us — Differentiator Table</div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
+                
                 <p class="etm-help">The "Instead of this / We offer this" table on /about-us/.</p>
                 <div class="etm-pc-rows" data-section="about_compare"
                      data-fields='[{"k":"left","l":"Instead of this","placeholder":"Group tours that move people around in coaches"},{"k":"right","l":"We offer this","placeholder":"A privately hosted journey, end-to-end..."}]'></div>
                 <button type="button" class="button etm-pc-add" data-section="about_compare">+ Add Row</button>
+                            </div>
             </div>
 
-            <div class="etm-section">
-                <h2 class="etm-section__title">Editorial Strings</h2>
+            <div class="etm-exp-item is-open">
+                <div class="etm-exp-item__header">
+                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title">Editorial Strings</div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
+                
                 <p class="etm-help">Single-string copy across multiple pages. Edit and save — the strings update everywhere they appear.</p>
 
                 <div class="etm-pc-string-grid" style="display:grid;gap:14px;">
@@ -294,10 +403,21 @@ function etm_page_content_page(): void {
                         <textarea data-string-key="about_origin_story" rows="10" class="etm-input" style="width:100%;font-family:inherit;" placeholder="For many visitors, a trip to Ireland..."><?php echo esc_textarea( $page_strings['about_origin_story'] ?? '' ); ?></textarea>
                     </div>
                 </div>
+                            </div>
             </div>
 
-            <div class="etm-section">
-                <h2 class="etm-section__title">Bespoke Tours — Philosophy Block</h2>
+            <div class="etm-exp-item is-open">
+                <div class="etm-exp-item__header">
+                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title">Bespoke Tours — Philosophy Block</div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
+                
                 <p class="etm-help">The "This Is Not a Tour Package" two-column block on /bespoke-tours/.</p>
 
                 <div class="etm-field">
@@ -308,10 +428,21 @@ function etm_page_content_page(): void {
                     <label class="etm-label">Body (paragraphs separated by blank lines)</label>
                     <textarea data-string-key="bespoke_philosophy_body" rows="10" class="etm-input" style="width:100%;font-family:inherit;" placeholder="Most companies offer you a list of itineraries..."><?php echo esc_textarea( $page_strings['bespoke_philosophy_body'] ?? '' ); ?></textarea>
                 </div>
+                            </div>
             </div>
 
-            <div class="etm-section">
-                <h2 class="etm-section__title">Golf Tours — Philosophy Block</h2>
+            <div class="etm-exp-item is-open">
+                <div class="etm-exp-item__header">
+                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title">Golf Tours — Philosophy Block</div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
+                
                 <p class="etm-help">The "This Is Not a Golf Package" two-column block on /golf-tours/.</p>
 
                 <div class="etm-field">
@@ -326,10 +457,21 @@ function etm_page_content_page(): void {
                     <label class="etm-label">Blockquote (callout line)</label>
                     <input type="text" data-string-key="golf_philosophy_blockquote" class="etm-input" style="width:100%;" value="<?php echo esc_attr( $page_strings['golf_philosophy_blockquote'] ?? '' ); ?>" placeholder="The best golf trip of your life, without having to think about anything.">
                 </div>
+                            </div>
             </div>
 
-            <div class="etm-section">
-                <h2 class="etm-section__title">About Us — Founder Feature</h2>
+            <div class="etm-exp-item is-open">
+                <div class="etm-exp-item__header">
+                    <div class="etm-exp-item__thumb etm-exp-item__thumb--empty"><?php echo etm_lucide( 'file-text', 18 ); ?></div>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title">About Us — Founder Feature</div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Collapse"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
+                
                 <p class="etm-help">The "Raphael Mulally" founder block on /about-us/.</p>
 
                 <div class="etm-field-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -354,6 +496,7 @@ function etm_page_content_page(): void {
                     <label class="etm-label">Quote Attribution</label>
                     <input type="text" data-string-key="about_founder_quote_attribution" class="etm-input" style="width:100%;" value="<?php echo esc_attr( $page_strings['about_founder_quote_attribution'] ?? '' ); ?>" placeholder="Raphael Mulally · Founder, Elite Tours Ireland">
                 </div>
+                            </div>
             </div>
 
             <div class="etm-actions etm-actions--sticky">
@@ -620,7 +763,7 @@ function etm_page_content_page(): void {
                 .then(function (res) {
                     if (res.success) {
                         markClean();
-                        saveBtn.textContent = 'Saved ✔';
+                        saveBtn.textContent = 'Saved';
                         feedback.textContent = 'All page content saved.';
                         feedback.className = 'etm-notice etm-notice--success';
                         setTimeout(function () { saveBtn.textContent = 'Save All Page Content'; saveBtn.disabled = false; }, 2200);
@@ -638,7 +781,18 @@ function etm_page_content_page(): void {
                     feedback.className = 'etm-notice etm-notice--error';
                 });
         });
-    })();
+    
+        // Collapse/expand each section by clicking its header.
+        form.querySelectorAll('.etm-exp-item__header').forEach(function (header) {
+            header.addEventListener('click', function (e) {
+                if (e.target.closest('input, textarea, select, button')) {
+                    if (!e.target.closest('.etm-exp-item__toggle')) return;
+                }
+                header.closest('.etm-exp-item').classList.toggle('is-open');
+            });
+        });
+
+        })();
     </script>
     <?php
 }

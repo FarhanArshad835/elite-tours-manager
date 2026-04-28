@@ -84,7 +84,7 @@ function etm_page_heroes_page(): void {
     if ( ! is_array( $ctas ) )   $ctas   = [];
     ?>
     <div class="wrap etm-wrap">
-        <h1 class="etm-page-title">🪧 Page Heroes &amp; CTAs</h1>
+        <h1 class="etm-page-title"><?php echo etm_lucide( 'layout-template', 22 ); ?> Page Heroes &amp; CTAs</h1>
         <p class="etm-page-desc">Hero block (top) and bottom CTA for each page template. Edit once — reflected immediately on the live site.</p>
 
         <div id="etm-ph-feedback" class="etm-notice" style="min-height:1.5em;margin-bottom:14px;"></div>
@@ -97,12 +97,25 @@ function etm_page_heroes_page(): void {
                 $c = $ctas[ $slug ]   ?? [];
                 $img_id  = absint( $h['image_id'] ?? 0 );
                 $img_url = $img_id ? wp_get_attachment_image_url( $img_id, 'medium' ) : '';
+                $section_meta = $def['has_hero'] && $def['has_cta']
+                    ? 'Hero + bottom CTA'
+                    : ( $def['has_hero'] ? 'Hero only' : 'CTA only' );
+                $thumb_html = $img_url
+                    ? '<img class="etm-exp-item__thumb" src="' . esc_url( $img_url ) . '" alt="">'
+                    : '<div class="etm-exp-item__thumb etm-exp-item__thumb--empty">' . etm_lucide( 'layout-template', 18 ) . '</div>';
             ?>
-            <div class="etm-section" data-page-slug="<?php echo esc_attr( $slug ); ?>" style="border-left:3px solid var(--et-green, #1A4731);">
-                <h2 class="etm-section__title">
-                    <?php echo esc_html( $def['label'] ); ?>
-                    <span style="font-size:13px;color:#888;font-weight:normal;margin-left:8px;">/<?php echo esc_html( $slug ); ?>/</span>
-                </h2>
+            <div class="etm-exp-item" data-page-slug="<?php echo esc_attr( $slug ); ?>">
+                <div class="etm-exp-item__header">
+                    <?php echo $thumb_html; ?>
+                    <div class="etm-exp-item__info">
+                        <div class="etm-exp-item__title"><?php echo esc_html( $def['label'] ); ?></div>
+                        <div class="etm-exp-item__meta">/<?php echo esc_html( $slug ); ?>/ &middot; <?php echo esc_html( $section_meta ); ?></div>
+                    </div>
+                    <div class="etm-exp-item__actions">
+                        <button type="button" class="etm-exp-item__toggle" title="Expand"><?php echo etm_lucide( 'chevron-down', 16 ); ?></button>
+                    </div>
+                </div>
+                <div class="etm-exp-item__body">
 
                 <?php if ( $def['has_hero'] ) : ?>
                 <div style="margin-bottom:18px;padding:14px 16px;background:#f6f7f7;border-radius:6px;">
@@ -178,6 +191,7 @@ function etm_page_heroes_page(): void {
                 </div>
                 <?php endif; ?>
 
+                </div><!-- /.etm-exp-item__body -->
             </div>
             <?php endforeach; ?>
 
@@ -206,8 +220,19 @@ function etm_page_heroes_page(): void {
             el.addEventListener('change', markDirty);
         });
 
+        // Collapse/expand each page section by clicking its header. Skip clicks
+        // landing on the inputs/buttons inside the body (header doesn't contain them).
+        form.querySelectorAll('.etm-exp-item__header').forEach(function (header) {
+            header.addEventListener('click', function (e) {
+                if (e.target.closest('input, textarea, select, button')) {
+                    if (!e.target.closest('.etm-exp-item__toggle')) return;
+                }
+                header.closest('.etm-exp-item').classList.toggle('is-open');
+            });
+        });
+
         // Image picker / remove (per page section)
-        form.querySelectorAll('.etm-section[data-page-slug]').forEach(function (section) {
+        form.querySelectorAll('.etm-exp-item[data-page-slug]').forEach(function (section) {
             var upload = section.querySelector('.etm-ph-upload');
             var remove = section.querySelector('.etm-ph-remove-img');
             var imgId  = section.querySelector('[data-hero-field="image_id"]');
@@ -242,7 +267,7 @@ function etm_page_heroes_page(): void {
         function collect() {
             var heroes = {};
             var ctas   = {};
-            form.querySelectorAll('.etm-section[data-page-slug]').forEach(function (section) {
+            form.querySelectorAll('.etm-exp-item[data-page-slug]').forEach(function (section) {
                 var slug = section.dataset.pageSlug;
                 var h = {}, c = {};
                 section.querySelectorAll('[data-hero-field]').forEach(function (el) { h[el.dataset.heroField] = el.value; });
@@ -268,7 +293,7 @@ function etm_page_heroes_page(): void {
                 .then(function (res) {
                     if (res.success) {
                         markClean();
-                        saveBtn.textContent = 'Saved ✔';
+                        saveBtn.textContent = 'Saved';
                         feedback.textContent = 'Heroes & CTAs saved.';
                         feedback.className = 'etm-notice etm-notice--success';
                         setTimeout(function () { saveBtn.textContent = 'Save All Heroes & CTAs'; saveBtn.disabled = false; }, 2200);
