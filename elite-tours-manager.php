@@ -2,7 +2,7 @@
 /**
  * Plugin Name:   Elite Tours Manager
  * Description:   Content management panel for Elite Tours Ireland website. Last updated: April 2026.
- * Version:       1.2.20
+ * Version:       1.2.21
  * Author:        Elite Tours Ireland
  * Text Domain:   elite-tours-manager
  * GitHub Plugin URI: FarhanArshad835/elite-tours-manager
@@ -495,12 +495,14 @@ if ( is_admin() ) {
     require_once ETM_PATH . 'includes/admin/class-admin-menus.php';
     require_once ETM_PATH . 'includes/admin/pages/site-settings.php';
     require_once ETM_PATH . 'includes/admin/pages/homepage.php';
-    require_once ETM_PATH . 'includes/admin/pages/experiences.php';
+    // experiences.php (legacy et_experiences option editor) and itineraries.php
+    // (et_itineraries option editor) intentionally not loaded — both replaced
+    // by the renamed Experience CPT ("Sample Itineraries") which is the single
+    // source of truth for tour products.
     require_once ETM_PATH . 'includes/admin/pages/hotels.php';
     require_once ETM_PATH . 'includes/admin/pages/regions.php';
     require_once ETM_PATH . 'includes/admin/pages/key-experiences.php';
     require_once ETM_PATH . 'includes/admin/pages/golf-courses.php';
-    require_once ETM_PATH . 'includes/admin/pages/itineraries.php';
     require_once ETM_PATH . 'includes/admin/pages/page-content.php';
     require_once ETM_PATH . 'includes/admin/pages/funnel-leads.php';
     require_once ETM_PATH . 'includes/admin/pages/seed-content.php';

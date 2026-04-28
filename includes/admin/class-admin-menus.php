@@ -25,21 +25,28 @@ class ETM_Admin_Menus {
             3
         );
 
-        // Sub-pages
-        add_submenu_page( 'elite-tours', 'Site Settings', 'Site Settings', 'manage_options', 'et-site-settings',   'etm_site_settings_page' );
-        add_submenu_page( 'elite-tours', 'Homepage',      'Homepage',      'manage_options', 'et-homepage',        'etm_homepage_page' );
-        add_submenu_page( 'elite-tours', 'Experiences',   'Experiences',   'manage_options', 'et-experiences',     'etm_experiences_page' );
-        add_submenu_page( 'elite-tours', 'Hotels',         'Hotels',        'manage_options', 'et-hotels',          'etm_hotels_page' );
-        add_submenu_page( 'elite-tours', 'Regions',        'Regions',       'manage_options', 'et-regions',         'etm_regions_page' );
-        add_submenu_page( 'elite-tours', 'Key Experiences','Key Experiences','manage_options','et-key-experiences','etm_key_experiences_page' );
-        add_submenu_page( 'elite-tours', 'Golf Courses',   'Golf Courses',  'manage_options', 'et-golf-courses',    'etm_golf_courses_page' );
-        add_submenu_page( 'elite-tours', 'Itineraries',    'Itineraries',   'manage_options', 'et-itineraries',     'etm_itineraries_page' );
+        // ── Sub-menu groups (logical, in render order) ─────────────────
+        // 1. Sample Itineraries (CPT, auto-shown by show_in_menu='elite-tours' — appears at the top by default)
+        //
+        // 2. Site-wide configuration
+        add_submenu_page( 'elite-tours', 'Site Settings',  'Site Settings', 'manage_options', 'et-site-settings',   'etm_site_settings_page' );
+        add_submenu_page( 'elite-tours', 'Homepage',       'Homepage',      'manage_options', 'et-homepage',        'etm_homepage_page' );
         add_submenu_page( 'elite-tours', 'Page Content',   'Page Content',  'manage_options', 'et-page-content',    'etm_page_content_page' );
         add_submenu_page( 'elite-tours', 'Page Heroes & CTAs', 'Heroes & CTAs', 'manage_options', 'et-page-heroes', 'etm_page_heroes_page' );
+
+        // 3. Discovery (the /experiences/ page content)
+        add_submenu_page( 'elite-tours', 'Regions',        'Regions',       'manage_options', 'et-regions',         'etm_regions_page' );
+        add_submenu_page( 'elite-tours', 'Key Experiences','Key Experiences','manage_options','et-key-experiences','etm_key_experiences_page' );
+
+        // 4. Catalogue (browseable inventory)
+        add_submenu_page( 'elite-tours', 'Hotels',         'Hotels',        'manage_options', 'et-hotels',          'etm_hotels_page' );
+        add_submenu_page( 'elite-tours', 'Golf Courses',   'Golf Courses',  'manage_options', 'et-golf-courses',    'etm_golf_courses_page' );
+
+        // 5. Operational
         add_submenu_page( 'elite-tours', 'Funnel Leads',   'Funnel Leads',  'manage_options', 'et-funnel-leads',    'etm_funnel_leads_page' );
         add_submenu_page( 'elite-tours', 'Seed Content',   'Seed Content',  'manage_options', 'et-seed-content',    'etm_seed_content_page' );
 
-        // Remove duplicate top-level item
+        // Remove duplicate top-level item (the dashboard placeholder)
         remove_submenu_page( 'elite-tours', 'elite-tours' );
     }
 
@@ -57,18 +64,17 @@ class ETM_Admin_Menus {
                 <div class="etm-dashboard__grid">
                     <?php
                     $sections = [
-                        [ 'icon' => 'settings',         'title' => 'Site Settings',   'desc' => 'Logo, phone number, nav CTA text.',                                       'url' => admin_url( 'admin.php?page=et-site-settings' ) ],
-                        [ 'icon' => 'home',             'title' => 'Homepage',        'desc' => 'Hero video/image, headline, trust bar.',                                  'url' => admin_url( 'admin.php?page=et-homepage' ) ],
-                        [ 'icon' => 'tour',             'title' => 'Experiences',     'desc' => 'Add, edit, reorder experience cards.',                                    'url' => admin_url( 'admin.php?page=et-experiences' ) ],
-                        [ 'icon' => 'hotel',            'title' => 'Hotels',          'desc' => 'Manage accommodation listings.',                                          'url' => admin_url( 'admin.php?page=et-hotels' ) ],
-                        [ 'icon' => 'map',              'title' => 'Regions',         'desc' => 'The 11 region tiles on the Experiences page.',                            'url' => admin_url( 'admin.php?page=et-regions' ) ],
-                        [ 'icon' => 'tour',             'title' => 'Key Experiences', 'desc' => "The 22 named experiences shown below the regions on /experiences/.",      'url' => admin_url( 'admin.php?page=et-key-experiences' ) ],
-                        [ 'icon' => 'flag',             'title' => 'Golf Courses',    'desc' => "Manage Ireland's featured golf courses.",                                 'url' => admin_url( 'admin.php?page=et-golf-courses' ) ],
-                        [ 'icon' => 'clipboard-list',   'title' => 'Itineraries',     'desc' => 'Sample bespoke and golf itineraries.',                                    'url' => admin_url( 'admin.php?page=et-itineraries' ) ],
-                        [ 'icon' => 'file-text',        'title' => 'Page Content',    'desc' => 'Editorial blocks across Bespoke, Golf, Accommodation, Contact pages.',    'url' => admin_url( 'admin.php?page=et-page-content' ) ],
-                        [ 'icon' => 'layout-template',  'title' => 'Heroes & CTAs',   'desc' => 'Top hero blocks and bottom CTA sections per page.',                       'url' => admin_url( 'admin.php?page=et-page-heroes' ) ],
-                        [ 'icon' => 'inbox',            'title' => 'Funnel Leads',    'desc' => 'Captured leads from experience contact forms.',                           'url' => admin_url( 'admin.php?page=et-funnel-leads' ) ],
-                        [ 'icon' => 'sprout',           'title' => 'Seed Content',    'desc' => 'Bulk-populate the experience pages with their full content + images.',    'url' => admin_url( 'admin.php?page=et-seed-content' ) ],
+                        [ 'icon' => 'clipboard-list',   'title' => 'Sample Itineraries','desc' => 'Add, edit, and reorder the named tour products (Signature, Essence, …).', 'url' => admin_url( 'edit.php?post_type=experience' ) ],
+                        [ 'icon' => 'settings',         'title' => 'Site Settings',     'desc' => 'Logo, phone number, nav CTA text.',                                      'url' => admin_url( 'admin.php?page=et-site-settings' ) ],
+                        [ 'icon' => 'home',             'title' => 'Homepage',          'desc' => 'Hero video/image, headline, trust bar.',                                 'url' => admin_url( 'admin.php?page=et-homepage' ) ],
+                        [ 'icon' => 'file-text',        'title' => 'Page Content',      'desc' => 'Editorial blocks across Bespoke, Golf, Accommodation, Contact pages.',   'url' => admin_url( 'admin.php?page=et-page-content' ) ],
+                        [ 'icon' => 'layout-template',  'title' => 'Heroes & CTAs',     'desc' => 'Top hero blocks and bottom CTA sections per page.',                      'url' => admin_url( 'admin.php?page=et-page-heroes' ) ],
+                        [ 'icon' => 'map',              'title' => 'Regions',           'desc' => 'The 11 region tiles on the Experiences page.',                           'url' => admin_url( 'admin.php?page=et-regions' ) ],
+                        [ 'icon' => 'tour',             'title' => 'Key Experiences',   'desc' => 'The 22 named moments shown below the regions on /experiences/.',         'url' => admin_url( 'admin.php?page=et-key-experiences' ) ],
+                        [ 'icon' => 'hotel',            'title' => 'Hotels',            'desc' => 'Manage accommodation listings.',                                         'url' => admin_url( 'admin.php?page=et-hotels' ) ],
+                        [ 'icon' => 'flag',             'title' => 'Golf Courses',      'desc' => "Manage Ireland's featured golf courses.",                                'url' => admin_url( 'admin.php?page=et-golf-courses' ) ],
+                        [ 'icon' => 'inbox',            'title' => 'Funnel Leads',      'desc' => 'Captured leads from experience contact forms.',                          'url' => admin_url( 'admin.php?page=et-funnel-leads' ) ],
+                        [ 'icon' => 'sprout',           'title' => 'Seed Content',      'desc' => 'Bulk-populate the site with default content + images.',                  'url' => admin_url( 'admin.php?page=et-seed-content' ) ],
                     ];
                     foreach ( $sections as $s ) : ?>
                         <a href="<?php echo esc_url( $s['url'] ); ?>" class="etm-card">
