@@ -2,7 +2,7 @@
 /**
  * Plugin Name:   Elite Tours Manager
  * Description:   Content management panel for Elite Tours Ireland website. Last updated: April 2026.
- * Version:       1.2.26
+ * Version:       1.2.27
  * Author:        Elite Tours Ireland
  * Text Domain:   elite-tours-manager
  * GitHub Plugin URI: FarhanArshad835/elite-tours-manager
@@ -11,7 +11,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'ETM_VERSION', '1.12.1' );
+// Read version dynamically from the Plugin Name header so it always matches
+// the auto-bumped value the pre-commit hook writes on every commit. No more
+// stale hardcoded version strings. get_file_data works on both front + admin.
+$etm_plugin_meta = get_file_data( __FILE__, [ 'Version' => 'Version' ] );
+define( 'ETM_VERSION', $etm_plugin_meta['Version'] ?: '0.0.0' );
+unset( $etm_plugin_meta );
 
 // ── One-time migration: clear stale homepage settings so fresh defaults apply ─
 if ( get_option( 'etm_migration_v130' ) !== 'done' ) {
@@ -464,6 +469,46 @@ add_filter( 'plugin_row_meta', function ( array $meta, string $file ): array {
     }
     return $meta;
 }, 10, 2 );
+
+// ── Admin bar version badge — visible on EVERY admin and front-end page when
+// logged in, so you can verify in one glance which plugin + theme version is
+// live without digging into the Plugins page. ───────────────────────────────
+add_action( 'admin_bar_menu', function ( $bar ) {
+    if ( ! current_user_can( 'manage_options' ) ) return;
+
+    $theme       = wp_get_theme();
+    $theme_ver   = $theme->get( 'Version' );
+    $plugin_ver  = ETM_VERSION;
+    $plugin_mod  = filemtime( __FILE__ );
+    $age_minutes = max( 0, (int) round( ( time() - $plugin_mod ) / 60 ) );
+    $age_label   = $age_minutes < 60
+        ? $age_minutes . 'm ago'
+        : ( $age_minutes < 1440 ? round( $age_minutes / 60 ) . 'h ago' : round( $age_minutes / 1440 ) . 'd ago' );
+
+    $bar->add_node( [
+        'id'    => 'etm-version-badge',
+        'title' => sprintf(
+            '<span style="color:#ffd700;font-weight:600;">ET</span> <span style="opacity:0.9;">plugin v%s</span> <span style="opacity:0.6;">· theme v%s</span> <span style="opacity:0.5;">· %s</span>',
+            esc_html( $plugin_ver ),
+            esc_html( $theme_ver ),
+            esc_html( $age_label )
+        ),
+        'href'  => admin_url( 'admin.php?page=elite-tours' ),
+        'meta'  => [
+            'title' => sprintf(
+                'Elite Tours Manager v%s deployed %s UTC; theme v%s. Click to open the dashboard.',
+                $plugin_ver,
+                gmdate( 'j M Y H:i', $plugin_mod ),
+                $theme_ver
+            ),
+        ],
+    ] );
+}, 100 );
+
+// Make admin bar visible on the front-end too (it is by default for logged-in
+// users, but ensure it). Front-end visibility is what makes this useful for
+// rapid sync-verification — open the live site, look at top bar.
+add_filter( 'show_admin_bar', '__return_true' );
 
 // ── Auto-create pages (runs once per version) ────────────────────────────────
 // v3 (Phase 8) adds Privacy Policy + Terms & Conditions pages.
