@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * (new images, new option keys, new steps). The number is shown in the
  * Seed Content admin page header so the live site can be checked at a glance.
  */
-if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 15 );
+if ( ! defined( 'ETM_SEEDER_VERSION' ) ) define( 'ETM_SEEDER_VERSION', 16 );
 
 class ETM_Experience_Seeder {
 
@@ -76,6 +76,10 @@ class ETM_Experience_Seeder {
         $this->log[] = '';
         $this->log[] = '── Step 7: Key Experiences image attachments ──';
         $this->seed_key_experience_images();
+
+        $this->log[] = '';
+        $this->log[] = '── Step 8: Page hero image attachments ──';
+        $this->seed_page_hero_images();
 
         $this->log[] = '';
         $this->log[] = 'Done.';
@@ -447,6 +451,48 @@ class ETM_Experience_Seeder {
         }
         update_option( 'et_key_experiences', $items );
         $this->log[] = "Wired image IDs for {$wired} of " . count( $items ) . " key experiences";
+    }
+
+    // ─── Step 8: Page hero image_id slots ────────────────────────
+
+    /**
+     * Imports each inner-page hero image into the Media Library and writes the
+     * resulting attachment ID into et_page_heroes[slug].image_id. This guarantees
+     * the page hero renders even when the theme-folder image URL is unreachable
+     * (CDN strip, theme rename, missing asset on host) — the helper prefers
+     * image_id over image_filename, so once this runs, heroes ride the standard
+     * Media Library pipeline.
+     *
+     * Slug → filename map matches the page templates' default image_filename.
+     */
+    private function seed_page_hero_images(): void {
+        $map = [
+            'bespoke-tours'         => 'winding-road.jpg',
+            'golf-tours'            => 'golf-coastal.jpg',
+            'experiences'           => 'irish-pub.jpg',
+            'accommodation'         => 'gothic-castle.jpg',
+            'about-us'              => 'kylemore-abbey.jpg',
+            'contact'               => 'cliffs-overcast.jpg',
+            'blog'                  => 'notebook-desk.jpg',
+            'wishlist'              => 'cliffs-dramatic.jpg',
+            'privacy-policy'        => 'cloud-sea-figure.jpg',
+            'terms-and-conditions'  => 'cloud-sea-figure.jpg',
+        ];
+        $heroes = get_option( 'et_page_heroes', [] );
+        if ( ! is_array( $heroes ) ) $heroes = [];
+        $wired = 0;
+        foreach ( $map as $slug => $filename ) {
+            $id = $this->seed_image( $filename );
+            if ( ! $id ) continue;
+            if ( ! isset( $heroes[ $slug ] ) || ! is_array( $heroes[ $slug ] ) ) {
+                $heroes[ $slug ] = [];
+            }
+            $heroes[ $slug ]['image_id']       = $id;
+            $heroes[ $slug ]['image_filename'] = $filename;
+            $wired++;
+        }
+        update_option( 'et_page_heroes', $heroes );
+        $this->log[] = "Wired image IDs for {$wired} of " . count( $map ) . " page heroes";
     }
 
     // ─── Step 9: Hotels image_id slots ───────────────────────────
