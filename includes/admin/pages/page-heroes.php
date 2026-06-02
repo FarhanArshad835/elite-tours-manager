@@ -1,18 +1,18 @@
 <?php
 /**
- * Page Heroes & Bottom CTAs — single admin page for the per-page top hero
+ * Page Heroes & Bottom CTAs, single admin page for the per-page top hero
  * blocks (h1 / subtitle / hero CTA / background image) and the bottom CTA
  * sections that sit above the footer on every page template.
  *
  * Storage:
- *   et_page_heroes  — assoc array keyed by page slug. Each value:
+ *   et_page_heroes , assoc array keyed by page slug. Each value:
  *                       eyebrow, title (br/em allowed), subtitle, cta_text,
  *                       cta_url, image_id, image_filename (fallback)
- *   et_page_ctas    — assoc array keyed by page slug. Each value:
+ *   et_page_ctas   , assoc array keyed by page slug. Each value:
  *                       title (br/em allowed), subtitle, cta_text, cta_url
  *
  * Pages covered: bespoke-tours, golf-tours, experiences, accommodation,
- * about-us, contact (hero only — page is the form).
+ * about-us, contact (hero only, page is the form).
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -85,7 +85,7 @@ function etm_page_heroes_page(): void {
     ?>
     <div class="wrap etm-wrap">
         <h1 class="etm-page-title"><?php echo etm_lucide( 'layout-template', 22 ); ?> Page Heroes &amp; CTAs</h1>
-        <p class="etm-page-desc">Hero block (top) and bottom CTA for each page template. Edit once — reflected immediately on the live site.</p>
+        <p class="etm-page-desc">Hero block (top) and bottom CTA for each page template. Edit once, reflected immediately on the live site.</p>
 
         <div id="etm-ph-feedback" class="etm-notice" style="min-height:1.5em;margin-bottom:14px;"></div>
 
@@ -122,7 +122,7 @@ function etm_page_heroes_page(): void {
                     <h3 style="margin:0 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:0.5px;color:#555;">Top Hero</h3>
 
                     <div class="etm-field">
-                        <label class="etm-label">Eyebrow (small label above title — optional)</label>
+                        <label class="etm-label">Eyebrow (small label above title, optional)</label>
                         <input type="text" data-hero-field="eyebrow" class="etm-input" value="<?php echo esc_attr( $h['eyebrow'] ?? '' ); ?>" placeholder="">
                     </div>
 
@@ -140,11 +140,11 @@ function etm_page_heroes_page(): void {
                     <?php if ( $def['has_hero_cta'] ) : ?>
                     <div class="etm-field-row" style="display:grid;grid-template-columns:1fr 2fr;gap:12px;">
                         <div class="etm-field">
-                            <label class="etm-label">Hero CTA — Button Text</label>
+                            <label class="etm-label">Hero CTA, Button Text</label>
                             <input type="text" data-hero-field="cta_text" class="etm-input" value="<?php echo esc_attr( $h['cta_text'] ?? '' ); ?>" placeholder="Begin Your First Conversation">
                         </div>
                         <div class="etm-field">
-                            <label class="etm-label">Hero CTA — Link URL</label>
+                            <label class="etm-label">Hero CTA, Link URL</label>
                             <input type="text" data-hero-field="cta_url" class="etm-input" value="<?php echo esc_attr( $h['cta_url'] ?? '' ); ?>" placeholder="/contact/">
                         </div>
                     </div>
@@ -317,7 +317,7 @@ function etm_page_heroes_page(): void {
 }
 
 /**
- * Front-end render helper — renders a standard hero section for a given page slug.
+ * Front-end render helper, renders a standard hero section for a given page slug.
  * Reads from et_page_heroes; falls back to defaults the caller supplies.
  *
  * @param string $slug      Page slug (e.g. 'bespoke-tours').
@@ -386,7 +386,7 @@ function etm_render_paragraphs( string $body ): void {
     foreach ( $paragraphs as $p ) {
         $p = trim( $p );
         if ( $p === '' ) continue;
-        // **bold** — capture before *italic* (greedy match prevention)
+        // **bold**, capture before *italic* (greedy match prevention)
         $parts = preg_split( '/\*\*([^*]+)\*\*|\*([^*]+)\*/', $p, -1, PREG_SPLIT_DELIM_CAPTURE );
         $out = '';
         for ( $i = 0; $i < count( $parts ); $i++ ) {
@@ -406,7 +406,7 @@ function etm_render_paragraphs( string $body ): void {
 }
 
 /**
- * Front-end render helper — renders the bottom green CTA section.
+ * Front-end render helper, renders the bottom green CTA section.
  *
  * @param string $slug      Page slug.
  * @param array  $defaults  Fallback values: title, subtitle, cta_text, cta_url.

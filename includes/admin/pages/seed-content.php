@@ -5,7 +5,7 @@
  * One-click bulk-populate the three experience CPT posts (Bespoke Private
  * Tour of Ireland, Trace Your Irish Heritage, Ireland's Craft Distilleries)
  * with their full editorial content, plus the supporting images. Idempotent
- * — safe to re-run on any environment (local, staging, live).
+ *, safe to re-run on any environment (local, staging, live).
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -42,7 +42,7 @@ function etm_seed_content_page(): void {
     // and which version it was on. Three states:
     //   - never run  -> amber "Not yet run" notice
     //   - up to date -> green "Last run X · matches current vN" badge
-    //   - outdated   -> amber "Ran at v(old). Current is v(N) — run again"
+    //   - outdated   -> amber "Ran at v(old). Current is v(N), run again"
     $last_run         = get_option( 'etm_seeder_last_run', null );
     $current_version  = (int) ETM_SEEDER_VERSION;
     $run_state        = 'never';      // never | current | outdated
@@ -69,12 +69,12 @@ function etm_seed_content_page(): void {
         <?php if ( $run_state === 'current' ) : ?>
             <div style="background:#ecfdf5;border-left:4px solid #10b981;padding:12px 16px;margin:14px 0;font-size:13px;line-height:1.5;display:flex;align-items:center;gap:10px;">
                 <span style="color:#047857;flex-shrink:0;"><?php echo etm_lucide( 'check-circle', 18 ); ?></span>
-                <span style="color:#064e3b;"><strong>Seeder has been run.</strong> Last run <?php echo esc_html( $time_human ); ?> on Seeder v<?php echo (int) $last_version; ?> — matches the current version. Re-running will refresh content from the bundled defaults.</span>
+                <span style="color:#064e3b;"><strong>Seeder has been run.</strong> Last run <?php echo esc_html( $time_human ); ?> on Seeder v<?php echo (int) $last_version; ?>, matches the current version. Re-running will refresh content from the bundled defaults.</span>
             </div>
         <?php elseif ( $run_state === 'outdated' ) : ?>
             <div style="background:#fff7e6;border-left:4px solid #f0b849;padding:12px 16px;margin:14px 0;font-size:13px;line-height:1.5;display:flex;align-items:center;gap:10px;">
                 <span style="color:#92400e;flex-shrink:0;"><?php echo etm_lucide( 'sprout', 18 ); ?></span>
-                <span style="color:#78350f;"><strong>Seeder is out of date.</strong> Last run <?php echo esc_html( $time_human ); ?> on <strong>Seeder v<?php echo (int) $last_version; ?></strong>. The current version is <strong>v<?php echo $current_version; ?></strong> — run again to apply newer seed data.</span>
+                <span style="color:#78350f;"><strong>Seeder is out of date.</strong> Last run <?php echo esc_html( $time_human ); ?> on <strong>Seeder v<?php echo (int) $last_version; ?></strong>. The current version is <strong>v<?php echo $current_version; ?></strong>, run again to apply newer seed data.</span>
             </div>
         <?php else : ?>
             <div style="background:#fff7e6;border-left:4px solid #f0b849;padding:12px 16px;margin:14px 0;font-size:13px;line-height:1.5;display:flex;align-items:center;gap:10px;">
@@ -90,28 +90,28 @@ function etm_seed_content_page(): void {
                 fresh environment.
             </p>
             <ul style="font-size:14px;line-height:1.7;color:#3c434a;list-style:disc;margin-left:22px;">
-                <li><strong>5 experience pages</strong> — The Signature Ireland Journey (11–15 days), The Essence of Ireland (6–10 days), Bespoke Private Tour (umbrella), Trace Your Irish Heritage, Ireland's Craft Distilleries (~250 meta-field values across the five).</li>
-                <li><strong>11 regions of Ireland</strong> — Dublin, Cork & Kinsale, Kerry & Dingle, South & West, Galway, Connemara, Mayo & Ashford, Sligo, Donegal, Derry & Causeway, Belfast — each with a hi-res hero, eyebrow, blurb, 3 key highlights, and a tour-product link. Rendered on the Experiences page.</li>
-                <li><strong>22 key experiences</strong> — the named items the client called out: Midleton Distillery, Old Head of Kinsale, Ring of Kerry, Slea Head Drive, Foxy John's, Cliffs of Moher (via Doolin), Galway, Connemara, Ashford Castle, Giant's Causeway, Black Taxi Tour, Titanic Quarter, etc. Rendered as a featured grid below the regions on /experiences/.</li>
-                <li><strong>22 hotels</strong> — Ashford / Dromoland / Ballynahinch / Lough Eske / Glenlo Abbey / Abbeyglen, Shelbourne / Merrion / Merchant / Hayfield Manor / Hawthorn / Bushmills / Europa / Westport / Derry City, Sheen Falls / Aghadoe Heights / Europe / Harvey's Point / Kinsale curated / Fishing Lodges / Private Estates. Grouped by Castle / Boutique / Coastal & Scenic. Image IDs left at 0 — client to provide hotel exteriors in a follow-up phase.</li>
-                <li><strong>0 sample itineraries</strong> (et_itineraries cleared) — the legacy Itineraries admin and front-end sections were removed. The renamed Sample Itineraries CPT (Signature + Essence) is now the source of truth.</li>
-                <li><strong>31 image attachments</strong> — uploaded from the bundled <code>seed-data/images/</code> folder into the Media Library and wired to the right meta fields. Includes hi-res hero shots (Gap of Dunloe, Kylemore Abbey, coastal road fog, whiskey casks warehouse, copper still, Irish Whiskey Museum) plus 4 region heroes (Dublin, Galway, Sligo, Belfast — bundled for upcoming regional pages) and the 18 original story/pillar/process images.</li>
-                <li><strong>Homepage settings</strong> — hero, intro, offer blocks, process steps, testimonials, founder CTA and section visibility.</li>
-                <li><strong>Homepage images</strong> — full-bleed hero photo, intro section image, Bespoke + Golf offer images, founder portrait. All wired into <em>Homepage</em> screen automatically.</li>
-                <li><strong>Experience cards array</strong> — the 3 cards used on the homepage Experiences grid.</li>
-                <li><strong>Experience filters</strong> — type and duration taxonomies (Bespoke / Photography / Culinary / Golf, etc.).</li>
+                <li><strong>5 experience pages</strong>, The Signature Ireland Journey (11-15 days), The Essence of Ireland (6-10 days), Bespoke Private Tour (umbrella), Trace Your Irish Heritage, Ireland's Craft Distilleries (~250 meta-field values across the five).</li>
+                <li><strong>11 regions of Ireland</strong>, Dublin, Cork & Kinsale, Kerry & Dingle, South & West, Galway, Connemara, Mayo & Ashford, Sligo, Donegal, Derry & Causeway, Belfast, each with a hi-res hero, eyebrow, blurb, 3 key highlights, and a tour-product link. Rendered on the Experiences page.</li>
+                <li><strong>22 key experiences</strong>, the named items the client called out: Midleton Distillery, Old Head of Kinsale, Ring of Kerry, Slea Head Drive, Foxy John's, Cliffs of Moher (via Doolin), Galway, Connemara, Ashford Castle, Giant's Causeway, Black Taxi Tour, Titanic Quarter, etc. Rendered as a featured grid below the regions on /experiences/.</li>
+                <li><strong>22 hotels</strong>, Ashford / Dromoland / Ballynahinch / Lough Eske / Glenlo Abbey / Abbeyglen, Shelbourne / Merrion / Merchant / Hayfield Manor / Hawthorn / Bushmills / Europa / Westport / Derry City, Sheen Falls / Aghadoe Heights / Europe / Harvey's Point / Kinsale curated / Fishing Lodges / Private Estates. Grouped by Castle / Boutique / Coastal & Scenic. Image IDs left at 0, client to provide hotel exteriors in a follow-up phase.</li>
+                <li><strong>0 sample itineraries</strong> (et_itineraries cleared), the legacy Itineraries admin and front-end sections were removed. The renamed Sample Itineraries CPT (Signature + Essence) is now the source of truth.</li>
+                <li><strong>31 image attachments</strong>, uploaded from the bundled <code>seed-data/images/</code> folder into the Media Library and wired to the right meta fields. Includes hi-res hero shots (Gap of Dunloe, Kylemore Abbey, coastal road fog, whiskey casks warehouse, copper still, Irish Whiskey Museum) plus 4 region heroes (Dublin, Galway, Sligo, Belfast, bundled for upcoming regional pages) and the 18 original story/pillar/process images.</li>
+                <li><strong>Homepage settings</strong>, hero, intro, offer blocks, process steps, testimonials, founder CTA and section visibility.</li>
+                <li><strong>Homepage images</strong>, full-bleed hero photo, intro section image, Bespoke + Golf offer images, founder portrait. All wired into <em>Homepage</em> screen automatically.</li>
+                <li><strong>Experience cards array</strong>, the 3 cards used on the homepage Experiences grid.</li>
+                <li><strong>Experience filters</strong>, type and duration taxonomies (Bespoke / Photography / Culinary / Golf, etc.).</li>
             </ul>
 
             <p style="font-size:14px;line-height:1.6;color:#3c434a;">
                 Use this on a fresh environment (live, staging, a new local clone)
                 to bring everything to the same state as the primary development
-                site. The seeder is <strong>idempotent</strong> — running it twice
+                site. The seeder is <strong>idempotent</strong>, running it twice
                 will not create duplicates; it updates existing posts and reuses
                 already-imported images.
             </p>
 
             <div style="background:#fff7e6;border-left:4px solid #f0b849;padding:12px 16px;margin:18px 0;font-size:13px;line-height:1.5;">
-                <strong>Heads up — this overwrites:</strong>
+                <strong>Heads up, this overwrites:</strong>
                 Running the seeder will overwrite any manual edits made on this
                 site to: the 3 experience posts' meta fields, the
                 <em>Homepage</em> screen settings, the <em>Experiences</em> cards
@@ -150,7 +150,7 @@ function etm_seed_content_page(): void {
                 </p>
             <?php elseif ( $just_ran ) : ?>
                 <div class="notice notice-warning" style="margin-top:20px;">
-                    <p>The seeder ran but no log was captured (transient may have expired). Try again — the log is stored briefly after each run.</p>
+                    <p>The seeder ran but no log was captured (transient may have expired). Try again, the log is stored briefly after each run.</p>
                 </div>
             <?php endif; ?>
 

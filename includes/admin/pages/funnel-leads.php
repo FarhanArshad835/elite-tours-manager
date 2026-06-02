@@ -63,7 +63,7 @@ function etm_funnel_leads_page(): void {
 
         <p class="etm-page-desc">
             Captured from the experience-page contact form. Newest first. The list is capped at the most recent 200 leads.
-            Always also sent by email to your Site Settings contact address — this view is the durable record.
+            Always also sent by email to your Site Settings contact address, this view is the durable record.
         </p>
 
         <?php if ( empty( $leads ) ) : ?>
@@ -107,10 +107,10 @@ function etm_funnel_leads_page(): void {
                         <td>
                             <?php if ( ! empty( $lead['page_url'] ) ) : ?>
                                 <a href="<?php echo esc_url( $lead['page_url'] ); ?>" target="_blank" rel="noopener">
-                                    <?php echo esc_html( $lead['experience'] ?: '—' ); ?>
+                                    <?php echo esc_html( $lead['experience'] ?: ',' ); ?>
                                 </a>
                             <?php else : ?>
-                                <?php echo esc_html( $lead['experience'] ?: '—' ); ?>
+                                <?php echo esc_html( $lead['experience'] ?: ',' ); ?>
                             <?php endif; ?>
                         </td>
                         <td><strong><?php echo esc_html( $lead['name'] ?? '' ); ?></strong></td>

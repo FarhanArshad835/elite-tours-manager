@@ -192,7 +192,7 @@ function etm_homepage_page(): void {
             <div class="etm-accordion" id="etm-panel-hero">
                 <button type="button" class="etm-accordion__toggle">Hero Section <span class="etm-accordion__arrow">&#9662;</span></button>
                 <div class="etm-accordion__body" style="display:none;">
-                    <p class="etm-section__desc">The full-screen section at the top of the homepage — the first thing visitors see.</p>
+                    <p class="etm-section__desc">The full-screen section at the top of the homepage, the first thing visitors see.</p>
 
                     <!-- Background -->
                     <div class="etm-field">
@@ -255,7 +255,7 @@ function etm_homepage_page(): void {
                     <div class="etm-field">
                         <label class="etm-label" for="hero_subheading">Subheading</label>
                         <textarea id="hero_subheading" name="hero_subheading" class="etm-textarea" rows="2"><?php echo esc_textarea( $o( 'hero_subheading', 'Bespoke private journeys, tailored to you, delivered with genuine Irish care.' ) ); ?></textarea>
-                        <p class="etm-help">Keep it to 1–2 lines.</p>
+                        <p class="etm-help">Keep it to 1-2 lines.</p>
                     </div>
 
                     <!-- CTAs -->
@@ -272,7 +272,7 @@ function etm_homepage_page(): void {
                         </div>
                     </div>
 
-                    <!-- TripAdvisor proof badge — appears above the buttons -->
+                    <!-- TripAdvisor proof badge, appears above the buttons -->
                     <div class="etm-field">
                         <label class="etm-label" for="hero_proof_text">TripAdvisor Proof Line <small>(above buttons)</small></label>
                         <input type="text" id="hero_proof_text" name="hero_proof_text" class="etm-input"
@@ -286,7 +286,7 @@ function etm_homepage_page(): void {
             <div class="etm-accordion" id="etm-panel-trust">
                 <button type="button" class="etm-accordion__toggle">Trust Strip <span class="etm-accordion__arrow">&#9662;</span></button>
                 <div class="etm-accordion__body" style="display:none;">
-                    <p class="etm-section__desc">The badge bar at the bottom of the hero — partner logos and credibility signals.</p>
+                    <p class="etm-section__desc">The badge bar at the bottom of the hero, partner logos and credibility signals.</p>
 
                     <!-- TripAdvisor -->
                     <div class="etm-field-group">
@@ -523,7 +523,7 @@ function etm_homepage_page(): void {
                     <span class="etm-accordion__arrow">&#9662;</span>
                 </div>
                 <div class="etm-accordion__body" style="display:none;">
-                    <p class="etm-section__desc">Two full-bleed image cards — Bespoke and Golf.</p>
+                    <p class="etm-section__desc">Two full-bleed image cards, Bespoke and Golf.</p>
                     <div class="etm-field-row etm-field-row--halves">
 
                         <?php
@@ -831,13 +831,13 @@ function etm_homepage_page(): void {
                     <div class="etm-field">
                         <label class="etm-label" for="founder_quote">Pull Quote <em>(italic)</em></label>
                         <textarea id="founder_quote" name="founder_quote" class="etm-textarea" rows="3"><?php echo esc_textarea( $o( 'founder_quote', "I've spent decades helping people experience Ireland in a truly personal way." ) ); ?></textarea>
-                        <p class="etm-help">Displayed in italic below the CTA button. Do not include quotation marks — they are added automatically.</p>
+                        <p class="etm-help">Displayed in italic below the CTA button. Do not include quotation marks, they are added automatically.</p>
                     </div>
                     <div class="etm-field">
                         <label class="etm-label" for="founder_cite">Citation</label>
                         <input type="text" id="founder_cite" name="founder_cite" class="etm-input etm-input--wide"
                                value="<?php echo esc_attr( $o( 'founder_cite', 'Raphael Mulally, Founder, Elite Tours Ireland' ) ); ?>">
-                        <p class="etm-help">Displayed as "— [citation]" below the quote.</p>
+                        <p class="etm-help">Displayed as ", [citation]" below the quote.</p>
                     </div>
 
                     <!-- Founder image -->
@@ -1144,7 +1144,7 @@ function etm_homepage_page(): void {
 
         allBtns.forEach( function ( btn ) {
             btn.addEventListener( 'click', function () {
-                if ( ! form ) { alert( 'Form not found — please refresh the page.' ); return; }
+                if ( ! form ) { alert( 'Form not found, please refresh the page.' ); return; }
 
                 updateOrderInput();
 
@@ -1305,7 +1305,7 @@ function etm_homepage_page(): void {
                             return;
                         }
                     }
-                    // Past all rows — put at end
+                    // Past all rows, put at end
                     sortable.appendChild( placeholder );
                 }
 

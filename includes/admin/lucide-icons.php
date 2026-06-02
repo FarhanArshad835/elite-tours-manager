@@ -52,7 +52,7 @@ if ( ! function_exists( 'etm_lucide' ) ) {
         }
 
         if ( ! isset( $library[ $name ] ) ) {
-            return ''; // unknown icon — render nothing rather than fall back to emoji
+            return ''; // unknown icon, render nothing rather than fall back to emoji
         }
 
         $size  = max( 12, min( 64, $size ) );

@@ -13,7 +13,7 @@ add_action( 'wp_ajax_nopriv_etm_funnel_submit', 'etm_funnel_submit' );
 function etm_funnel_submit(): void {
     check_ajax_referer( 'etm_funnel', '_wpnonce' );
 
-    // Honeypot — bots fill the "website" field; humans never see it
+    // Honeypot, bots fill the "website" field; humans never see it
     if ( ! empty( $_POST['website'] ) ) {
         wp_send_json_success( 'Thank you' ); // pretend success, drop silently
     }
@@ -36,7 +36,7 @@ function etm_funnel_submit(): void {
     $site = get_option( 'et_site_settings', [] );
     $to   = ! empty( $site['contact_email'] ) ? $site['contact_email'] : get_option( 'admin_email' );
 
-    $subject = sprintf( '[Elite Tours] Funnel lead — %s', $exp ?: 'General' );
+    $subject = sprintf( '[Elite Tours] Funnel lead, %s', $exp ?: 'General' );
     $body    = "New enquiry from the website funnel.\n\n";
     $body   .= "Experience: " . ( $exp ?: 'General contact' ) . "\n";
     if ( $exp_url ) $body .= "Page: $exp_url\n";
@@ -68,5 +68,5 @@ function etm_funnel_submit(): void {
     }
     update_option( 'et_funnel_leads', $leads );
 
-    wp_send_json_success( 'Thanks — we\'ll be in touch shortly.' );
+    wp_send_json_success( 'Thanks, we\'ll be in touch shortly.' );
 }

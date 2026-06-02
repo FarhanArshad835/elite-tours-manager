@@ -3,7 +3,7 @@
  * Admin: Key Experiences
  *
  * The 22 named "Key experiences" the client called out in
- * Full list of experiences.txt — Midleton Distillery, Old Head of Kinsale,
+ * Full list of experiences.txt, Midleton Distillery, Old Head of Kinsale,
  * Ring of Kerry, Slea Head Drive, Foxy John's, Cliffs of Moher (via Doolin),
  * Galway, Connemara, Ashford Castle, Giant's Causeway, Black Taxi Tour,
  * Titanic Quarter, etc. Stored in the et_key_experiences wp_options array
@@ -98,7 +98,7 @@ function etm_key_experiences_page(): void {
                     thumb +
                     '<div class="etm-exp-item__info">' +
                         '<div class="etm-exp-item__title">' + (item.name || 'Untitled') + '</div>' +
-                        '<div class="etm-exp-item__meta">' + (item.region || '—') + '</div>' +
+                        '<div class="etm-exp-item__meta">' + (item.region || ',') + '</div>' +
                     '</div>' +
                     '<div class="etm-exp-item__actions">' +
                         '<button type="button" class="etm-exp-item__toggle" title="Expand">&#9662;</button>' +

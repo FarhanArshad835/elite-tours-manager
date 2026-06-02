@@ -26,7 +26,7 @@ class ETM_Admin_Menus {
         );
 
         // ── Sub-menu groups (logical, in render order) ─────────────────
-        // 1. Sample Itineraries (CPT, auto-shown by show_in_menu='elite-tours' — appears at the top by default)
+        // 1. Sample Itineraries (CPT, auto-shown by show_in_menu='elite-tours', appears at the top by default)
         //
         // 2. Site-wide configuration
         add_submenu_page( 'elite-tours', 'Site Settings',  'Site Settings', 'manage_options', 'et-site-settings',   'etm_site_settings_page' );
@@ -59,7 +59,7 @@ class ETM_Admin_Menus {
                         <span class="etm-logo-et">ET</span>
                         Elite Tours Ireland
                     </h1>
-                    <p class="etm-dashboard__sub">Website Content Manager — v<?php echo ETM_VERSION; ?></p>
+                    <p class="etm-dashboard__sub">Website Content Manager, v<?php echo ETM_VERSION; ?></p>
                 </div>
                 <div class="etm-dashboard__grid">
                     <?php

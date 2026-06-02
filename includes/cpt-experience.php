@@ -54,7 +54,7 @@ add_action( 'admin_enqueue_scripts', function ( $hook ) {
 add_action( 'add_meta_boxes', function () {
     add_meta_box(
         'etm_experience_funnel',
-        'Funnel Page Fields (V2 — Editorial Layout)',
+        'Funnel Page Fields (V2, Editorial Layout)',
         'etm_render_experience_funnel_meta',
         'experience',
         'normal',
@@ -191,7 +191,7 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
             </div>
 
             <div class="etm-cpt-row">
-                <label>Italic Fragment of Title <span class="etm-cpt-help">(must match a phrase in the post title — that phrase will render in italic gold)</span></label>
+                <label>Italic Fragment of Title <span class="etm-cpt-help">(must match a phrase in the post title, that phrase will render in italic gold)</span></label>
                 <?php etm_field_text( 'etm_hero_title_em', $get( 'hero_title_em' ), 'Private Tour' ); ?>
             </div>
 
@@ -201,18 +201,18 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
             </div>
 
             <div class="etm-cpt-row">
-                <label>Breadcrumb (top-left strip) <span class="etm-cpt-help">(one item per line — last line is highlighted)</span></label>
+                <label>Breadcrumb (top-left strip) <span class="etm-cpt-help">(one item per line, last line is highlighted)</span></label>
                 <?php etm_field_textarea( 'etm_hero_breadcrumb', implode( "\n", array_map( 'strval', $hero_breadcrumb ) ), "Tailored Experiences\nAncestry, Culture & Scenery\nThe Bespoke Private Tour", 3 ); ?>
             </div>
 
             <div class="etm-cpt-row">
-                <label>Top-Right Meta Strip <span class="etm-cpt-help">(one item per line — joined with dot separators)</span></label>
+                <label>Top-Right Meta Strip <span class="etm-cpt-help">(one item per line, joined with dot separators)</span></label>
                 <?php etm_field_textarea( 'etm_hero_meta_strip', implode( "\n", array_map( 'strval', $hero_meta_strip ) ), "The Whole Island\nPrivately Guided\nDesigned Around You", 3 ); ?>
             </div>
 
             <div class="etm-cpt-row">
                 <label>Aside Paragraph (right column under hero)</label>
-                <?php etm_field_textarea( 'etm_hero_aside_text', $get( 'hero_aside_text' ), 'A fully bespoke private tour of Ireland — designed end-to-end around the people travelling…', 3 ); ?>
+                <?php etm_field_textarea( 'etm_hero_aside_text', $get( 'hero_aside_text' ), 'A fully bespoke private tour of Ireland, designed end-to-end around the people travelling…', 3 ); ?>
             </div>
 
             <div class="etm-cpt-row">
@@ -223,7 +223,7 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
                             <button type="button" class="etm-repeater__remove">×</button>
                             <div class="etm-cpt-grid">
                                 <div><input type="text" name="etm_hero_aside_facts[<?php echo (int) $i; ?>][label]" value="<?php echo esc_attr( $fact['label'] ?? '' ); ?>" placeholder="Label (e.g. Length)" class="widefat"></div>
-                                <div><input type="text" name="etm_hero_aside_facts[<?php echo (int) $i; ?>][value]" value="<?php echo esc_attr( $fact['value'] ?? '' ); ?>" placeholder="Value (e.g. 6 – 15 days)" class="widefat"></div>
+                                <div><input type="text" name="etm_hero_aside_facts[<?php echo (int) $i; ?>][value]" value="<?php echo esc_attr( $fact['value'] ?? '' ); ?>" placeholder="Value (e.g. 6 - 15 days)" class="widefat"></div>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -275,11 +275,11 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
 
             <div class="etm-cpt-row">
                 <label>Intro Paragraph (right of heading)</label>
-                <?php etm_field_textarea( 'etm_highlights_intro', $get( 'highlights_intro' ), 'Four things every Bespoke shares — held quietly in the background while the country reveals itself.', 2 ); ?>
+                <?php etm_field_textarea( 'etm_highlights_intro', $get( 'highlights_intro' ), 'Four things every Bespoke shares, held quietly in the background while the country reveals itself.', 2 ); ?>
             </div>
 
             <div class="etm-cpt-row">
-                <label>Highlights <span class="etm-cpt-help">(4 items recommended — auto-numbered 01, 02, 03, 04…)</span></label>
+                <label>Highlights <span class="etm-cpt-help">(4 items recommended, auto-numbered 01, 02, 03, 04…)</span></label>
                 <div class="etm-repeater-list" data-repeater="highlights">
                     <?php foreach ( $highlights as $i => $h ) : ?>
                         <div class="etm-repeater">
@@ -317,11 +317,11 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
 
             <div class="etm-cpt-grid">
                 <div class="etm-cpt-row">
-                    <label>Heading — Part 1</label>
+                    <label>Heading, Part 1</label>
                     <?php etm_field_text( 'etm_story_heading_part1', $get( 'story_heading_part1' ), 'Ireland,' ); ?>
                 </div>
                 <div class="etm-cpt-row">
-                    <label>Heading — Part 2 (italic gold)</label>
+                    <label>Heading, Part 2 (italic gold)</label>
                     <?php etm_field_text( 'etm_story_heading_part2', $get( 'story_heading_part2' ), 'your way.' ); ?>
                 </div>
             </div>
@@ -401,11 +401,11 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
 
             <div class="etm-cpt-grid">
                 <div class="etm-cpt-row">
-                    <label>Heading — Part 1</label>
+                    <label>Heading, Part 1</label>
                     <?php etm_field_text( 'etm_pillars_heading_part1', $get( 'pillars_heading_part1' ), 'Ancestry, Culture' ); ?>
                 </div>
                 <div class="etm-cpt-row">
-                    <label>Heading — Part 2 (italic)</label>
+                    <label>Heading, Part 2 (italic)</label>
                     <?php etm_field_text( 'etm_pillars_heading_part2', $get( 'pillars_heading_part2' ), '& Scenery.' ); ?>
                 </div>
             </div>
@@ -421,7 +421,7 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
             </div>
 
             <div class="etm-cpt-row">
-                <label>Pillars <span class="etm-cpt-help">(3 recommended — auto-numbered I, II, III)</span></label>
+                <label>Pillars <span class="etm-cpt-help">(3 recommended, auto-numbered I, II, III)</span></label>
                 <div class="etm-repeater-list" data-repeater="pillars">
                     <?php foreach ( $pillars as $i => $p ) : ?>
                         <div class="etm-repeater">
@@ -430,7 +430,7 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
                                 <input type="text" name="etm_pillars[<?php echo (int) $i; ?>][pillar]" value="<?php echo esc_attr( $p['pillar'] ?? '' ); ?>" placeholder="Pillar (e.g. Ancestry)" class="widefat">
                                 <input type="text" name="etm_pillars[<?php echo (int) $i; ?>][title]"  value="<?php echo esc_attr( $p['title']  ?? '' ); ?>" placeholder="Title (e.g. Find your people…)" class="widefat">
                             </div>
-                            <textarea name="etm_pillars[<?php echo (int) $i; ?>][body]" placeholder="Body (2–3 sentences)" rows="3" class="widefat" style="margin-top:6px;"><?php echo esc_textarea( $p['body'] ?? '' ); ?></textarea>
+                            <textarea name="etm_pillars[<?php echo (int) $i; ?>][body]" placeholder="Body (2-3 sentences)" rows="3" class="widefat" style="margin-top:6px;"><?php echo esc_textarea( $p['body'] ?? '' ); ?></textarea>
                             <div style="margin-top:6px;">
                                 <label style="font-weight:600;font-size:12px;">Image:</label>
                                 <?php etm_field_image( 'etm_pillars[' . (int) $i . '][image_id]', (int) ( $p['image_id'] ?? 0 ) ); ?>
@@ -487,7 +487,7 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
                                 <input type="text" name="etm_process_steps[<?php echo (int) $i; ?>][number]" value="<?php echo esc_attr( $s['number'] ?? '' ); ?>" placeholder="Number (e.g. 01)" class="widefat">
                                 <input type="text" name="etm_process_steps[<?php echo (int) $i; ?>][title]"  value="<?php echo esc_attr( $s['title']  ?? '' ); ?>" placeholder="Title (e.g. A first conversation)" class="widefat" style="grid-column:span 2;">
                             </div>
-                            <textarea name="etm_process_steps[<?php echo (int) $i; ?>][body]" placeholder="2–3 sentences" rows="2" class="widefat" style="margin-top:6px;"><?php echo esc_textarea( $s['body'] ?? '' ); ?></textarea>
+                            <textarea name="etm_process_steps[<?php echo (int) $i; ?>][body]" placeholder="2-3 sentences" rows="2" class="widefat" style="margin-top:6px;"><?php echo esc_textarea( $s['body'] ?? '' ); ?></textarea>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -498,11 +498,11 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
 
             <div class="etm-cpt-grid">
                 <div class="etm-cpt-row">
-                    <label>Heading — Part 1</label>
+                    <label>Heading, Part 1</label>
                     <?php etm_field_text( 'etm_process_aside_heading_part1', $get( 'process_aside_heading_part1' ), 'Built in four' ); ?>
                 </div>
                 <div class="etm-cpt-row">
-                    <label>Heading — Part 2 (italic)</label>
+                    <label>Heading, Part 2 (italic)</label>
                     <?php etm_field_text( 'etm_process_aside_heading_part2', $get( 'process_aside_heading_part2' ), 'quiet conversations.' ); ?>
                 </div>
             </div>
@@ -560,15 +560,15 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
 
             <div class="etm-cpt-grid-3">
                 <div class="etm-cpt-row">
-                    <label>Heading — Part 1</label>
+                    <label>Heading, Part 1</label>
                     <?php etm_field_text( 'etm_cta_heading_part1', $get( 'cta_heading_part1' ), 'We are' ); ?>
                 </div>
                 <div class="etm-cpt-row">
-                    <label>Heading — Part 2 (italic)</label>
+                    <label>Heading, Part 2 (italic)</label>
                     <?php etm_field_text( 'etm_cta_heading_part2', $get( 'cta_heading_part2' ), 'experience designers,' ); ?>
                 </div>
                 <div class="etm-cpt-row">
-                    <label>Heading — Part 3</label>
+                    <label>Heading, Part 3</label>
                     <?php etm_field_text( 'etm_cta_heading_part3', $get( 'cta_heading_part3' ), 'not tour operators.' ); ?>
                 </div>
             </div>
@@ -625,11 +625,11 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
 
             <div class="etm-cpt-grid">
                 <div class="etm-cpt-row">
-                    <label>Heading — Part 1</label>
+                    <label>Heading, Part 1</label>
                     <?php etm_field_text( 'etm_similar_heading_part1', $get( 'similar_heading_part1' ), 'Other experiences,' ); ?>
                 </div>
                 <div class="etm-cpt-row">
-                    <label>Heading — Part 2 (italic)</label>
+                    <label>Heading, Part 2 (italic)</label>
                     <?php etm_field_text( 'etm_similar_heading_part2', $get( 'similar_heading_part2' ), 'other quiet days.' ); ?>
                 </div>
             </div>
@@ -649,7 +649,7 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
                 <label>Pick 3 Related Experiences <span class="etm-cpt-help">(if none picked, the latest 3 other experiences are shown automatically)</span></label>
                 <div class="etm-checkbox-list">
                     <?php if ( empty( $other_experiences ) ) : ?>
-                        <em>No other experiences yet — publish more to use this.</em>
+                        <em>No other experiences yet, publish more to use this.</em>
                     <?php else : ?>
                         <?php foreach ( $other_experiences as $opt ) :
                             $checked = in_array( (int) $opt->ID, array_map( 'intval', $similar_ids ), true );
@@ -664,8 +664,8 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
             </div>
 
             <div class="etm-cpt-row">
-                <label>Card Sub-meta <span class="etm-cpt-help">(small italic line shown when this experience appears as a card on other pages — e.g. "Multi-day · 6–15 nights")</span></label>
-                <?php etm_field_text( 'etm_card_meta', $get( 'card_meta' ), 'Multi-day · 6–15 nights' ); ?>
+                <label>Card Sub-meta <span class="etm-cpt-help">(small italic line shown when this experience appears as a card on other pages, e.g. "Multi-day · 6-15 nights")</span></label>
+                <?php etm_field_text( 'etm_card_meta', $get( 'card_meta' ), 'Multi-day · 6-15 nights' ); ?>
             </div>
 
         </div>
@@ -706,7 +706,7 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
                 if ( list && list.querySelectorAll( '.etm-repeater' ).length > 1 ) {
                     row.remove();
                 } else if ( row ) {
-                    // Last row — clear instead of remove so we always have one.
+                    // Last row, clear instead of remove so we always have one.
                     row.querySelectorAll( 'input, textarea' ).forEach( function ( el ) {
                         if ( el.type === 'hidden' ) el.value = 0; else el.value = '';
                     } );
@@ -817,7 +817,7 @@ add_action( 'save_post_experience', function ( int $post_id ) {
         update_post_meta( $post_id, '_etm_' . $f, absint( $_POST[ 'etm_' . $f ] ?? 0 ) );
     }
 
-    // ── Hero breadcrumb / meta strip — newline-separated → array ─
+    // ── Hero breadcrumb / meta strip, newline-separated → array ─
     foreach ( [ 'hero_breadcrumb', 'hero_meta_strip' ] as $f ) {
         $raw   = wp_unslash( $_POST[ 'etm_' . $f ] ?? '' );
         $lines = array_values( array_filter( array_map( 'trim', preg_split( '/\r\n|\n|\r/', (string) $raw ) ) ) );

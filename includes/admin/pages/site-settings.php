@@ -145,7 +145,7 @@ function etm_site_settings_page(): void {
                 $founder_url = $founder_id ? wp_get_attachment_image_url( (int) $founder_id, 'medium' ) : '';
                 ?>
                 <div class="etm-field">
-                    <label class="etm-label">Raphael Mulally — Photo</label>
+                    <label class="etm-label">Raphael Mulally, Photo</label>
                     <div class="etm-media-upload">
                         <img src="<?php echo esc_url( $founder_url ); ?>" id="etm-founder-preview"
                              class="etm-media-preview etm-media-preview--wide" alt=""

@@ -1,6 +1,6 @@
 <?php
 /**
- * Regions admin — manages et_regions, the 11 region tiles rendered as
+ * Regions admin, manages et_regions, the 11 region tiles rendered as
  * "The country, in eleven movements." on /experiences/. Same UX pattern
  * as Hotels: drag-reorder, image picker, AJAX save, dirty tracking.
  *
@@ -131,7 +131,7 @@ function etm_regions_page(): void {
                         '<div class="etm-exp-field"><label>Blurb (description paragraph)</label><textarea data-field="blurb" rows="3">' + esc(item.blurb) + '</textarea></div>' +
                     '</div>' +
                     '<div class="etm-exp-row etm-exp-row--full">' +
-                        '<div class="etm-exp-field"><label>Highlights (one bullet per line — first 3 shown on the card)</label><textarea data-field="highlights" rows="4" placeholder="EPIC Museum & the real Irish emigration story\nTrinity College, Christ Church & Dublinia\nViking walking tour with Brendan">' + esc(highlightsAsText(item.highlights)) + '</textarea></div>' +
+                        '<div class="etm-exp-field"><label>Highlights (one bullet per line, first 3 shown on the card)</label><textarea data-field="highlights" rows="4" placeholder="EPIC Museum & the real Irish emigration story\nTrinity College, Christ Church & Dublinia\nViking walking tour with Brendan">' + esc(highlightsAsText(item.highlights)) + '</textarea></div>' +
                     '</div>' +
                     '<div class="etm-exp-row">' +
                         '<div class="etm-exp-field"><label>CTA Link Text</label><input type="text" data-field="tour_link_text" value="' + esc(item.tour_link_text) + '" placeholder="Featured in: Signature & Bespoke"></div>' +

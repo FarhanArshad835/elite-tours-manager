@@ -54,7 +54,7 @@ class ETM_Experience_Seeder {
         $this->cleanup_carryover_experiences();
 
         $this->log[] = '';
-        $this->log[] = '── Step 2: Signature Journey + Essence — Bespoke tour products ──';
+        $this->log[] = '── Step 2: Signature Journey + Essence, Bespoke tour products ──';
         $this->seed_signature_and_essence();
 
         $this->log[] = '';
@@ -66,7 +66,7 @@ class ETM_Experience_Seeder {
         $this->seed_homepage_images();
 
         $this->log[] = '';
-        $this->log[] = '── Step 5: Regions of Ireland — image attachments ──';
+        $this->log[] = '── Step 5: Regions of Ireland, image attachments ──';
         $this->seed_region_images();
 
         $this->log[] = '';
@@ -99,7 +99,7 @@ class ETM_Experience_Seeder {
     /**
      * Force-deletes the three carryover Experience CPT posts that pre-dated
      * the 2026-04-27 client batch (Bespoke umbrella, Heritage, Distilleries).
-     * Idempotent — does nothing if the posts no longer exist. Runs before
+     * Idempotent, does nothing if the posts no longer exist. Runs before
      * any seeding so subsequent steps see a clean slate.
      */
     private function cleanup_carryover_experiences(): void {
@@ -116,7 +116,7 @@ class ETM_Experience_Seeder {
                 continue;
             }
             wp_delete_post( (int) $post->ID, true );
-            $this->log[] = "Deleted carryover post #{$post->ID} — {$slug}";
+            $this->log[] = "Deleted carryover post #{$post->ID}, {$slug}";
             $removed++;
         }
         $this->log[] = "Removed {$removed} carryover post(s).";
@@ -126,13 +126,13 @@ class ETM_Experience_Seeder {
 
     /**
      * The two Bespoke tour products from the client's 2026-04-27 brief drop:
-     *   - The Signature Ireland Journey  (11–15 days)
-     *   - The Essence of Ireland Experience (6–10 days)
+     *   - The Signature Ireland Journey  (11-15 days)
+     *   - The Essence of Ireland Experience (6-10 days)
      *
      * Both follow the existing 7-section funnel template (hero / highlights /
      * story / pillars / process / CTA / similar) and reuse hero images
      * bundled in seed-data/images/. They are the only Experience CPT entries
-     * that ship — the Bespoke umbrella, Heritage, and Distilleries carryovers
+     * that ship, the Bespoke umbrella, Heritage, and Distilleries carryovers
      * were removed in Step 1.
      */
     private function seed_signature_and_essence(): void {
@@ -148,7 +148,7 @@ class ETM_Experience_Seeder {
         $cottage_23_id     = $this->seed_image( '23.png' );
         $portrait_id       = $this->seed_image( 'Raphell mulaly image.jpeg' );
 
-        // ─── The Signature Ireland Journey (11–15 days) ─────────
+        // ─── The Signature Ireland Journey (11-15 days) ─────────
         $id_signature = $this->get_or_create_post(
             'signature-ireland-journey',
             'ET The Signature Ireland Journey',
@@ -157,15 +157,15 @@ class ETM_Experience_Seeder {
         if ( $id_signature && $hero_signature_id ) set_post_thumbnail( $id_signature, $hero_signature_id );
 
         $signature_meta = [
-            // Hero — copy verbatim from "ET The Signature Ireland Journey.pdf" hero block.
-            '_etm_eyebrow'                     => '11–15 Days | Fully Bespoke | Privately Hosted',
+            // Hero, copy verbatim from "ET The Signature Ireland Journey.pdf" hero block.
+            '_etm_eyebrow'                     => '11-15 Days | Fully Bespoke | Privately Hosted',
             '_etm_hero_title_em'               => 'The Signature Ireland Journey',
             '_etm_hero_deck'                   => 'This is not a fixed tour. A privately curated journey through Ireland, designed around you, guided by local expertise, and delivered with a level of care that turns travel into something far more meaningful.',
             '_etm_hero_breadcrumb'             => [ 'Bespoke Tours', 'Privately Hosted', 'The Signature Journey' ],
-            '_etm_hero_meta_strip'             => [ '11–15 Days', 'Fully Bespoke', 'Privately Hosted' ],
+            '_etm_hero_meta_strip'             => [ '11-15 Days', 'Fully Bespoke', 'Privately Hosted' ],
             '_etm_hero_aside_text'             => 'Every journey is different. Every experience is intentional. And the most memorable moments are often the ones you never see coming.',
             '_etm_hero_aside_facts'            => [
-                [ 'label' => 'Length', 'value' => '11–15 days' ],
+                [ 'label' => 'Length', 'value' => '11-15 days' ],
                 [ 'label' => 'Style',  'value' => 'Fully bespoke' ],
             ],
             '_etm_hero_cta_primary'            => 'Start planning your journey',
@@ -173,29 +173,29 @@ class ETM_Experience_Seeder {
             '_etm_hero_cta_secondary'          => '',
             '_etm_hero_cta_secondary_url'      => '',
 
-            // Highlights — verbatim from PDF "Journey Highlights" (southern half).
+            // Highlights, verbatim from PDF "Journey Highlights" (southern half).
             '_etm_highlights_heading'          => 'Journey Highlights',
             '_etm_highlights_intro'            => '',
             '_etm_highlights'                  => [
                 [ 'title' => 'Dublin & Ancient Ireland',
-                  'desc'  => 'Begin with the foundations of Ireland — its history, heritage, and deep-rooted connection to the world. Ancient landmarks, storytelling, and cultural context set the tone for everything that follows.',
+                  'desc'  => 'Begin with the foundations of Ireland, its history, heritage, and deep-rooted connection to the world. Ancient landmarks, storytelling, and cultural context set the tone for everything that follows.',
                   'image_id' => $cathedral_id ],
                 [ 'title' => 'Cork & Kinsale',
-                  'desc'  => 'A softer, coastal introduction to the south of Ireland. Colourful towns, harbourside life, and rich maritime history — with moments of reflection, exploration, and understated luxury.',
+                  'desc'  => 'A softer, coastal introduction to the south of Ireland. Colourful towns, harbourside life, and rich maritime history, with moments of reflection, exploration, and understated luxury.',
                   'image_id' => $kylemore_id ],
                 [ 'title' => 'Kerry & Dingle',
-                  'desc'  => 'One of the most visually striking parts of the country. Winding coastal roads, dramatic scenery, and small towns full of character — where Ireland feels raw, cinematic, and alive.',
+                  'desc'  => 'One of the most visually striking parts of the country. Winding coastal roads, dramatic scenery, and small towns full of character, where Ireland feels raw, cinematic, and alive.',
                   'image_id' => $hero_essence_id ],
                 [ 'title' => 'South & West',
-                  'desc'  => 'Castles, landscapes, and iconic experiences blend seamlessly with quieter, lesser-known stops. This is where the journey begins to shift — from seeing Ireland to truly feeling it.',
+                  'desc'  => 'Castles, landscapes, and iconic experiences blend seamlessly with quieter, lesser-known stops. This is where the journey begins to shift, from seeing Ireland to truly feeling it.',
                   'image_id' => $cottage_23_id ],
             ],
 
-            // Story — verbatim from PDF "What This Journey Feels Like".
+            // Story, verbatim from PDF "What This Journey Feels Like".
             '_etm_story_heading_part1'         => 'What This Journey',
             '_etm_story_heading_part2'         => 'Feels Like',
             '_etm_story_plate'                 => '',
-            '_etm_story_lede'                  => 'From the moment you arrive, Ireland unfolds in layers — history, culture, landscape, and atmosphere — each carefully introduced, never rushed.',
+            '_etm_story_lede'                  => 'From the moment you arrive, Ireland unfolds in layers, history, culture, landscape, and atmosphere, each carefully introduced, never rushed.',
             '_etm_story_para1'                 => 'You move effortlessly from vibrant cities to quiet coastal villages, from world-class estates to hidden local spots, experiencing the country in a way that feels both elevated and deeply authentic.',
             '_etm_story_para2'                 => 'This is Ireland properly experienced.',
             '_etm_story_image_main'            => $muckross_id,
@@ -203,7 +203,7 @@ class ETM_Experience_Seeder {
             '_etm_story_people_label'          => '',
             '_etm_story_people'                => [],
 
-            // Pillars — verbatim from PDF "The Wild Atlantic Journey (West & North)".
+            // Pillars, verbatim from PDF "The Wild Atlantic Journey (West & North)".
             // Each region's two-line PDF entry rendered as that pillar's body text.
             '_etm_pillars_heading_part1'       => 'The Wild Atlantic Journey',
             '_etm_pillars_heading_part2'       => '(West & North)',
@@ -211,13 +211,13 @@ class ETM_Experience_Seeder {
             '_etm_pillars_intro'               => '',
             '_etm_pillars'                     => [
                 [ 'pillar' => 'Galway', 'title' => '',
-                  'body' => 'Ireland at its most vibrant. Music, culture, energy, and storytelling — a city that draws people in and rarely lets go.',
+                  'body' => 'Ireland at its most vibrant. Music, culture, energy, and storytelling, a city that draws people in and rarely lets go.',
                   'image_id' => $cathedral_id ],
                 [ 'pillar' => 'Connemara', 'title' => '',
-                  'body' => 'Wild, open, and untouched. This is the Ireland people imagine — rugged landscapes, quiet beauty, and space to slow down.',
+                  'body' => 'Wild, open, and untouched. This is the Ireland people imagine, rugged landscapes, quiet beauty, and space to slow down.',
                   'image_id' => $sligo_id ],
                 [ 'pillar' => 'Mayo & Ashford', 'title' => '',
-                  'body' => 'A refined balance of luxury and authenticity. World-class estates paired with genuine local experiences — often where the most memorable moments happen.',
+                  'body' => 'A refined balance of luxury and authenticity. World-class estates paired with genuine local experiences, often where the most memorable moments happen.',
                   'image_id' => $belfast_id ],
                 [ 'pillar' => 'Sligo', 'title' => '',
                   'body' => 'A quieter, more reflective side of Ireland. Rich in poetry, landscape, and atmosphere.',
@@ -233,14 +233,14 @@ class ETM_Experience_Seeder {
                   'image_id' => $belfast_id ],
             ],
 
-            // Process — verbatim from PDF "A Truly Bespoke Experience" +
+            // Process, verbatim from PDF "A Truly Bespoke Experience" +
             // "The Moments You Don't See Coming".
             '_etm_process_card_eyebrow'        => 'A Truly Bespoke Experience',
             '_etm_process_card_title'          => 'A Truly Bespoke Experience',
             '_etm_process_card_subtitle'       => '',
             '_etm_process_steps'               => [
                 [ 'number' => '01', 'title' => '',
-                  'body' => 'This journey is not fixed — and it never will be.' ],
+                  'body' => 'This journey is not fixed, and it never will be.' ],
                 [ 'number' => '02', 'title' => '',
                   'body' => 'It is designed around your pace, your interests, and your preferences, with the flexibility to adapt in real time.' ],
                 [ 'number' => '03', 'title' => '',
@@ -250,20 +250,20 @@ class ETM_Experience_Seeder {
             ],
             '_etm_process_aside_heading_part1' => "The Moments You Don't",
             '_etm_process_aside_heading_part2' => 'See Coming',
-            '_etm_process_aside_body'          => 'Some of the most meaningful parts of this experience will never appear on an itinerary. They are not listed. They are not planned in advance. And they are not shared publicly. They are golden moments — created through local relationships, instinct, and experience — that turn a great trip into something unforgettable.',
+            '_etm_process_aside_body'          => 'Some of the most meaningful parts of this experience will never appear on an itinerary. They are not listed. They are not planned in advance. And they are not shared publicly. They are golden moments, created through local relationships, instinct, and experience, that turn a great trip into something unforgettable.',
             '_etm_process_image_1'             => $hero_signature_id,
             '_etm_process_image_2'             => $kylemore_id,
             '_etm_process_facts'               => [
-                [ 'label' => 'Length', 'value' => '11–15 days' ],
+                [ 'label' => 'Length', 'value' => '11-15 days' ],
                 [ 'label' => 'Style',  'value' => 'Fully Bespoke' ],
                 [ 'label' => 'Hosting','value' => 'Privately Hosted' ],
             ],
 
-            // CTA — verbatim from PDF "Begin Your Journey".
+            // CTA, verbatim from PDF "Begin Your Journey".
             '_etm_cta_heading_part1'           => 'Begin Your',
             '_etm_cta_heading_part2'           => 'Journey',
             '_etm_cta_heading_part3'           => '',
-            '_etm_cta_body'                    => 'Every itinerary begins with a conversation. From there, your journey through Ireland is carefully shaped, refined, and brought to life — with every detail handled, and every experience considered. Start planning your journey.',
+            '_etm_cta_body'                    => 'Every itinerary begins with a conversation. From there, your journey through Ireland is carefully shaped, refined, and brought to life, with every detail handled, and every experience considered. Start planning your journey.',
             '_etm_cta_phone'                   => '+353 87 345 2874',
             '_etm_cta_email'                   => 'concierge@elitetours.ie',
             '_etm_cta_portrait'                => $portrait_id,
@@ -277,31 +277,31 @@ class ETM_Experience_Seeder {
             // Cross-linked at the bottom of this method once $id_essence exists.
             '_etm_similar_ids'                 => [],
 
-            '_etm_card_meta'                   => '11–15 Days | Fully Bespoke | Privately Hosted',
+            '_etm_card_meta'                   => '11-15 Days | Fully Bespoke | Privately Hosted',
         ];
         if ( $id_signature ) {
             foreach ( $signature_meta as $k => $v ) update_post_meta( $id_signature, $k, $v );
-            $this->log[] = "Seeded Signature Journey (post #{$id_signature}) — " . count( $signature_meta ) . " fields";
+            $this->log[] = "Seeded Signature Journey (post #{$id_signature}), " . count( $signature_meta ) . " fields";
         }
 
-        // ─── The Essence of Ireland Experience (6–10 days) ──────
+        // ─── The Essence of Ireland Experience (6-10 days) ──────
         $id_essence = $this->get_or_create_post(
             'essence-of-ireland',
             'The Essence of Ireland Experience',
-            'For those with less time, this journey captures the very best of Ireland — without ever feeling rushed.'
+            'For those with less time, this journey captures the very best of Ireland, without ever feeling rushed.'
         );
         if ( $id_essence && $hero_essence_id ) set_post_thumbnail( $id_essence, $hero_essence_id );
 
         $essence_meta = [
-            // Hero — verbatim from "The Essence of Ireland Experience.pdf".
-            '_etm_eyebrow'                     => '6–10 Days | Fully Bespoke | Privately Hosted',
+            // Hero, verbatim from "The Essence of Ireland Experience.pdf".
+            '_etm_eyebrow'                     => '6-10 Days | Fully Bespoke | Privately Hosted',
             '_etm_hero_title_em'               => 'The Essence of Ireland Experience',
-            '_etm_hero_deck'                   => 'For those with less time, this journey captures the very best of Ireland — without ever feeling rushed.',
+            '_etm_hero_deck'                   => 'For those with less time, this journey captures the very best of Ireland, without ever feeling rushed.',
             '_etm_hero_breadcrumb'             => [ 'Bespoke Tours', 'Privately Hosted', 'The Essence Experience' ],
-            '_etm_hero_meta_strip'             => [ '6–10 Days', 'Fully Bespoke', 'Privately Hosted' ],
-            '_etm_hero_aside_text'             => 'Rather than trying to see everything, we focus on experiencing the right things, properly. Each itinerary is carefully designed to deliver a complete, high-end Irish experience within a shorter timeframe — balancing iconic highlights with lesser-known moments that most travellers never reach.',
+            '_etm_hero_meta_strip'             => [ '6-10 Days', 'Fully Bespoke', 'Privately Hosted' ],
+            '_etm_hero_aside_text'             => 'Rather than trying to see everything, we focus on experiencing the right things, properly. Each itinerary is carefully designed to deliver a complete, high-end Irish experience within a shorter timeframe, balancing iconic highlights with lesser-known moments that most travellers never reach.',
             '_etm_hero_aside_facts'            => [
-                [ 'label' => 'Length', 'value' => '6–10 days' ],
+                [ 'label' => 'Length', 'value' => '6-10 days' ],
                 [ 'label' => 'Style',  'value' => 'Fully bespoke' ],
             ],
             '_etm_hero_cta_primary'            => 'Start planning your journey',
@@ -309,9 +309,9 @@ class ETM_Experience_Seeder {
             '_etm_hero_cta_secondary'          => '',
             '_etm_hero_cta_secondary_url'      => '',
 
-            // Highlights — verbatim from PDF "A Tailored Approach to Time".
+            // Highlights, verbatim from PDF "A Tailored Approach to Time".
             '_etm_highlights_heading'          => 'A Tailored Approach to Time',
-            '_etm_highlights_intro'            => 'No two 6–10 day journeys are the same.',
+            '_etm_highlights_intro'            => 'No two 6-10 day journeys are the same.',
             '_etm_highlights'                  => [
                 [ 'title' => 'South & West',
                   'desc'  => "Some clients choose to immerse themselves in the South & West, taking in coastal landscapes, historic towns, and Ireland's most scenic routes.",
@@ -323,11 +323,11 @@ class ETM_Experience_Seeder {
                   'desc'  => 'And for many, the journey becomes a carefully selected blend of both.',
                   'image_id' => $kylemore_id ],
                 [ 'title' => 'Our role',
-                  'desc'  => 'Our role is to guide that decision — and build a route that feels effortless, balanced, and complete.',
+                  'desc'  => 'Our role is to guide that decision, and build a route that feels effortless, balanced, and complete.',
                   'image_id' => $muckross_id ],
             ],
 
-            // Story — verbatim from PDF "What This Journey Feels Like".
+            // Story, verbatim from PDF "What This Journey Feels Like".
             '_etm_story_heading_part1'         => 'What This Journey',
             '_etm_story_heading_part2'         => 'Feels Like',
             '_etm_story_plate'                 => '',
@@ -339,33 +339,33 @@ class ETM_Experience_Seeder {
             '_etm_story_people_label'          => '',
             '_etm_story_people'                => [],
 
-            // Pillars — verbatim from PDF "Journey Possibilities".
+            // Pillars, verbatim from PDF "Journey Possibilities".
             '_etm_pillars_heading_part1'       => 'Journey',
             '_etm_pillars_heading_part2'       => 'Possibilities',
             '_etm_pillars_subheading'          => 'Depending on your preferences, your journey may include elements of:',
             '_etm_pillars_intro'               => '',
             '_etm_pillars'                     => [
                 [ 'pillar' => 'Dublin & Ancient Ireland', 'title' => '',
-                  'body' => "A strong cultural and historical introduction — grounding the journey in Ireland's story.",
+                  'body' => "A strong cultural and historical introduction, grounding the journey in Ireland's story.",
                   'image_id' => $cathedral_id ],
                 [ 'pillar' => 'The South & West', 'title' => '',
-                  'body' => "Coastal towns, castles, and some of the country's most iconic scenery — delivered at the right pace.",
+                  'body' => "Coastal towns, castles, and some of the country's most iconic scenery, delivered at the right pace.",
                   'image_id' => $hero_essence_id ],
                 [ 'pillar' => 'Kerry & The Atlantic Coast', 'title' => '',
                   'body' => 'Visually striking routes, local character, and moments that feel cinematic.',
                   'image_id' => $hero_essence_id ],
                 [ 'pillar' => 'Galway & Connemara', 'title' => '',
-                  'body' => 'Energy, culture, and wild landscapes — where Ireland feels most alive and most untouched.',
+                  'body' => 'Energy, culture, and wild landscapes, where Ireland feels most alive and most untouched.',
                   'image_id' => $cathedral_id ],
                 [ 'pillar' => 'The West & North', 'title' => '',
-                  'body' => 'A more rugged, less-travelled experience — dramatic coastlines, deeper history, and quieter beauty.',
+                  'body' => 'A more rugged, less-travelled experience, dramatic coastlines, deeper history, and quieter beauty.',
                   'image_id' => $sligo_id ],
                 [ 'pillar' => 'Northern Ireland & Belfast', 'title' => '',
-                  'body' => 'For those wanting contrast — powerful storytelling, modern culture, and a different perspective on the island.',
+                  'body' => 'For those wanting contrast, powerful storytelling, modern culture, and a different perspective on the island.',
                   'image_id' => $belfast_id ],
             ],
 
-            // Process — verbatim from PDF "Designed Around You" +
+            // Process, verbatim from PDF "Designed Around You" +
             // "The Moments That Matter Most".
             '_etm_process_card_eyebrow'        => 'Designed Around You',
             '_etm_process_card_title'          => 'Designed Around You',
@@ -382,16 +382,16 @@ class ETM_Experience_Seeder {
             ],
             '_etm_process_aside_heading_part1' => 'The Moments That',
             '_etm_process_aside_heading_part2' => 'Matter Most',
-            '_etm_process_aside_body'          => "Nothing is fixed. We simply apply our knowledge of Ireland to design a journey that gives you the best possible version of the country — within the time you have. Just like our longer journeys, the most memorable parts of this experience are often the ones you won't see listed. Unplanned stops. Local introductions. Moments that happen naturally along the way. These are the details that define the journey — and they are never shared publicly.",
+            '_etm_process_aside_body'          => "Nothing is fixed. We simply apply our knowledge of Ireland to design a journey that gives you the best possible version of the country, within the time you have. Just like our longer journeys, the most memorable parts of this experience are often the ones you won't see listed. Unplanned stops. Local introductions. Moments that happen naturally along the way. These are the details that define the journey, and they are never shared publicly.",
             '_etm_process_image_1'             => $links_id,
             '_etm_process_image_2'             => $causeway_30_id,
             '_etm_process_facts'               => [
-                [ 'label' => 'Length', 'value' => '6–10 days' ],
+                [ 'label' => 'Length', 'value' => '6-10 days' ],
                 [ 'label' => 'Style',  'value' => 'Fully Bespoke' ],
                 [ 'label' => 'Hosting','value' => 'Privately Hosted' ],
             ],
 
-            // CTA — verbatim from PDF "Begin Your Journey".
+            // CTA, verbatim from PDF "Begin Your Journey".
             '_etm_cta_heading_part1'           => 'Begin Your',
             '_etm_cta_heading_part2'           => 'Journey',
             '_etm_cta_heading_part3'           => '',
@@ -409,11 +409,11 @@ class ETM_Experience_Seeder {
             // Cross-linked below once both posts exist.
             '_etm_similar_ids'                 => [],
 
-            '_etm_card_meta'                   => '6–10 Days | Fully Bespoke | Privately Hosted',
+            '_etm_card_meta'                   => '6-10 Days | Fully Bespoke | Privately Hosted',
         ];
         if ( $id_essence ) {
             foreach ( $essence_meta as $k => $v ) update_post_meta( $id_essence, $k, $v );
-            $this->log[] = "Seeded Essence Experience (post #{$id_essence}) — " . count( $essence_meta ) . " fields";
+            $this->log[] = "Seeded Essence Experience (post #{$id_essence}), " . count( $essence_meta ) . " fields";
         }
 
         // Cross-link the two tour products to each other.
@@ -436,7 +436,7 @@ class ETM_Experience_Seeder {
     private function seed_key_experience_images(): void {
         $items = get_option( 'et_key_experiences', [] );
         if ( ! is_array( $items ) || empty( $items ) ) {
-            $this->log[] = "et_key_experiences option is empty — skipping";
+            $this->log[] = "et_key_experiences option is empty, skipping";
             return;
         }
         $wired = 0;
@@ -459,7 +459,7 @@ class ETM_Experience_Seeder {
      * Imports each inner-page hero image into the Media Library and writes the
      * resulting attachment ID into et_page_heroes[slug].image_id. This guarantees
      * the page hero renders even when the theme-folder image URL is unreachable
-     * (CDN strip, theme rename, missing asset on host) — the helper prefers
+     * (CDN strip, theme rename, missing asset on host), the helper prefers
      * image_id over image_filename, so once this runs, heroes ride the standard
      * Media Library pipeline.
      *
@@ -507,7 +507,7 @@ class ETM_Experience_Seeder {
     private function seed_hotel_images(): void {
         $hotels = get_option( 'et_hotels', [] );
         if ( ! is_array( $hotels ) || empty( $hotels ) ) {
-            $this->log[] = "et_hotels option is empty — skipping hotel images";
+            $this->log[] = "et_hotels option is empty, skipping hotel images";
             return;
         }
         $wired = 0;
@@ -537,7 +537,7 @@ class ETM_Experience_Seeder {
     private function seed_region_images(): void {
         $regions = get_option( 'et_regions', [] );
         if ( ! is_array( $regions ) || empty( $regions ) ) {
-            $this->log[] = "et_regions option is empty — skipping region images";
+            $this->log[] = "et_regions option is empty, skipping region images";
             return;
         }
         $wired = 0;
@@ -598,7 +598,7 @@ class ETM_Experience_Seeder {
 
     /**
      * Imports the bundled site-content.php into wp_options. Overwrites any
-     * existing values for the keys it sets — safe because the keys it touches
+     * existing values for the keys it sets, safe because the keys it touches
      * (et_homepage_settings, et_experiences, et_experience_taxonomies) are
      * managed entirely through this plugin's admin screens.
      */
@@ -673,7 +673,7 @@ class ETM_Experience_Seeder {
                 'post_status'  => 'publish',
                 'post_excerpt' => $excerpt,
             ] );
-            $this->log[] = "Updated existing post #{$existing->ID} — $slug";
+            $this->log[] = "Updated existing post #{$existing->ID}, $slug";
             return (int) $existing->ID;
         }
         $post_id = wp_insert_post( [
@@ -688,7 +688,7 @@ class ETM_Experience_Seeder {
             $this->log[] = "FAIL creating post: $slug";
             return 0;
         }
-        $this->log[] = "Created post #{$post_id} — $slug";
+        $this->log[] = "Created post #{$post_id}, $slug";
         return (int) $post_id;
     }
 
@@ -708,9 +708,9 @@ class ETM_Experience_Seeder {
             '_etm_hero_deck'                   => 'Crafted around your interests, ancestry, and pace.',
             '_etm_hero_breadcrumb'             => [ 'Tailored Experiences', 'Ancestry, Culture & Scenery', 'The Bespoke Private Tour' ],
             '_etm_hero_meta_strip'             => [ 'The Whole Island', 'Privately Guided', 'Designed Around You' ],
-            '_etm_hero_aside_text'             => 'A fully bespoke private tour of Ireland — designed end-to-end around the people travelling, with every road, room, and meeting chosen by hand.',
+            '_etm_hero_aside_text'             => 'A fully bespoke private tour of Ireland, designed end-to-end around the people travelling, with every road, room, and meeting chosen by hand.',
             '_etm_hero_aside_facts'            => [
-                [ 'label' => 'Length', 'value' => '6 – 15 days' ],
+                [ 'label' => 'Length', 'value' => '6 - 15 days' ],
                 [ 'label' => 'Season', 'value' => 'Year-round' ],
             ],
             '_etm_hero_cta_primary'            => 'Begin Your Journey',
@@ -725,11 +725,11 @@ class ETM_Experience_Seeder {
                 [ 'title' => 'A private chauffeur-guide',
                   'desc'  => 'One person. The whole journey. Drivers who are also storytellers, fluent in the country they cross.' ],
                 [ 'title' => 'Ancestry traced & visited',
-                  'desc'  => 'Professional genealogists prepare your file before you arrive. Parish, townland, and — where we can — the cousins still on the land.' ],
+                  'desc'  => 'Professional genealogists prepare your file before you arrive. Parish, townland, and, where we can, the cousins still on the land.' ],
                 [ 'title' => 'Manor & castle accommodations',
                   'desc'  => 'Hand-picked houses chosen for character, not stars. Most evenings are spent somewhere with a name and a history.' ],
                 [ 'title' => 'Quiet, exclusive access',
-                  'desc'  => "Doors that are usually closed — a private after-hours visit, a poet at a table, a tasting before the distillery opens." ],
+                  'desc'  => "Doors that are usually closed, a private after-hours visit, a poet at a table, a tasting before the distillery opens." ],
             ],
 
             '_etm_story_number'                => '02',
@@ -737,8 +737,8 @@ class ETM_Experience_Seeder {
             '_etm_story_heading_part1'         => 'Ireland,',
             '_etm_story_heading_part2'         => 'your way.',
             '_etm_story_plate'                 => 'Plate 1 of 4 · The Western Counties',
-            '_etm_story_lede'                  => 'The Bespoke is the journey we are best known for — built end-to-end around the people travelling. Where you go, how long you stay, and the rhythm of each day are decided in conversation with us, never lifted from a brochure.',
-            '_etm_story_para1'                 => "Most begin with a single thread — a great-grandmother's parish in Mayo, a love of the western seaboard, a curiosity about the language, a quiet need to slow down. From there, we build outward: the route, the houses you sleep in, the people you meet, the meals at the end of each day.",
+            '_etm_story_lede'                  => 'The Bespoke is the journey we are best known for, built end-to-end around the people travelling. Where you go, how long you stay, and the rhythm of each day are decided in conversation with us, never lifted from a brochure.',
+            '_etm_story_para1'                 => "Most begin with a single thread, a great-grandmother's parish in Mayo, a love of the western seaboard, a curiosity about the language, a quiet need to slow down. From there, we build outward: the route, the houses you sleep in, the people you meet, the meals at the end of each day.",
             '_etm_story_para2'                 => 'No two of these journeys have ever been the same. None ever will be.',
             '_etm_story_people_label'          => 'Your People for the Journey',
             '_etm_story_people'                => [
@@ -755,7 +755,7 @@ class ETM_Experience_Seeder {
             '_etm_pillars_heading_part1'       => 'Ancestry, Culture',
             '_etm_pillars_heading_part2'       => '& Scenery.',
             '_etm_pillars_subheading'          => 'Three threads, woven to your weight.',
-            '_etm_pillars_intro'               => 'Almost every Bespoke draws on these three pillars — but the proportions are entirely yours. Some travellers want a week of ancestry; others come for the landscape and stay for the music. We listen, then design accordingly.',
+            '_etm_pillars_intro'               => 'Almost every Bespoke draws on these three pillars, but the proportions are entirely yours. Some travellers want a week of ancestry; others come for the landscape and stay for the music. We listen, then design accordingly.',
             '_etm_pillars'                     => [
                 [ 'pillar' => 'Ancestry', 'title' => 'Find your people, then sit with them.',
                   'body' => 'We work with professional genealogists in Dublin and Belfast to trace your line, then plan parish visits, graveyard walks, and afternoons with the cousins still on the land.',
@@ -777,7 +777,7 @@ class ETM_Experience_Seeder {
                 [ 'number' => '01', 'title' => 'A first conversation',
                   'body' => 'An hour on the phone with a designer. We ask about who you are, what brought you to Ireland, and what would make the trip mean something.' ],
                 [ 'number' => '02', 'title' => 'A draft itinerary',
-                  'body' => 'Within ten days you receive a written itinerary — routes, houses, experiences, and the reasoning behind each choice. Every line is yours to revise.' ],
+                  'body' => 'Within ten days you receive a written itinerary, routes, houses, experiences, and the reasoning behind each choice. Every line is yours to revise.' ],
                 [ 'number' => '03', 'title' => 'Quiet preparation',
                   'body' => 'Once you approve the shape, we book everything ourselves. A printed leather wallet arrives by post, two weeks before you leave.' ],
                 [ 'number' => '04', 'title' => 'Ireland, properly',
@@ -785,11 +785,11 @@ class ETM_Experience_Seeder {
             ],
             '_etm_process_aside_heading_part1' => 'Built in four',
             '_etm_process_aside_heading_part2' => 'quiet conversations.',
-            '_etm_process_aside_body'          => "We do not begin with a route. We begin with a phone call. The journey is shaped slowly, on your terms — and we carry every detail so you don't have to.",
+            '_etm_process_aside_body'          => "We do not begin with a route. We begin with a phone call. The journey is shaped slowly, on your terms, and we carry every detail so you don't have to.",
             '_etm_process_facts'               => [
                 [ 'label' => 'From',   'value' => '€1,650 / day' ],
-                [ 'label' => 'Length', 'value' => '6 – 15 days' ],
-                [ 'label' => 'Group',  'value' => '2 – 8' ],
+                [ 'label' => 'Length', 'value' => '6 - 15 days' ],
+                [ 'label' => 'Group',  'value' => '2 - 8' ],
             ],
 
             '_etm_cta_number'                  => '05',
@@ -797,7 +797,7 @@ class ETM_Experience_Seeder {
             '_etm_cta_heading_part1'           => 'We are',
             '_etm_cta_heading_part2'           => 'experience designers,',
             '_etm_cta_heading_part3'           => 'not tour operators.',
-            '_etm_cta_body'                    => 'Every Bespoke is built around a quiet conversation. Tell us what brought you to Ireland — a name, a county, a curiosity — and we will write back within a working day.',
+            '_etm_cta_body'                    => 'Every Bespoke is built around a quiet conversation. Tell us what brought you to Ireland, a name, a county, a curiosity, and we will write back within a working day.',
             '_etm_cta_phone'                   => '+353 87 345 2874',
             '_etm_cta_email'                   => 'concierge@elitetours.ie',
             '_etm_cta_quote'                   => "I've spent decades helping people experience Ireland in a truly personal way. The Bespoke is the journey closest to my heart.",
@@ -810,7 +810,7 @@ class ETM_Experience_Seeder {
             '_etm_similar_view_all_text'       => 'View all experiences →',
             '_etm_similar_view_all_url'        => home_url( '/experiences/' ),
 
-            '_etm_card_meta'                   => 'Multi-day · 6 – 15 nights',
+            '_etm_card_meta'                   => 'Multi-day · 6 - 15 nights',
         ];
         foreach ( $meta as $key => $value ) {
             update_post_meta( $post_id, $key, $value );
@@ -822,7 +822,7 @@ class ETM_Experience_Seeder {
 
     private function seed_bespoke_images(): void {
         // Hero is upgraded to a hi-res TripAdvisor shot (Gap of Dunloe, 1100×1467)
-        // because the previous 22.jpg was 788×800 — too soft on a full-bleed hero.
+        // because the previous 22.jpg was 788×800, too soft on a full-bleed hero.
         $files = [
             'hero'           => 'gap-of-dunloe.jpg',
             'story_main'     => '0.png',
@@ -881,20 +881,20 @@ class ETM_Experience_Seeder {
         $post_id = (int) $post->ID;
 
         update_post_meta( $post_id, '_etm_highlights_heading', 'Highlights.' );
-        update_post_meta( $post_id, '_etm_highlights_intro',   'Four things every Bespoke shares — held quietly in the background while the country reveals itself.' );
+        update_post_meta( $post_id, '_etm_highlights_intro',   'Four things every Bespoke shares, held quietly in the background while the country reveals itself.' );
 
         $highlights = [
             [ 'title' => 'A private chauffeur-guide',
               'desc'  => 'One person. The whole journey. Drivers who are also storytellers, fluent in the country they cross.',
               'image_id' => $id_cliffsAlt ],
             [ 'title' => 'Ancestry traced & visited',
-              'desc'  => 'Professional genealogists prepare your file before you arrive. Parish, townland, and — where we can — the cousins still on the land.',
+              'desc'  => 'Professional genealogists prepare your file before you arrive. Parish, townland, and, where we can, the cousins still on the land.',
               'image_id' => $id_cottage ],
             [ 'title' => 'Manor & castle accommodations',
               'desc'  => 'Hand-picked houses chosen for character, not stars. Most evenings are spent somewhere with a name and a history.',
               'image_id' => $id_manor ],
             [ 'title' => 'Quiet, exclusive access',
-              'desc'  => "Doors that are usually closed — a private after-hours visit, a poet at a table, a tasting before the distillery opens.",
+              'desc'  => "Doors that are usually closed, a private after-hours visit, a poet at a table, a tasting before the distillery opens.",
               'image_id' => $id_drawingRoom ],
         ];
         update_post_meta( $post_id, '_etm_highlights', $highlights );
@@ -936,9 +936,9 @@ class ETM_Experience_Seeder {
         }
 
         // Heritage post-thumbnail is upgraded to the hi-res Kylemore Abbey
-        // reflection (1200×675) — the existing 0.png is 736×981 which softens
+        // reflection (1200×675), the existing 0.png is 736×981 which softens
         // at full hero scale. Distilleries is upgraded to a hi-res whiskey
-        // cask warehouse shot (1920×3410, Pexels) — the existing 29.png pub
+        // cask warehouse shot (1920×3410, Pexels), the existing 29.png pub
         // corner was 600×900 and tonally pub-leaning rather than craft-leaning;
         // the warehouse better matches the "houses, people, and the practice"
         // copy of the experience.
@@ -953,9 +953,9 @@ class ETM_Experience_Seeder {
             '_etm_hero_deck'                   => 'A guided return to the parish, townland, and people your family came from.',
             '_etm_hero_breadcrumb'             => [ 'Tailored Experiences', 'Ancestry & Roots', 'Trace Your Irish Heritage' ],
             '_etm_hero_meta_strip'             => [ 'The Whole Island', 'Privately Researched', 'Quietly Met' ],
-            '_etm_hero_aside_text'             => "A bespoke journey through your family's Ireland — researched in advance with professional genealogists, then walked together at your own pace.",
+            '_etm_hero_aside_text'             => "A bespoke journey through your family's Ireland, researched in advance with professional genealogists, then walked together at your own pace.",
             '_etm_hero_aside_facts'            => [
-                [ 'label' => 'Length', 'value' => '5 – 8 days' ],
+                [ 'label' => 'Length', 'value' => '5 - 8 days' ],
                 [ 'label' => 'Season', 'value' => 'Year-round' ],
             ],
             '_etm_hero_cta_primary'            => 'Begin Your Search',
@@ -964,10 +964,10 @@ class ETM_Experience_Seeder {
             '_etm_hero_cta_secondary_url'      => '#et-exp-cta',
 
             '_etm_highlights_heading'          => 'Highlights.',
-            '_etm_highlights_intro'            => 'Four things every Heritage journey shares — held quietly in the background while the country reveals itself.',
+            '_etm_highlights_intro'            => 'Four things every Heritage journey shares, held quietly in the background while the country reveals itself.',
             '_etm_highlights'                  => [
                 [ 'title' => "A genealogist's file, prepared",
-                  'desc'  => 'We commission a professional Dublin or Belfast genealogist to research your line before you arrive — often months in advance.',
+                  'desc'  => 'We commission a professional Dublin or Belfast genealogist to research your line before you arrive, often months in advance.',
                   'image_id' => $img['9.png'] ],
                 [ 'title' => 'The townland, walked slowly',
                   'desc'  => 'We find where your name belonged, and bring you there. The lane, the church, the field, the gravestone.',
@@ -976,14 +976,14 @@ class ETM_Experience_Seeder {
                   'desc'  => 'Where the line is still living, we make the introduction. Tea is poured. Photographs are shared. No strangers leave that house.',
                   'image_id' => $img['17.png'] ],
                 [ 'title' => 'Documents to take home',
-                  'desc'  => "A bound family file — parish records, maps, photographs, and the genealogist's notes — yours to keep, designed to be kept.",
+                  'desc'  => "A bound family file, parish records, maps, photographs, and the genealogist's notes, yours to keep, designed to be kept.",
                   'image_id' => $img['33.png'] ],
             ],
 
             '_etm_story_heading_part1'         => 'Coming home,',
             '_etm_story_heading_part2'         => 'to a name.',
             '_etm_story_plate'                 => 'Plate 1 of 4 · The Western Counties',
-            '_etm_story_lede'                  => 'For many of our guests, an Irish journey is not a holiday — it is a return to a name on a parish register, a townland on a worn family map, or a feeling that something here is theirs.',
+            '_etm_story_lede'                  => 'For many of our guests, an Irish journey is not a holiday, it is a return to a name on a parish register, a townland on a worn family map, or a feeling that something here is theirs.',
             '_etm_story_para1'                 => 'Heritage is the most personal journey we design. It begins months before you fly, in the quiet work of a Dublin or Belfast genealogist tracing your line through baptismal records, land transfers, and the long, careful papers of the country.',
             '_etm_story_para2'                 => 'By the time you arrive, the work has been done. What remains is the walk.',
             '_etm_story_image_main'            => $img['9.png'],
@@ -1001,7 +1001,7 @@ class ETM_Experience_Seeder {
             '_etm_pillars_heading_part1'       => 'Research, Walk',
             '_etm_pillars_heading_part2'       => '& Belong.',
             '_etm_pillars_subheading'          => 'Three movements, gently sequenced.',
-            '_etm_pillars_intro'               => 'Every Heritage journey draws on these three movements, in this order — research before you arrive, walking the country with a guide, and where possible, the welcome of cousins still on the land.',
+            '_etm_pillars_intro'               => 'Every Heritage journey draws on these three movements, in this order, research before you arrive, walking the country with a guide, and where possible, the welcome of cousins still on the land.',
             '_etm_pillars'                     => [
                 [ 'pillar' => 'Research', 'title' => "The genealogist's quiet preparation.",
                   'body' => 'Months before you fly, a professional genealogist in Dublin or Belfast traces your line through parish registers, land records, and gravestone surveys. The file arrives with you.',
@@ -1019,11 +1019,11 @@ class ETM_Experience_Seeder {
             '_etm_process_card_subtitle'       => 'two months of research, one week in Ireland',
             '_etm_process_steps'               => [
                 [ 'number' => '01', 'title' => 'A first conversation',
-                  'body' => "An hour by phone with a designer. Tell us what you know — names, towns, dates — and what you'd hope to feel." ],
+                  'body' => "An hour by phone with a designer. Tell us what you know, names, towns, dates, and what you'd hope to feel." ],
                 [ 'number' => '02', 'title' => "The genealogist's brief",
                   'body' => 'We commission a professional researcher with expertise in your county. Within four weeks, you receive a written file and a recommended itinerary.' ],
                 [ 'number' => '03', 'title' => 'Quiet preparation',
-                  'body' => 'Once you approve, we book everything — driver-host, accommodation, parish access, family introductions where possible.' ],
+                  'body' => 'Once you approve, we book everything, driver-host, accommodation, parish access, family introductions where possible.' ],
                 [ 'number' => '04', 'title' => 'Ireland, properly',
                   'body' => 'Your driver meets you at Shannon, Dublin or Belfast. The file travels with you. From that moment, the work is done.' ],
             ],
@@ -1034,14 +1034,14 @@ class ETM_Experience_Seeder {
             '_etm_process_image_2'             => $img['0.png'],
             '_etm_process_facts'               => [
                 [ 'label' => 'From',   'value' => '€1,850 / day' ],
-                [ 'label' => 'Length', 'value' => '5 – 8 days'  ],
-                [ 'label' => 'Group',  'value' => '2 – 6'       ],
+                [ 'label' => 'Length', 'value' => '5 - 8 days'  ],
+                [ 'label' => 'Group',  'value' => '2 - 6'       ],
             ],
 
             '_etm_cta_heading_part1'           => 'We are',
             '_etm_cta_heading_part2'           => 'story-keepers,',
             '_etm_cta_heading_part3'           => 'as much as designers.',
-            '_etm_cta_body'                    => "Tell us a name, a county, a half-remembered story — even a great-grandmother's first name and a port of departure. We will write back within a working day.",
+            '_etm_cta_body'                    => "Tell us a name, a county, a half-remembered story, even a great-grandmother's first name and a port of departure. We will write back within a working day.",
             '_etm_cta_phone'                   => '+353 87 345 2874',
             '_etm_cta_email'                   => 'concierge@elitetours.ie',
             '_etm_cta_portrait'                => $img['Raphell mulaly image.jpeg'],
@@ -1054,10 +1054,10 @@ class ETM_Experience_Seeder {
             '_etm_similar_view_all_url'        => home_url( '/experiences/' ),
             '_etm_similar_ids'                 => array_filter( [ $id_bespoke, $id_distilleries ] ),
 
-            '_etm_card_meta'                   => 'Multi-day · 5 – 8 nights',
+            '_etm_card_meta'                   => 'Multi-day · 5 - 8 nights',
         ];
         foreach ( $heritage_meta as $k => $v ) update_post_meta( $id_heritage, $k, $v );
-        $this->log[] = "Seeded Heritage (post #{$id_heritage}) — " . count( $heritage_meta ) . " fields";
+        $this->log[] = "Seeded Heritage (post #{$id_heritage}), " . count( $heritage_meta ) . " fields";
 
         $distilleries_meta = [
             '_etm_eyebrow'                     => 'An Elite Tours Experience · Whiskey & Culture',
@@ -1065,9 +1065,9 @@ class ETM_Experience_Seeder {
             '_etm_hero_deck'                   => 'A privately guided journey through the houses, the people, and the practice behind a quiet renaissance in Irish whiskey.',
             '_etm_hero_breadcrumb'             => [ 'Tailored Experiences', 'Whiskey & Culture', "Ireland's Craft Distilleries" ],
             '_etm_hero_meta_strip'             => [ 'From Cork to Antrim', 'Privately Hosted', 'Designed to Slow' ],
-            '_etm_hero_aside_text'             => 'A five-day private journey through six craft distilleries, three private tastings, and one cooperage — at the rhythm of a long, slow drink.',
+            '_etm_hero_aside_text'             => 'A five-day private journey through six craft distilleries, three private tastings, and one cooperage, at the rhythm of a long, slow drink.',
             '_etm_hero_aside_facts'            => [
-                [ 'label' => 'Length', 'value' => '5 – 7 days'  ],
+                [ 'label' => 'Length', 'value' => '5 - 7 days'  ],
                 [ 'label' => 'Season', 'value' => 'Year-round' ],
             ],
             '_etm_hero_cta_primary'            => 'Plan Your Pilgrimage',
@@ -1076,26 +1076,26 @@ class ETM_Experience_Seeder {
             '_etm_hero_cta_secondary_url'      => '#et-exp-cta',
 
             '_etm_highlights_heading'          => 'Highlights.',
-            '_etm_highlights_intro'            => 'Four things every Distilleries journey shares — chosen for distinction rather than fame.',
+            '_etm_highlights_intro'            => 'Four things every Distilleries journey shares, chosen for distinction rather than fame.',
             '_etm_highlights'                  => [
                 [ 'title' => 'Six distilleries, three intimate',
                   'desc'  => 'Three of the houses we visit are still small enough to be opened by the people who run them. The other three are quietly storied.',
                   'image_id' => $img['25.png'] ],
                 [ 'title' => 'Private tastings, hosted',
-                  'desc'  => 'At each distillery, we secure a private flight before opening — guided not by a brand ambassador, but by a master distiller or blender.',
+                  'desc'  => 'At each distillery, we secure a private flight before opening, guided not by a brand ambassador, but by a master distiller or blender.',
                   'image_id' => $img['26.png'] ],
                 [ 'title' => 'A cooper at his bench',
                   'desc'  => 'One half-day at a working cooperage. Hands on the staves. Conversation with the man who builds the casks the whiskey will live in.',
                   'image_id' => $img['27.png'] ],
                 [ 'title' => 'Tables that match the glass',
-                  'desc'  => 'Every dinner is paired — a gastropub in West Cork, a tasting menu in Galway, a long Dublin lunch with a serious cellar.',
+                  'desc'  => 'Every dinner is paired, a gastropub in West Cork, a tasting menu in Galway, a long Dublin lunch with a serious cellar.',
                   'image_id' => $img['28.png'] ],
             ],
 
             '_etm_story_heading_part1'         => 'A glass,',
             '_etm_story_heading_part2'         => 'carefully kept.',
             '_etm_story_plate'                 => 'Plate 1 of 4 · From Cork to Antrim',
-            '_etm_story_lede'                  => 'Ireland once had two hundred working distilleries; for much of the last century, fewer than three remained. What is happening now is a quiet correction — small houses, careful hands, drinks made for keeping.',
+            '_etm_story_lede'                  => 'Ireland once had two hundred working distilleries; for much of the last century, fewer than three remained. What is happening now is a quiet correction, small houses, careful hands, drinks made for keeping.',
             '_etm_story_para1'                 => 'We design this journey for travellers who already love whiskey and want to spend a week with the people making it. The route runs the country diagonally, from the Atlantic coast of Cork to the Antrim glens, with stops chosen for distinction rather than fame.',
             '_etm_story_para2'                 => 'It is, in the gentlest sense, a pilgrimage.',
             '_etm_story_image_main'            => $img['26.png'],
@@ -1113,10 +1113,10 @@ class ETM_Experience_Seeder {
             '_etm_pillars_heading_part1'       => 'Heritage, Craft',
             '_etm_pillars_heading_part2'       => '& the Cask.',
             '_etm_pillars_subheading'          => 'Three threads, distilled carefully.',
-            '_etm_pillars_intro'               => 'Every Craft Distilleries journey draws on these three threads — the long heritage of Irish whiskey, the hands shaping it now, and the quiet patience of the cask.',
+            '_etm_pillars_intro'               => 'Every Craft Distilleries journey draws on these three threads, the long heritage of Irish whiskey, the hands shaping it now, and the quiet patience of the cask.',
             '_etm_pillars'                     => [
                 [ 'pillar' => 'Heritage', 'title' => 'The two-hundred-year tradition, retold.',
-                  'body' => 'We visit three houses with century-old archives — Bushmills, Kilbeggan, and a smaller mill outside Dingle — to understand where the practice began before tasting where it is going.',
+                  'body' => 'We visit three houses with century-old archives, Bushmills, Kilbeggan, and a smaller mill outside Dingle, to understand where the practice began before tasting where it is going.',
                   'image_id' => $img['distillery-barrels-irish.jpg'] ?? $img['25.png'] ],
                 [ 'pillar' => 'Craft', 'title' => 'The people who shape what is in the glass.',
                   'body' => 'Master distillers, head blenders, a still-room foreman in Cork. We secure private time with the people who matter most, never with marketers.',
@@ -1133,7 +1133,7 @@ class ETM_Experience_Seeder {
                 [ 'number' => '01', 'title' => 'A first conversation',
                   'body' => 'An hour by phone. Tell us your favourite expression, your tolerance for travel, and the kind of dinners you most enjoy.' ],
                 [ 'number' => '02', 'title' => 'The route, drawn',
-                  'body' => 'Within ten days you receive a written itinerary — six distilleries, three private hosts, the cooperage, and the meals at the end of each day.' ],
+                  'body' => 'Within ten days you receive a written itinerary, six distilleries, three private hosts, the cooperage, and the meals at the end of each day.' ],
                 [ 'number' => '03', 'title' => 'Quiet preparation',
                   'body' => 'Once you approve, we secure the private slots. Most of these visits cannot be booked online; we have spent years building the relationships that allow them.' ],
                 [ 'number' => '04', 'title' => 'Ireland, properly',
@@ -1141,19 +1141,19 @@ class ETM_Experience_Seeder {
             ],
             '_etm_process_aside_heading_part1' => 'Built across',
             '_etm_process_aside_heading_part2' => 'five careful days.',
-            '_etm_process_aside_body'          => 'Whiskey rewards patience. The journey is paced for it — late starts, slow lunches, no more than two distilleries in a single day. Every tasting is preceded by the walk that earned it.',
+            '_etm_process_aside_body'          => 'Whiskey rewards patience. The journey is paced for it, late starts, slow lunches, no more than two distilleries in a single day. Every tasting is preceded by the walk that earned it.',
             '_etm_process_image_1'             => $img['27.png'],
             '_etm_process_image_2'             => $img['30.png'],
             '_etm_process_facts'               => [
                 [ 'label' => 'From',   'value' => '€1,950 / day' ],
-                [ 'label' => 'Length', 'value' => '5 – 7 days'  ],
-                [ 'label' => 'Group',  'value' => '2 – 6'       ],
+                [ 'label' => 'Length', 'value' => '5 - 7 days'  ],
+                [ 'label' => 'Group',  'value' => '2 - 6'       ],
             ],
 
             '_etm_cta_heading_part1'           => 'We are',
             '_etm_cta_heading_part2'           => 'whiskey companions,',
             '_etm_cta_heading_part3'           => 'not tour guides.',
-            '_etm_cta_body'                    => "Tell us how you take your whiskey — and what you'd hope to learn over five days. We will write back within a working day with the names of houses we'd take you to first.",
+            '_etm_cta_body'                    => "Tell us how you take your whiskey, and what you'd hope to learn over five days. We will write back within a working day with the names of houses we'd take you to first.",
             '_etm_cta_phone'                   => '+353 87 345 2874',
             '_etm_cta_email'                   => 'concierge@elitetours.ie',
             '_etm_cta_portrait'                => $img['Raphell mulaly image.jpeg'],
@@ -1166,10 +1166,10 @@ class ETM_Experience_Seeder {
             '_etm_similar_view_all_url'        => home_url( '/experiences/' ),
             '_etm_similar_ids'                 => array_filter( [ $id_bespoke, $id_heritage ] ),
 
-            '_etm_card_meta'                   => 'Multi-day · 5 – 7 nights',
+            '_etm_card_meta'                   => 'Multi-day · 5 - 7 nights',
         ];
         foreach ( $distilleries_meta as $k => $v ) update_post_meta( $id_distilleries, $k, $v );
-        $this->log[] = "Seeded Distilleries (post #{$id_distilleries}) — " . count( $distilleries_meta ) . " fields";
+        $this->log[] = "Seeded Distilleries (post #{$id_distilleries}), " . count( $distilleries_meta ) . " fields";
 
         if ( $id_bespoke ) {
             update_post_meta( $id_bespoke, '_etm_similar_ids', [ $id_heritage, $id_distilleries ] );
