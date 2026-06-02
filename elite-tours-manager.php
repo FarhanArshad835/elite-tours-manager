@@ -2,7 +2,7 @@
 /**
  * Plugin Name:   Elite Tours Manager
  * Description:   Content management panel for Elite Tours Ireland website. Last updated: April 2026.
- * Version:       1.2.29
+ * Version:       1.2.30
  * Author:        Elite Tours Ireland
  * Text Domain:   elite-tours-manager
  * GitHub Plugin URI: FarhanArshad835/elite-tours-manager
@@ -547,6 +547,73 @@ if ( get_option( 'etm_migration_v1130' ) !== 'done' ) {
     }
 
     update_option( 'etm_migration_v1130', 'done' );
+}
+
+// ── One-time migration v1.13.1: clean dashes from Sample Itineraries CPT meta ──
+// v1130 ran at plugin file-load time but the 'experience' CPT is registered on
+// the init hook (priority 10), so post_type_exists() was false at that moment
+// and the CPT loop in v1130 was silently skipped. v1131 reruns the CPT-only
+// portion on init priority 30 (after CPT register) to catch the post titles,
+// excerpts, and _etm_* meta that v1130 missed.
+if ( get_option( 'etm_migration_v1131' ) !== 'done' ) {
+    add_action( 'init', function () {
+        if ( get_option( 'etm_migration_v1131' ) === 'done' ) return;
+        if ( ! post_type_exists( 'experience' ) ) return;
+
+        $replace = function ( $v ) use ( &$replace ) {
+            if ( is_string( $v ) ) {
+                $v = str_replace( "\xE2\x80\x93", "-", $v );
+                $v = str_replace( " \xE2\x80\x94 ", ", ", $v );
+                $v = str_replace( " \xE2\x80\x94",  ",",  $v );
+                $v = str_replace( "\xE2\x80\x94 ",  ", ", $v );
+                $v = str_replace( "\xE2\x80\x94",   ",",  $v );
+                return $v;
+            }
+            if ( is_array( $v ) ) {
+                return array_map( $replace, $v );
+            }
+            return $v;
+        };
+
+        $posts = get_posts( [
+            'post_type'      => 'experience',
+            'post_status'    => 'any',
+            'posts_per_page' => -1,
+            'fields'         => 'ids',
+            'no_found_rows'  => true,
+        ] );
+        foreach ( $posts as $pid ) {
+            $post = get_post( $pid );
+            if ( $post ) {
+                $new_title   = $replace( $post->post_title );
+                $new_excerpt = $replace( $post->post_excerpt );
+                $new_content = $replace( $post->post_content );
+                if ( $new_title !== $post->post_title
+                  || $new_excerpt !== $post->post_excerpt
+                  || $new_content !== $post->post_content ) {
+                    wp_update_post( [
+                        'ID'           => $pid,
+                        'post_title'   => $new_title,
+                        'post_excerpt' => $new_excerpt,
+                        'post_content' => $new_content,
+                    ] );
+                }
+            }
+            $all_meta = get_post_meta( $pid );
+            foreach ( $all_meta as $key => $values ) {
+                if ( strpos( $key, '_etm_' ) !== 0 ) continue;
+                foreach ( $values as $stored ) {
+                    $unser = maybe_unserialize( $stored );
+                    $new   = $replace( $unser );
+                    if ( $new !== $unser ) {
+                        update_post_meta( $pid, $key, $new );
+                    }
+                }
+            }
+        }
+
+        update_option( 'etm_migration_v1131', 'done' );
+    }, 30 );
 }
 
 define( 'ETM_PATH',    plugin_dir_path( __FILE__ ) );
