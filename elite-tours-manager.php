@@ -2,7 +2,7 @@
 /**
  * Plugin Name:   Elite Tours Manager
  * Description:   Content management panel for Elite Tours Ireland website. Last updated: April 2026.
- * Version:       1.2.33
+ * Version:       1.2.34
  * Author:        Elite Tours Ireland
  * Text Domain:   elite-tours-manager
  * GitHub Plugin URI: FarhanArshad835/elite-tours-manager
@@ -712,6 +712,88 @@ if ( get_option( 'etm_migration_v1150' ) !== 'done' ) {
         }
         update_option( 'etm_migration_v1150', 'done' );
     }, 40 );
+}
+
+// ── One-time migration v1.16.0: 3 more landscape region swaps + Essence card + permalink flush ──
+// Same pattern as v1150, batched. Sideloads 4 hi-res Pexels landscape shots
+// into the Media Library and wires them to:
+//   - et_regions[cork-and-kinsale]    -> kinsale-charles-fort-harbour.jpg
+//   - et_regions[kerry-and-dingle]    -> kerry-ring-mountains-lake.jpg
+//   - et_regions[galway]              -> galway-long-walk-houses.jpg
+//   - experience post (essence-of-ireland) featured image -> essence-ireland-countryside-coast.jpg
+// Plus flush_rewrite_rules() so /experiences/signature-ireland-journey/
+// and /experiences/essence-of-ireland/ resolve (they were 404 on live).
+if ( get_option( 'etm_migration_v1160' ) !== 'done' ) {
+    add_action( 'init', function () {
+        if ( get_option( 'etm_migration_v1160' ) === 'done' ) return;
+
+        $sideload = function ( string $filename ): int {
+            $abs = plugin_dir_path( __FILE__ ) . 'seed-data/images/' . $filename;
+            if ( ! file_exists( $abs ) ) return 0;
+            $existing = get_posts( [
+                'post_type'      => 'attachment',
+                'post_status'    => 'inherit',
+                'posts_per_page' => 1,
+                'meta_key'       => '_etm_seed_source',
+                'meta_value'     => $filename,
+                'fields'         => 'ids',
+            ] );
+            if ( ! empty( $existing ) ) return (int) $existing[0];
+            require_once ABSPATH . 'wp-admin/includes/media.php';
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            require_once ABSPATH . 'wp-admin/includes/image.php';
+            $upload = wp_upload_dir();
+            $tmp    = trailingslashit( $upload['path'] ) . '_seed_tmp_' . $filename;
+            if ( ! @copy( $abs, $tmp ) ) return 0;
+            $att_id = media_handle_sideload(
+                [ 'name' => $filename, 'tmp_name' => $tmp ],
+                0
+            );
+            if ( is_wp_error( $att_id ) ) { @unlink( $tmp ); return 0; }
+            update_post_meta( $att_id, '_etm_seed_source', $filename );
+            return (int) $att_id;
+        };
+
+        // Region swaps
+        $region_swaps = [
+            'cork-and-kinsale'  => 'kinsale-charles-fort-harbour.jpg',
+            'kerry-and-dingle'  => 'kerry-ring-mountains-lake.jpg',
+            'galway'            => 'galway-long-walk-houses.jpg',
+        ];
+        $regions = get_option( 'et_regions', [] );
+        if ( is_array( $regions ) ) {
+            $changed = false;
+            foreach ( $regions as $i => $r ) {
+                $slug = $r['slug'] ?? '';
+                if ( isset( $region_swaps[ $slug ] ) ) {
+                    $att_id = $sideload( $region_swaps[ $slug ] );
+                    if ( $att_id ) {
+                        $regions[ $i ]['image_id']       = $att_id;
+                        $regions[ $i ]['image_filename'] = $region_swaps[ $slug ];
+                        $changed = true;
+                    }
+                }
+            }
+            if ( $changed ) update_option( 'et_regions', $regions );
+        }
+
+        // Essence CPT post thumbnail
+        if ( post_type_exists( 'experience' ) ) {
+            $essence = get_page_by_path( 'essence-of-ireland', OBJECT, 'experience' );
+            if ( $essence ) {
+                $att_id = $sideload( 'essence-ireland-countryside-coast.jpg' );
+                if ( $att_id ) {
+                    set_post_thumbnail( $essence->ID, $att_id );
+                }
+            }
+        }
+
+        // Flush permalinks so the experience CPT funnel pages resolve
+        // (Signature & Essence were 404 on live before this).
+        flush_rewrite_rules( false );
+
+        update_option( 'etm_migration_v1160', 'done' );
+    }, 50 );
 }
 
 define( 'ETM_PATH',    plugin_dir_path( __FILE__ ) );

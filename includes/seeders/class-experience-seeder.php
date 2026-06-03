@@ -137,7 +137,7 @@ class ETM_Experience_Seeder {
      */
     private function seed_signature_and_essence(): void {
         $hero_signature_id = $this->seed_image( 'coastal-road-fog.jpg' );
-        $hero_essence_id   = $this->seed_image( 'gap-of-dunloe.jpg' );
+        $hero_essence_id   = $this->seed_image( 'essence-ireland-countryside-coast.jpg' );
         $kylemore_id       = $this->seed_image( 'kylemore-abbey-reflection.jpg' );
         $muckross_id       = $this->seed_image( 'muckross-lake-view.jpg' );
         $cathedral_id      = $this->seed_image( 'galway-cathedral-river.jpg' );
