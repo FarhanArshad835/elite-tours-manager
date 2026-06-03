@@ -2,7 +2,7 @@
 /**
  * Plugin Name:   Elite Tours Manager
  * Description:   Content management panel for Elite Tours Ireland website. Last updated: April 2026.
- * Version:       1.2.34
+ * Version:       1.2.35
  * Author:        Elite Tours Ireland
  * Text Domain:   elite-tours-manager
  * GitHub Plugin URI: FarhanArshad835/elite-tours-manager
@@ -794,6 +794,94 @@ if ( get_option( 'etm_migration_v1160' ) !== 'done' ) {
 
         update_option( 'etm_migration_v1160', 'done' );
     }, 50 );
+}
+
+// ── One-time migration v1.17.0: swap all 13 portrait hotel images to landscape ──
+// The 22-hotel accommodation grid was using portrait stock for every card,
+// looking cramped in the landscape card slot. This migration sideloads 12
+// new 1920px Pexels landscape shots, reuses the Kinsale Charles Fort image
+// from v1160 for the curated-Kinsale slot, and rewrites et_hotels[…].image_id
+// by hotel name (so admin reorderings don't break the mapping).
+//
+// Note: the new seed files reuse the EXISTING hotel-*.jpg filenames, so the
+// usual _etm_seed_source reuse-existing-attachment branch would point us
+// back at the OLD portrait attachments. The sideload helper here is the
+// fresh-import variant — it always creates a new attachment, tags it with
+// the landscape version marker, and leaves the old portrait attachments
+// orphaned but harmless.
+if ( get_option( 'etm_migration_v1170' ) !== 'done' ) {
+    add_action( 'init', function () {
+        if ( get_option( 'etm_migration_v1170' ) === 'done' ) return;
+
+        $sideload = function ( string $filename ): int {
+            $abs = plugin_dir_path( __FILE__ ) . 'seed-data/images/' . $filename;
+            if ( ! file_exists( $abs ) ) return 0;
+            // Reuse an attachment only if it was tagged by THIS migration
+            $tagged = get_posts( [
+                'post_type'      => 'attachment',
+                'post_status'    => 'inherit',
+                'posts_per_page' => 1,
+                'meta_key'       => '_etm_seed_source_v1170',
+                'meta_value'     => $filename,
+                'fields'         => 'ids',
+            ] );
+            if ( ! empty( $tagged ) ) return (int) $tagged[0];
+            require_once ABSPATH . 'wp-admin/includes/media.php';
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            require_once ABSPATH . 'wp-admin/includes/image.php';
+            $upload = wp_upload_dir();
+            $tmp    = trailingslashit( $upload['path'] ) . '_seed_tmp_v1170_' . $filename;
+            if ( ! @copy( $abs, $tmp ) ) return 0;
+            $att_id = media_handle_sideload(
+                [ 'name' => $filename, 'tmp_name' => $tmp ],
+                0
+            );
+            if ( is_wp_error( $att_id ) ) { @unlink( $tmp ); return 0; }
+            update_post_meta( $att_id, '_etm_seed_source',        $filename );
+            update_post_meta( $att_id, '_etm_seed_source_v1170',  $filename );
+            return (int) $att_id;
+        };
+
+        // Hotel name → new filename. Matches by hotel 'name' (not array index)
+        // so any admin reordering stays correct.
+        $hotel_swaps = [
+            'Ballynahinch Castle'   => 'hotel-ballynahinch-castle.jpg',
+            'Lough Eske Castle'     => 'hotel-lough-eske-castle.jpg',
+            'Abbeyglen Castle'      => 'hotel-abbeyglen-castle.jpg',
+            'The Shelbourne'        => 'hotel-shelbourne-dublin.jpg',
+            'The Merrion'           => 'hotel-merrion-dublin.jpg',
+            'The Merchant Hotel'    => 'hotel-merchant-belfast.jpg',
+            'The Hawthorn Hotel'    => 'hotel-hawthorn-galway.jpg',
+            'Bushmills Inn'         => 'hotel-bushmills-inn.jpg',
+            'Europa Hotel'          => 'hotel-europa-belfast.jpg',
+            'Derry City Hotel'      => 'hotel-derry-city.jpg',
+            'The Europe Hotel'      => 'hotel-europe-killarney.jpg',
+            'Fishing Lodges'        => 'hotel-fishing-lodges.jpg',
+            'Kinsale, Curated Stays' => 'kinsale-charles-fort-harbour.jpg',
+        ];
+
+        $hotels = get_option( 'et_hotels', [] );
+        if ( ! is_array( $hotels ) ) {
+            update_option( 'etm_migration_v1170', 'done' );
+            return;
+        }
+
+        $changed = 0;
+        foreach ( $hotels as $i => $h ) {
+            $name = $h['name'] ?? '';
+            if ( ! isset( $hotel_swaps[ $name ] ) ) continue;
+            $att_id = $sideload( $hotel_swaps[ $name ] );
+            if ( $att_id ) {
+                $hotels[ $i ]['image_id']       = $att_id;
+                $hotels[ $i ]['image_filename'] = $hotel_swaps[ $name ];
+                $changed++;
+            }
+        }
+        if ( $changed ) {
+            update_option( 'et_hotels', $hotels );
+        }
+        update_option( 'etm_migration_v1170', 'done' );
+    }, 55 );
 }
 
 define( 'ETM_PATH',    plugin_dir_path( __FILE__ ) );
