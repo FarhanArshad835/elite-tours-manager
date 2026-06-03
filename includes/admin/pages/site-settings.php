@@ -86,7 +86,7 @@ function etm_site_settings_page(): void {
                     <label class="etm-label" for="contact_email">Contact Email</label>
                     <input type="email" id="contact_email" name="contact_email" class="etm-input"
                            value="<?php echo esc_attr( $opts['contact_email'] ?? '' ); ?>"
-                           placeholder="elitetoursireland@gmail.com">
+                           placeholder="Info@elitetoursireland.com">
                     <p class="etm-help">Shown in the footer contact column.</p>
                 </div>
                 <div class="etm-field">

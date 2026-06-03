@@ -2,7 +2,7 @@
 /**
  * Plugin Name:   Elite Tours Manager
  * Description:   Content management panel for Elite Tours Ireland website. Last updated: April 2026.
- * Version:       1.2.30
+ * Version:       1.2.31
  * Author:        Elite Tours Ireland
  * Text Domain:   elite-tours-manager
  * GitHub Plugin URI: FarhanArshad835/elite-tours-manager
@@ -614,6 +614,41 @@ if ( get_option( 'etm_migration_v1131' ) !== 'done' ) {
 
         update_option( 'etm_migration_v1131', 'done' );
     }, 30 );
+}
+
+// ── One-time migration v1.14.0: normalise contact email to Info@elitetoursireland.com ──
+// User asked for every email reference to be Info@elitetoursireland.com.
+// Source PHP fallbacks already updated in the same release; this migration
+// rewrites the stored values too so the live render matches regardless of
+// which DB field a given template reads from.
+//   - et_site_settings.contact_email
+//   - et_homepage_settings.founder_cite (if it embeds an email — defensive)
+//   - All Sample Itineraries CPT _etm_cta_email post meta
+if ( get_option( 'etm_migration_v1140' ) !== 'done' ) {
+    $new_email = 'Info@elitetoursireland.com';
+
+    // Site Settings.
+    $site = get_option( 'et_site_settings', [] );
+    if ( ! is_array( $site ) ) $site = [];
+    $site['contact_email'] = $new_email;
+    update_option( 'et_site_settings', $site );
+
+    // CPT post meta — deferred to init so the CPT is registered.
+    add_action( 'init', function () use ( $new_email ) {
+        if ( get_option( 'etm_migration_v1140' ) === 'done' ) return;
+        if ( ! post_type_exists( 'experience' ) ) return;
+        $posts = get_posts( [
+            'post_type'      => 'experience',
+            'post_status'    => 'any',
+            'posts_per_page' => -1,
+            'fields'         => 'ids',
+            'no_found_rows'  => true,
+        ] );
+        foreach ( $posts as $pid ) {
+            update_post_meta( $pid, '_etm_cta_email', $new_email );
+        }
+        update_option( 'etm_migration_v1140', 'done' );
+    }, 35 );
 }
 
 define( 'ETM_PATH',    plugin_dir_path( __FILE__ ) );

@@ -585,7 +585,7 @@ function etm_render_experience_funnel_meta( WP_Post $post ): void {
                 </div>
                 <div class="etm-cpt-row">
                     <label>Email</label>
-                    <?php etm_field_text( 'etm_cta_email', $get( 'cta_email' ), 'concierge@elitetours.ie' ); ?>
+                    <?php etm_field_text( 'etm_cta_email', $get( 'cta_email' ), 'Info@elitetoursireland.com' ); ?>
                 </div>
             </div>
 
