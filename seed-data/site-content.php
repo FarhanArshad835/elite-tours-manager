@@ -151,7 +151,7 @@ return [
                 'Trinity College, Christ Church & Dublinia',
                 'Viking walking tour with Brendan',
             ],
-            'image_filename' => 'dublin-trinity-campanile.jpg',
+            'image_filename' => 'dublin-liffey-hapenny.jpg',
             'image_id'       => 0,
             'tour_link_text' => 'Featured in: Signature & Bespoke',
             'tour_link_url'  => '/experiences/signature-ireland-journey/',

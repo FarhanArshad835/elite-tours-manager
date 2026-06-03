@@ -2,7 +2,7 @@
 /**
  * Plugin Name:   Elite Tours Manager
  * Description:   Content management panel for Elite Tours Ireland website. Last updated: April 2026.
- * Version:       1.2.32
+ * Version:       1.2.33
  * Author:        Elite Tours Ireland
  * Text Domain:   elite-tours-manager
  * GitHub Plugin URI: FarhanArshad835/elite-tours-manager
@@ -649,6 +649,69 @@ if ( get_option( 'etm_migration_v1140' ) !== 'done' ) {
         }
         update_option( 'etm_migration_v1140', 'done' );
     }, 35 );
+}
+
+// ── One-time migration v1.15.0: swap Dublin region image to a landscape shot ──
+// Imports dublin-liffey-hapenny.jpg (1920x1280 Pexels — Ha'penny Bridge over
+// the Liffey) into the Media Library and replaces the Dublin region's
+// image_id with the new attachment. Replaces the prior portrait Trinity
+// Campanile shot. Defensive: matches by slug so admin reorderings don't
+// break the swap.
+if ( get_option( 'etm_migration_v1150' ) !== 'done' ) {
+    add_action( 'init', function () {
+        if ( get_option( 'etm_migration_v1150' ) === 'done' ) return;
+
+        $regions = get_option( 'et_regions', [] );
+        if ( ! is_array( $regions ) ) return;
+
+        $filename = 'dublin-liffey-hapenny.jpg';
+        $abs      = plugin_dir_path( __FILE__ ) . 'seed-data/images/' . $filename;
+        if ( ! file_exists( $abs ) ) return;
+
+        // Re-use existing attachment if a prior run already imported it
+        $existing = get_posts( [
+            'post_type'      => 'attachment',
+            'post_status'    => 'inherit',
+            'posts_per_page' => 1,
+            'meta_key'       => '_etm_seed_source',
+            'meta_value'     => $filename,
+            'fields'         => 'ids',
+        ] );
+        if ( ! empty( $existing ) ) {
+            $att_id = (int) $existing[0];
+        } else {
+            require_once ABSPATH . 'wp-admin/includes/media.php';
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            require_once ABSPATH . 'wp-admin/includes/image.php';
+            $upload = wp_upload_dir();
+            $tmp    = trailingslashit( $upload['path'] ) . '_seed_tmp_' . $filename;
+            if ( ! @copy( $abs, $tmp ) ) return;
+            $att_id = media_handle_sideload(
+                [ 'name' => $filename, 'tmp_name' => $tmp ],
+                0
+            );
+            if ( is_wp_error( $att_id ) ) {
+                @unlink( $tmp );
+                return;
+            }
+            update_post_meta( $att_id, '_etm_seed_source', $filename );
+        }
+
+        // Update the Dublin region by slug
+        $changed = false;
+        foreach ( $regions as $i => $r ) {
+            if ( ( $r['slug'] ?? '' ) === 'dublin-and-ancient-ireland' ) {
+                $regions[ $i ]['image_id']       = (int) $att_id;
+                $regions[ $i ]['image_filename'] = $filename;
+                $changed = true;
+                break;
+            }
+        }
+        if ( $changed ) {
+            update_option( 'et_regions', $regions );
+        }
+        update_option( 'etm_migration_v1150', 'done' );
+    }, 40 );
 }
 
 define( 'ETM_PATH',    plugin_dir_path( __FILE__ ) );
