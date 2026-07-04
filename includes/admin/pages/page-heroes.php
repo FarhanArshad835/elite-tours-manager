@@ -342,6 +342,19 @@ function etm_render_page_hero( string $slug, array $defaults = [], string $base_
         ? wp_get_attachment_image_url( $img_id, 'large' )
         : ( $img_filename && $base_url ? trailingslashit( $base_url ) . $img_filename : '' );
 
+    // Optional TripAdvisor proof badge, rendered inside the hero over the
+    // photo (same look as the homepage). Opt-in via defaults['show_proof']
+    // so existing page heroes are unaffected. Text comes from the shared
+    // homepage setting; read directly so the plugin has no theme dependency.
+    $show_proof = ! empty( $defaults['show_proof'] );
+    $proof_text = '';
+    if ( $show_proof ) {
+        $hp = get_option( 'et_homepage_settings', [] );
+        $proof_text = ( is_array( $hp ) && ! empty( $hp['hero_proof_text'] ) )
+            ? $hp['hero_proof_text']
+            : "Ireland's Highest-Rated Tour Provider on TripAdvisor";
+    }
+
     $allowed = [ 'br' => [], 'em' => [], 'strong' => [] ];
     ?>
     <section class="et-page-hero <?php echo esc_attr( $extra_class ); ?>">
@@ -359,6 +372,12 @@ function etm_render_page_hero( string $slug, array $defaults = [], string $base_
                 <?php endif; ?>
                 <?php if ( $subtitle ) : ?>
                 <p class="et-page-hero__sub"><?php echo esc_html( $subtitle ); ?></p>
+                <?php endif; ?>
+                <?php if ( $show_proof && $proof_text ) : ?>
+                <div class="et-proof et-proof--dark et-page-hero__proof" aria-label="5-star rated">
+                    <span class="et-proof__stars" aria-hidden="true">★★★★★</span>
+                    <span class="et-proof__text"><?php echo esc_html( $proof_text ); ?></span>
+                </div>
                 <?php endif; ?>
                 <?php if ( $cta_text && $cta_url ) :
                     $href = ( strpos( $cta_url, 'http' ) === 0 ) ? $cta_url : home_url( $cta_url );
