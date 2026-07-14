@@ -8,7 +8,7 @@ add_action( 'wp_ajax_etm_save_site_settings', function () {
 
     $fields = [ 'logo_id', 'phone_us', 'nav_cta_text', 'contact_email', 'address',
                 'social_instagram', 'social_facebook', 'social_tripadvisor',
-                'founder_image_id' ];
+                'founder_image_id', 'meta_pixel_id' ];
     $data   = [];
     foreach ( $fields as $f ) {
         $data[ $f ] = isset( $_POST[ $f ] ) ? sanitize_text_field( wp_unslash( $_POST[ $f ] ) ) : '';
@@ -119,6 +119,17 @@ function etm_site_settings_page(): void {
                     <input type="url" id="social_tripadvisor" name="social_tripadvisor" class="etm-input"
                            value="<?php echo esc_attr( $opts['social_tripadvisor'] ?? '' ); ?>"
                            placeholder="https://tripadvisor.com/...">
+                </div>
+            </div>
+
+            <div class="etm-section">
+                <h2 class="etm-section__title">Tracking</h2>
+                <div class="etm-field">
+                    <label class="etm-label" for="meta_pixel_id">Meta Pixel ID</label>
+                    <input type="text" id="meta_pixel_id" name="meta_pixel_id" class="etm-input"
+                           value="<?php echo esc_attr( $opts['meta_pixel_id'] ?? '' ); ?>"
+                           placeholder="e.g. 123456789012345">
+                    <p class="etm-help">Pixel ID from Meta Events Manager &rarr; Data Sources. When set, the site fires a PageView on every page and a Lead event on enquiry form submissions. Leave blank to disable all Meta tracking.</p>
                 </div>
             </div>
 
